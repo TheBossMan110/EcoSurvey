@@ -1,0 +1,82 @@
+﻿@model EcoSurvey.Models.Seminar
+
+@{
+    ViewData["Title"] = "Delete Seminar";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Delete Seminar</h1>
+        <p class="page-subtitle">Confirm deletion of an environmental awareness seminar</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 rounded-full bg-red-100 mx-auto flex items-center justify-center text-red-500 mb-4">
+                <i class="ri-delete-bin-line text-2xl"></i>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">Are you sure you want to delete this seminar?</h2>
+            <p class="text-gray-600">This action cannot be undone. This will permanently delete the seminar from the system.</p>
+        </div>
+
+        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+            <div class="mb-4">
+                <h3 class="text-lg font-medium text-gray-900">Seminar Title</h3>
+                <p class="text-gray-700">@Model.SeminarTitle</p>
+            </div>
+
+            <div class="mb-4">
+                <h3 class="text-lg font-medium text-gray-900">Location</h3>
+                <p class="text-gray-700">@Model.Location</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900">Conducted Date</h3>
+                    <p class="text-gray-700">@Model.ConductedDate.ToString("MMM dd, yyyy")</p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900">Number of Participants</h3>
+                    <p class="text-gray-700">@Model.NumberOfParticipants</p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900">Created Date</h3>
+                    <p class="text-gray-700">@Model.CreatedDate.ToString("MMM dd, yyyy")</p>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="mt-4">
+                    <h3 class="text-sm font-medium text-gray-900">Description</h3>
+                    <p class="text-gray-700">@Model.Description</p>
+                </div>
+            }
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="SeminarId" />
+            <div class="flex justify-center space-x-4">
+                <a asp-action="Index" class="btn btn-outline">
+                    <i class="ri-close-line"></i>
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <i class="ri-delete-bin-line"></i>
+                    Delete Seminar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

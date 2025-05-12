@@ -1,0 +1,323 @@
+﻿@model IEnumerable<EcoSurvey.Models.Competition>
+
+@{
+    ViewData["Title"] = "Competition Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Competition Management</h1>
+        <p class="page-subtitle">Manage environmental awareness competitions and challenges</p>
+    </div>
+    <div class="page-actions">
+        <button class="btn btn-outline" id="exportCompetitionsBtn">
+            <i class="ri-download-line"></i>
+            Export
+        </button>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="ri-add-line"></i>
+            Add Competition
+        </a>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="flex flex-col md:flex-row justify-between mb-4 space-y-4 md:space-y-0">
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <div class="relative">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                    <input type="text" id="searchCompetitions" class="search-input" placeholder="Search competitions...">
+                </div>
+                <select id="statusFilter" class="form-control w-full md:w-40">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <select id="dateFilter" class="form-control w-full md:w-40">
+                    <option value="">All Dates</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="past">Past</option>
+                </select>
+            </div>
+            <div class="flex items-center space-x-2">
+                <label for="bulkActions" class="text-sm text-gray-500">Bulk Actions:</label>
+                <select id="bulkActions" class="form-control w-40" disabled>
+                    <option value="">Select Action</option>
+                    <option value="activate">Activate</option>
+                    <option value="deactivate">Deactivate</option>
+                    <option value="delete">Delete</option>
+                </select>
+                <button id="applyBulkAction" class="btn btn-sm btn-outline" disabled>Apply</button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="w-10">
+                            <input type="checkbox" id="selectAllCompetitions" class="form-checkbox">
+                        </th>
+                        <th>Competition Title</th>
+                        <th>Date Range</th>
+                        <th>Status</th>
+                        <th>Related Survey</th>
+                        <th class="w-20">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var competition in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="competition-checkbox form-checkbox" data-id="@competition.CompetitionId">
+                                </td>
+                                <td>
+                                    <div class="flex items-center space-x-3">
+                                        <div>
+                                            <p class="font-medium">@competition.Title</p>
+                                            <p class="text-xs text-gray-500">Created: @competition.CreatedDate.ToString("MMM dd, yyyy")</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="text-sm text-gray-900">@competition.StartDate.ToString("MMM dd, yyyy") - @competition.EndDate.ToString("MMM dd, yyyy")</p>
+                                    <p class="text-xs text-gray-500">
+                                        @{
+                                            var daysLeft = (competition.EndDate - DateTime.Now).Days;
+                                            if (daysLeft > 0 && DateTime.Now >= competition.StartDate)
+                                            {
+                                                <span>@daysLeft days left</span>
+                                            }
+                                            else if (DateTime.Now < competition.StartDate)
+                                            {
+                                                <span>Starts in @((competition.StartDate - DateTime.Now).Days) days</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Ended</span>
+                                            }
+                                        }
+                                    </p>
+                                </td>
+                                <td>
+                                    @if (competition.IsActive)
+                                    {
+                                        <span class="badge badge-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-inactive">Inactive</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (competition.SurveyId.HasValue && ViewBag.SurveyTitles != null && ViewBag.SurveyTitles.ContainsKey(competition.SurveyId.Value))
+                                    {
+                                        <span>@ViewBag.SurveyTitles[competition.SurveyId.Value]</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-400">None</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="flex space-x-1">
+                                        <a asp-action="Details" asp-route-id="@competition.CompetitionId" class="btn-icon" title="View Competition">
+                                            <i class="ri-eye-line"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@competition.CompetitionId" class="btn-icon" title="Edit Competition">
+                                            <i class="ri-pencil-line"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@competition.CompetitionId" class="btn-icon text-red-500" title="Delete Competition">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <p class="text-gray-500">No competitions found.</p>
+                                <a asp-action="Create" class="text-primary hover:underline">Create your first competition</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex flex-col md:flex-row justify-between items-center mt-4 space-y-4 md:space-y-0">
+            <div class="text-sm text-gray-500">
+                Showing <span class="font-medium">@(Model?.Count() ?? 0)</span> competitions
+            </div>
+            @if (Model != null && Model.Count() > 10)
+            {
+                <div class="pagination">
+                    <button class="pagination-item" disabled>
+                        <i class="ri-arrow-left-s-line"></i>
+                    </button>
+                    <button class="pagination-item active">1</button>
+                    <button class="pagination-item">2</button>
+                    <button class="pagination-item">
+                        <i class="ri-arrow-right-s-line"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle select all checkbox
+            const selectAllCompetitions = document.getElementById('selectAllCompetitions');
+            const competitionCheckboxes = document.querySelectorAll('.competition-checkbox');
+            const bulkActions = document.getElementById('bulkActions');
+            const applyBulkAction = document.getElementById('applyBulkAction');
+
+            selectAllCompetitions.addEventListener('change', function() {
+                competitionCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+
+                updateBulkActionState();
+            });
+
+            competitionCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateBulkActionState);
+            });
+
+            function updateBulkActionState() {
+                const checkedCount = document.querySelectorAll('.competition-checkbox:checked').length;
+                bulkActions.disabled = checkedCount === 0;
+                applyBulkAction.disabled = checkedCount === 0;
+            }
+
+            // Handle bulk action
+            applyBulkAction.addEventListener('click', function() {
+                const action = bulkActions.value;
+                if (!action) {
+                    alert('Please select an action');
+                    return;
+                }
+
+                const selectedIds = Array.from(document.querySelectorAll('.competition-checkbox:checked'))
+                    .map(checkbox => checkbox.getAttribute('data-id'));
+
+                if (confirm(`Are you sure you want to ${action} ${selectedIds.length} competitions?`)) {
+                    // Here you would normally submit a form or make an AJAX request
+                    alert(`${action.charAt(0).toUpperCase() + action.slice(1)} action applied to competitions: ${selectedIds.join(', ')}`);
+                }
+            });
+
+            // Handle search
+            const searchInput = document.getElementById('searchCompetitions');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+
+                    if (title.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Handle status filter
+            const statusFilter = document.getElementById('statusFilter');
+            statusFilter.addEventListener('change', function() {
+                const selectedStatus = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    if (!selectedStatus) {
+                        row.style.display = '';
+                        return;
+                    }
+
+                    const statusCell = row.querySelector('td:nth-child(4)');
+                    if (statusCell && statusCell.textContent.toLowerCase().includes(selectedStatus)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Handle date filter
+            const dateFilter = document.getElementById('dateFilter');
+            dateFilter.addEventListener('change', function() {
+                const selectedFilter = this.value;
+                const rows = document.querySelectorAll('tbody tr');
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                rows.forEach(row => {
+                    if (!selectedFilter) {
+                        row.style.display = '';
+                        return;
+                    }
+
+                    const dateCell = row.querySelector('td:nth-child(3)');
+                    if (!dateCell) return;
+
+                    const dateText = dateCell.querySelector('p').textContent;
+                    const dates = dateText.split(' - ');
+                    const startDate = new Date(dates[0]);
+                    const endDate = new Date(dates[1]);
+
+                    let show = false;
+
+                    switch (selectedFilter) {
+                        case 'upcoming':
+                            show = startDate > today;
+                            break;
+                        case 'ongoing':
+                            show = startDate <= today && endDate >= today;
+                            break;
+                        case 'past':
+                            show = endDate < today;
+                            break;
+                    }
+
+                    row.style.display = show ? '' : 'none';
+                });
+            });
+
+            // Handle export
+            const exportCompetitionsBtn = document.getElementById('exportCompetitionsBtn');
+            exportCompetitionsBtn.addEventListener('click', function() {
+                alert('Exporting competitions to CSV...');
+            });
+        });
+    </script>
+}

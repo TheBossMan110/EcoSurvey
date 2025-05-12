@@ -1,0 +1,118 @@
+﻿@model EcoSurvey.Models.Survey
+
+@{
+    ViewData["Title"] = "Create Survey";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Create New Survey</h1>
+        <p class="page-subtitle">Create a new environmental awareness survey</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Title" class="form-label">Survey Title</label>
+                <input asp-for="Title" class="form-control" placeholder="Enter survey title" required />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter survey description" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label asp-for="StartDate" class="form-label">Start Date</label>
+                    <input asp-for="StartDate" class="form-control" type="date" required />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EndDate" class="form-label">End Date</label>
+                    <input asp-for="EndDate" class="form-control" type="date" required />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label asp-for="TargetUserType" class="form-label">Target User Type</label>
+                    <select asp-for="TargetUserType" class="form-control">
+                        <option value="">-- Select Target User Type --</option>
+                        <option value="Students">Students</option>
+                        <option value="Faculty">Faculty</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Community">Community</option>
+                        <option value="All">All</option>
+                    </select>
+                    <span asp-validation-for="TargetUserType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EstimatedCompletionTime" class="form-label">Estimated Completion Time (minutes)</label>
+                    <input asp-for="EstimatedCompletionTime" class="form-control" type="number" min="1" value="10" />
+                    <span asp-validation-for="EstimatedCompletionTime" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="flex items-center space-x-2">
+                    <input asp-for="IsActive" class="form-checkbox" />
+                    <label asp-for="IsActive" class="form-label-inline">Active Survey</label>
+                </div>
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-save-line"></i>
+                    Create Survey
+                </button>
+                <a asp-action="Index" class="btn btn-outline">
+                    <i class="ri-close-line"></i>
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum date for start date to today
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById("StartDate").min = formattedDate;
+
+            // Ensure end date is after start date
+            const startDateInput = document.getElementById("StartDate");
+            const endDateInput = document.getElementById("EndDate");
+
+            startDateInput.addEventListener("change", function() {
+                endDateInput.min = this.value;
+                if (endDateInput.value && endDateInput.value &lt; this.value) {
+                    endDateInput.value = this.value;
+                }
+            });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

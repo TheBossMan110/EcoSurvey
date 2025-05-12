@@ -1,0 +1,387 @@
+﻿@model IEnumerable<EcoSurvey.Models.Seminar>
+
+@{
+    ViewData["Title"] = "Seminar Management";
+    ViewData["ActivePage"] = "SeminarManagement";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Seminar Management</h1>
+        <p class="page-subtitle">Manage environmental awareness seminars and workshops</p>
+    </div>
+    <div class="page-actions">
+        <button class="btn btn-outline" id="exportSeminarsBtn">
+            <i class="ri-download-line"></i>
+            Export
+        </button>
+        <a href="/Admin/CreateSeminar" class="btn btn-primary">
+            <i class="ri-add-line"></i>
+            Add Seminar
+        </a>
+    </div>
+</div>
+
+<!-- Display success message if available -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="flex flex-col md:flex-row justify-between mb-4 space-y-4 md:space-y-0">
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <div class="relative">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                    <input type="text" id="searchSeminars" class="search-input" placeholder="Search seminars...">
+                </div>
+                <select id="locationFilter" class="form-control w-full md:w-40">
+                    <option value="">All Locations</option>
+                    <!-- Locations will be populated dynamically -->
+                </select>
+                <select id="dateFilter" class="form-control w-full md:w-40">
+                    <option value="">All Dates</option>
+                    <option value="past">Past Seminars</option>
+                    <option value="upcoming">Upcoming Seminars</option>
+                    <option value="today">Today</option>
+                    <option value="thisWeek">This Week</option>
+                    <option value="thisMonth">This Month</option>
+                </select>
+            </div>
+            <div class="flex items-center space-x-2">
+                <label for="bulkActions" class="text-sm text-gray-500">Bulk Actions:</label>
+                <select id="bulkActions" class="form-control w-40" disabled>
+                    <option value="">Select Action</option>
+                    <option value="export">Export</option>
+                    <option value="delete">Delete</option>
+                </select>
+                <button id="applyBulkAction" class="btn btn-sm btn-outline" disabled>Apply</button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="w-10">
+                            <input type="checkbox" id="selectAllSeminars" class="form-checkbox">
+                        </th>
+                        <th>Seminar Title</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Participants</th>
+                        <th class="w-20">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var seminar in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="seminar-checkbox form-checkbox" data-id="@seminar.SeminarId">
+                                </td>
+                                <td>
+                                    <div class="flex items-center space-x-3">
+                                        <div>
+                                            <p class="font-medium">@seminar.SeminarTitle</p>
+                                            <p class="text-xs text-gray-500">Created: @seminar.CreatedDate.ToString("MMM dd, yyyy")</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@seminar.Location</td>
+                                <td>
+                                    <p>@seminar.ConductedDate.ToString("MMM dd, yyyy")</p>
+                                    @{
+                                        var isPast = seminar.ConductedDate < DateTime.Today;
+                                        var isToday = seminar.ConductedDate.Date == DateTime.Today;
+                                        var daysUntil = (seminar.ConductedDate.Date - DateTime.Today).Days;
+                                    }
+
+                                    @if (isPast)
+                                    {
+                                        <span class="badge badge-inactive">Past</span>
+                                    }
+                                    else if (isToday)
+                                    {
+                                        <span class="badge badge-success">Today</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-info">In @daysUntil days</span>
+                                    }
+                                </td>
+                                <td>@seminar.NumberOfParticipants</td>
+                                <td>
+                                    <div class="flex space-x-1">
+                                        <a href="/Admin/EditSeminar/@seminar.SeminarId" class="btn-icon" title="Edit Seminar">
+                                            <i class="ri-pencil-line"></i>
+                                        </a>
+                                        <button class="btn-icon text-red-500 delete-seminar-btn" data-id="@seminar.SeminarId" title="Delete Seminar">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <p class="text-gray-500">No seminars found.</p>
+                                <a href="/Admin/CreateSeminar" class="text-primary hover:underline">Create your first seminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex flex-col md:flex-row justify-between items-center mt-4 space-y-4 md:space-y-0">
+            <div class="text-sm text-gray-500">
+                Showing <span class="font-medium">@(Model?.Count() ?? 0)</span> seminars
+            </div>
+            @if (Model != null && Model.Count() > 10)
+            {
+                <div class="pagination">
+                    <button class="pagination-item" disabled>
+                        <i class="ri-arrow-left-s-line"></i>
+                    </button>
+                    <button class="pagination-item active">1</button>
+                    <button class="pagination-item">2</button>
+                    <button class="pagination-item">
+                        <i class="ri-arrow-right-s-line"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteSeminarModal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3 class="modal-title">Delete Seminar</h3>
+            <button class="modal-close">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="text-center mb-4">
+                <div class="w-12 h-12 rounded-full bg-red-100 mx-auto flex items-center justify-center text-red-500 mb-4">
+                    <i class="ri-delete-bin-line text-xl"></i>
+                </div>
+                <p>Are you sure you want to delete this seminar? This action cannot be undone.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <form id="deleteSeminarForm" method="post" action="">
+                @Html.AntiForgeryToken()
+                <button type="button" class="btn btn-outline modal-close">Cancel</button>
+                <button type="submit" class="btn btn-danger">Delete Seminar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle select all checkbox
+            const selectAllSeminars = document.getElementById('selectAllSeminars');
+            const seminarCheckboxes = document.querySelectorAll('.seminar-checkbox');
+            const bulkActions = document.getElementById('bulkActions');
+            const applyBulkAction = document.getElementById('applyBulkAction');
+
+            selectAllSeminars.addEventListener('change', function() {
+                seminarCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+
+                updateBulkActionState();
+            });
+
+            seminarCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateBulkActionState);
+            });
+
+            function updateBulkActionState() {
+                const checkedCount = document.querySelectorAll('.seminar-checkbox:checked').length;
+                bulkActions.disabled = checkedCount === 0;
+                applyBulkAction.disabled = checkedCount === 0;
+            }
+
+            // Handle bulk action
+            applyBulkAction.addEventListener('click', function() {
+                const action = bulkActions.value;
+                if (!action) {
+                    alert('Please select an action');
+                    return;
+                }
+
+                const selectedIds = Array.from(document.querySelectorAll('.seminar-checkbox:checked'))
+                    .map(checkbox => checkbox.getAttribute('data-id'));
+
+                if (action === 'export') {
+                    alert(`Exporting ${selectedIds.length} seminars...`);
+                } else if (action === 'delete') {
+                    if (confirm(`Are you sure you want to delete ${selectedIds.length} seminars? This action cannot be undone.`)) {
+                        // Here you would normally submit a form or make an AJAX request
+                        alert(`Deleting ${selectedIds.length} seminars...`);
+                    }
+                }
+            });
+
+            // Handle delete seminar
+            const deleteButtons = document.querySelectorAll('.delete-seminar-btn');
+            const deleteSeminarModal = document.getElementById('deleteSeminarModal');
+            const deleteSeminarForm = document.getElementById('deleteSeminarForm');
+            const modalCloseButtons = document.querySelectorAll('.modal-close');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const seminarId = this.getAttribute('data-id');
+                    deleteSeminarForm.action = `/Admin/DeleteSeminarConfirmed/${seminarId}`;
+                    deleteSeminarModal.classList.remove('hidden');
+                });
+            });
+
+            modalCloseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    deleteSeminarModal.classList.add('hidden');
+                });
+            });
+
+            // Close modal when clicking outside
+            deleteSeminarModal.addEventListener('click', function(event) {
+                if (event.target === deleteSeminarModal || event.target.classList.contains('modal-overlay')) {
+                    deleteSeminarModal.classList.add('hidden');
+                }
+            });
+
+            // Handle search
+            const searchInput = document.getElementById('searchSeminars');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    const location = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+
+                    if (title.includes(searchTerm) || location.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Populate location filter
+            const locationFilter = document.getElementById('locationFilter');
+            const locations = new Set();
+
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const locationCell = row.querySelector('td:nth-child(3)');
+                if (locationCell) {
+                    locations.add(locationCell.textContent);
+                }
+            });
+
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location;
+                locationFilter.appendChild(option);
+            });
+
+            // Handle location filter
+            locationFilter.addEventListener('change', function() {
+                const selectedLocation = this.value;
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    if (!selectedLocation) {
+                        row.style.display = '';
+                        return;
+                    }
+
+                    const locationCell = row.querySelector('td:nth-child(3)');
+                    if (locationCell && locationCell.textContent === selectedLocation) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Handle date filter
+            const dateFilter = document.getElementById('dateFilter');
+            dateFilter.addEventListener('change', function() {
+                const selectedFilter = this.value;
+                const rows = document.querySelectorAll('tbody tr');
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                rows.forEach(row => {
+                    if (!selectedFilter) {
+                        row.style.display = '';
+                        return;
+                    }
+
+                    const dateCell = row.querySelector('td:nth-child(4)');
+                    if (!dateCell) return;
+
+                    const dateText = dateCell.querySelector('p').textContent;
+                    const seminarDate = new Date(dateText);
+                    seminarDate.setHours(0, 0, 0, 0);
+
+                    let show = false;
+
+                    switch (selectedFilter) {
+                        case 'past':
+                            show = seminarDate < today;
+                            break;
+                        case 'upcoming':
+                            show = seminarDate >= today;
+                            break;
+                        case 'today':
+                            show = seminarDate.getTime() === today.getTime();
+                            break;
+                        case 'thisWeek':
+                            const weekStart = new Date(today);
+                            weekStart.setDate(today.getDate() - today.getDay());
+                            const weekEnd = new Date(weekStart);
+                            weekEnd.setDate(weekStart.getDate() + 6);
+                            show = seminarDate >= weekStart && seminarDate <= week  + 6);
+                            show = seminarDate >= weekStart && seminarDate <= weekEnd;
+                            break;
+                        case 'thisMonth':
+                            const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                            const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                            show = seminarDate >= monthStart && seminarDate <= monthEnd;
+                            break;
+                    }
+
+                    row.style.display = show ? '' : 'none';
+                });
+            });
+
+            // Handle export
+            const exportSeminarsBtn = document.getElementById('exportSeminarsBtn');
+            exportSeminarsBtn.addEventListener('click', function() {
+                alert('Exporting seminars to CSV...');
+            });
+        });
+    </script>
+}

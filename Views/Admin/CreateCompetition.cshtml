@@ -1,0 +1,186 @@
+﻿@model EcoSurvey.Models.Competition
+
+@{
+    ViewData["Title"] = "Create Competition";
+    ViewData["ActivePage"] = "CompetitionManagement";
+    Layout = "_AdminLayout";
+}
+
+<!-- Breadcrumb -->
+<div class="flex items-center text-sm text-gray-500 mb-4">
+    <a href="/Admin/Index" class="hover:text-primary">Dashboard</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <a href="/Admin/CompetitionManagement" class="hover:text-primary">Competition Management</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <span class="text-gray-700 font-medium">Create New Competition</span>
+</div>
+
+<!-- Page Header -->
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Create New Competition</h1>
+        <p class="text-sm text-gray-600">Set up a new environmental awareness competition or challenge</p>
+    </div>
+</div>
+
+<!-- Competition Form -->
+<form asp-controller="Competition" id="competitionForm" method="post" asp-action="Create">
+    @Html.AntiForgeryToken()
+
+    <!-- Validation Summary -->
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div class="font-bold">Please correct the following errors:</div>
+            <div asp-validation-summary="All" class="text-red-600"></div>
+        </div>
+    }
+
+    <!-- Success Message -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="bg-white rounded-lg shadow mb-6">
+        <div class="p-5 border-b">
+            <h3 class="text-lg font-semibold text-gray-900">Competition Details</h3>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <div class="mb-4">
+                        <label asp-for="Title" class="block text-sm font-medium text-gray-700 mb-1">Competition Title <span class="text-red-500">*</span></label>
+                        <input asp-for="Title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Enter competition title" />
+                        <span asp-validation-for="Title" class="text-red-500 text-xs"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="block text-sm font-medium text-gray-700 mb-1">Description <span class="text-red-500">*</span></label>
+                        <textarea asp-for="Description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Enter competition description"></textarea>
+                        <span asp-validation-for="Description" class="text-red-500 text-xs"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="SurveyId" class="block text-sm font-medium text-gray-700 mb-1">Related Survey</label>
+                        <select asp-for="SurveyId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none appearance-none">
+                            <option value="">None</option>
+                            @if (ViewBag.Surveys != null)
+                            {
+                                foreach (var survey in ViewBag.Surveys)
+                                {
+                                    <option value="@survey.SurveyId">@survey.Title</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="SurveyId" class="text-red-500 text-xs"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label asp-for="StartDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                </div>
+                                <input asp-for="StartDate" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" />
+                            </div>
+                            <span asp-validation-for="StartDate" class="text-red-500 text-xs"></span>
+                        </div>
+                        <div>
+                            <label asp-for="EndDate" class="block text-sm font-medium text-gray-700 mb-1">End Date <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                </div>
+                                <input asp-for="EndDate" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" />
+                            </div>
+                            <span asp-validation-for="EndDate" class="text-red-500 text-xs"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Rules" class="block text-sm font-medium text-gray-700 mb-1">Rules</label>
+                        <textarea asp-for="Rules" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Enter competition rules"></textarea>
+                        <span asp-validation-for="Rules" class="text-red-500 text-xs"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Prizes" class="block text-sm font-medium text-gray-700 mb-1">Prizes</label>
+                        <textarea asp-for="Prizes" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Enter competition prizes"></textarea>
+                        <span asp-validation-for="Prizes" class="text-red-500 text-xs"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="MaxParticipants" class="block text-sm font-medium text-gray-700 mb-1">Max Participants</label>
+                        <input asp-for="MaxParticipants" type="number" min="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" />
+                        <span asp-validation-for="MaxParticipants" class="text-red-500 text-xs"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex items-center space-x-2">
+                            <input asp-for="IsActive" type="checkbox" class="form-checkbox" checked="checked" value="true" />
+                            <input type="hidden" asp-for="IsActive" value="false" />
+                            <label asp-for="IsActive" class="form-label-inline">Active Competition</label>
+                        </div>
+                        <span asp-validation-for="IsActive" class="text-red-500 text-xs"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="flex justify-end space-x-3 mb-6">
+        <a href="/Admin/CompetitionManagement" id="cancel-btn" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                <i class="ri-close-line"></i>
+            </div>
+            Cancel
+        </a>
+        <button type="submit"  class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2"> 
+                 <i class="ri-check-line"></i> 
+             </div> 
+             Create Competition
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set minimum date for start date to today
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById("StartDate").min = formattedDate;
+
+            // Ensure end date is after start date
+            const startDateInput = document.getElementById("StartDate");
+            const endDateInput = document.getElementById("EndDate");
+
+            startDateInput.addEventListener("change", function() {
+                endDateInput.min = this.value;
+                if (endDateInput.value && endDateInput.value < this.value) {
+                    endDateInput.value = this.value;
+                }
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

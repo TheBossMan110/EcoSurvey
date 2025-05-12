@@ -1,0 +1,203 @@
+﻿@model EcoSurvey.Models.Question
+
+@{
+    ViewData["Title"] = "Create Question";
+    ViewData["ActivePage"] = "SurveyManagement";
+    Layout = "_AdminLayout";
+
+    var survey = ViewBag.Survey as EcoSurvey.Models.Survey;
+}
+
+<!-- Breadcrumb -->
+<div class="flex items-center text-sm text-gray-500 mb-4">
+    <a asp-controller="Admin" asp-action="Index" class="hover:text-primary">Dashboard</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <a asp-controller="Admin" asp-action="SurveyManagement" class="hover:text-primary">Survey Management</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <a asp-controller="Admin" asp-action="QuestionManagement" asp-route-surveyId="@Model.SurveyId" class="hover:text-primary">Question Management</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <span class="text-gray-700 font-medium">Create Question</span>
+</div>
+
+<!-- Page Header -->
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Create Question</h1>
+        <p class="text-sm text-gray-600">Add a new question to survey: <span class="font-medium">@survey.Title</span></p>
+    </div>
+</div>
+
+<form asp-action="CreateQuestion" method="post">
+    <input type="hidden" asp-for="SurveyId" />
+    <input type="hidden" asp-for="DisplayOrder" />
+
+    <div class="bg-white rounded-lg shadow mb-6">
+        <div class="p-6">
+            <div class="mb-4">
+                <label asp-for="QuestionText" class="block text-sm font-medium text-gray-700 mb-1">Question Text <span class="text-red-500">*</span></label>
+                <input asp-for="QuestionText" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Enter question text">
+                <span asp-validation-for="QuestionText" class="text-xs text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="QuestionType" class="block text-sm font-medium text-gray-700 mb-1">Question Type <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <select asp-for="QuestionType" id="questionType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none appearance-none">
+                        <option value="1">Text</option>
+                        <option value="2">Single Choice</option>
+                        <option value="3">Multiple Choice</option>
+                        <option value="4">Rating</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </div>
+                </div>
+                <span asp-validation-for="QuestionType" class="text-xs text-red-500"></span>
+            </div>
+
+            <div id="optionsSection" class="mb-4 hidden">
+                <label for="options" class="block text-sm font-medium text-gray-700 mb-1">Options <span class="text-red-500">*</span></label>
+                <div class="space-y-2" id="optionsContainer">
+                    <div class="flex items-center">
+                        <input type="text" name="option" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Option 1">
+                        <button type="button" class="remove-option p-1 ml-2 text-gray-400 hover:text-red-500 hidden">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-close-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="text" name="option" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Option 2">
+                        <button type="button" class="remove-option p-1 ml-2 text-gray-400 hover:text-red-500">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-close-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" id="addOptionBtn" class="flex items-center text-sm text-primary hover:underline mt-2">
+                    <div class="w-4 h-4 flex items-center justify-center mr-1">
+                        <i class="ri-add-line"></i>
+                    </div>
+                    Add Option
+                </button>
+                <input type="hidden" asp-for="Options" id="optionsJson" />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="IsRequired" class="flex items-center">
+                    <input asp-for="IsRequired" type="checkbox" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary">
+                    <span class="ml-2 text-sm text-gray-700">This question is required</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="p-5 border-t bg-gray-50 flex justify-end">
+            <a asp-action="QuestionManagement" asp-route-surveyId="@Model.SurveyId" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap mr-3">
+                Cancel
+            </a>
+            <button type="submit" class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                Create Question
+            </button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const questionTypeSelect = document.getElementById('questionType');
+            const optionsSection = document.getElementById('optionsSection');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const addOptionBtn = document.getElementById('addOptionBtn');
+            const optionsJsonInput = document.getElementById('optionsJson');
+
+            // Show/hide options section based on question type
+            function toggleOptionsSection() {
+                const questionType = parseInt(questionTypeSelect.value);
+                if (questionType === 2 || questionType === 3) { // Single or Multiple Choice
+                    optionsSection.classList.remove('hidden');
+                } else {
+                    optionsSection.classList.add('hidden');
+                }
+            }
+
+            // Initialize
+            toggleOptionsSection();
+
+            // Add event listener for question type change
+            questionTypeSelect.addEventListener('change', toggleOptionsSection);
+
+            // Add option
+            addOptionBtn.addEventListener('click', function() {
+                const optionCount = optionsContainer.querySelectorAll('input[name="option"]').length;
+                const newOption = document.createElement('div');
+                newOption.className = 'flex items-center';
+                newOption.innerHTML = `
+                    <input type="text" name="option" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Option ${optionCount + 1}">
+                    <button type="button" class="remove-option p-1 ml-2 text-gray-400 hover:text-red-500">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-close-line"></i>
+                        </div>
+                    </button>
+                `;
+                optionsContainer.appendChild(newOption);
+
+                // Add event listener to the new remove button
+                newOption.querySelector('.remove-option').addEventListener('click', function() {
+                    optionsContainer.removeChild(newOption);
+                    updateOptionsJson();
+                });
+            });
+
+            // Remove option
+            optionsContainer.querySelectorAll('.remove-option').forEach(button => {
+                button.addEventListener('click', function() {
+                    const optionDiv = this.parentElement;
+                    optionsContainer.removeChild(optionDiv);
+                    updateOptionsJson();
+
+                    // Make sure at least one option remains
+                    if (optionsContainer.querySelectorAll('input[name="option"]').length === 1) {
+                        optionsContainer.querySelector('.remove-option').classList.add('hidden');
+                    }
+                });
+            });
+
+            // Update options JSON
+            function updateOptionsJson() {
+                const options = [];
+                optionsContainer.querySelectorAll('input[name="option"]').forEach(input => {
+                    if (input.value.trim()) {
+                        options.push(input.value.trim());
+                    }
+                });
+                optionsJsonInput.value = JSON.stringify(options);
+            }
+
+            // Update JSON on form submit
+            document.querySelector('form').addEventListener('submit', function(e) {
+                updateOptionsJson();
+            });
+
+            // Update JSON when options change
+            optionsContainer.addEventListener('input', function(e) {
+                if (e.target.name === 'option') {
+                    updateOptionsJson();
+                }
+            });
+        });
+    </script>
+}

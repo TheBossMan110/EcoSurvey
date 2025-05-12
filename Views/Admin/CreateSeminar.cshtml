@@ -1,0 +1,130 @@
+﻿@model EcoSurvey.Models.Seminar
+
+@{
+    ViewData["Title"] = "Create New Seminar";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Create New Seminar</h1>
+        <p class="page-subtitle">Schedule a new environmental awareness seminar</p>
+    </div>
+    <div class="page-actions">
+        <a href="/Admin/SeminarManagement" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to Seminars
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form id="createSeminarForm" method="post" action="/Admin/CreateSeminar">
+            @Html.AntiForgeryToken()
+
+            <!-- Add this at the top to display validation errors -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <div class="font-bold">Please correct the following errors:</div>
+                    <div asp-validation-summary="All" class="text-red-600"></div>
+                </div>
+            }
+
+            <!-- Display success message if available -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <!-- Updated form fields to match the actual Seminar model -->
+            <div class="form-group">
+                <label for="SeminarTitle" class="form-label">Seminar Title</label>
+                <input type="text" id="SeminarTitle" name="SeminarTitle" class="form-control" placeholder="Enter seminar title" required>
+                <span class="form-error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Location" class="form-label">Location</label>
+                <input type="text" id="Location" name="Location" class="form-control" placeholder="Enter seminar location" required>
+                <span class="form-error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="ConductedDate" class="form-label">Conducted Date</label>
+                <input type="date" id="ConductedDate" name="ConductedDate" class="form-control" required>
+                <span class="form-error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="NumberOfParticipants" class="form-label">Number of Participants</label>
+                <input type="number" id="NumberOfParticipants" name="NumberOfParticipants" class="form-control" min="1" value="20" required>
+                <span class="form-error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Description" class="form-label">Description</label>
+                <textarea id="Description" name="Description" class="form-control" rows="4" placeholder="Enter seminar description"></textarea>
+                <span class="form-error-message"></span>
+            </div>
+
+            <input type="hidden" name="CreatedDate" value="@DateTime.Now" />
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-save-line"></i>
+                    Create Seminar
+                </button>
+                <button type="reset" class="btn btn-outline">
+                    <i class="ri-refresh-line"></i>
+                    Reset Form
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('createSeminarForm');
+            const seminarDateInput = document.getElementById('ConductedDate');
+
+            // Set minimum date to today
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            seminarDateInput.min = formattedDate;
+
+            // Form validation
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+                const requiredFields = form.querySelectorAll('[required]');
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        const errorMessage = field.nextElementSibling;
+                        if (errorMessage && errorMessage.classList.contains('form-error-message')) {
+                            errorMessage.textContent = 'This field is required';
+                        }
+                        field.classList.add('error');
+                    } else {
+                        const errorMessage = field.nextElementSibling;
+                        if (errorMessage && errorMessage.classList.contains('form-error-message')) {
+                            errorMessage.textContent = '';
+                        }
+                        field.classList.remove('error');
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault();
+                    alert('Please fill in all required fields.');
+                }
+            });
+        });
+    </script>
+}

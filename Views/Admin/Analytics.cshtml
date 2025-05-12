@@ -1,0 +1,799 @@
+﻿@{
+    ViewData["Title"] = "Analytics";
+    ViewData["ActivePage"] = "Analytics";
+    Layout = "_AdminLayout";
+}
+
+<!-- Page Header -->
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Analytics</h1>
+        <p class="text-sm text-gray-600">Analyze survey participation and environmental awareness trends</p>
+    </div>
+    <div class="flex space-x-3">
+        <button class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                <i class="ri-download-line"></i>
+            </div>
+            Export Report
+        </button>
+        <button class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                <i class="ri-share-line"></i>
+            </div>
+            Share Insights
+        </button>
+    </div>
+</div>
+
+<!-- Date Range Filter -->
+<div class="bg-white rounded-lg shadow mb-6">
+    <div class="p-5 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                        <i class="ri-calendar-line"></i>
+                    </div>
+                </div>
+                <input type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" value="2025-04-01">
+            </div>
+            <span class="text-gray-500">to</span>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                        <i class="ri-calendar-line"></i>
+                    </div>
+                </div>
+                <input type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" value="2025-05-01">
+            </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <button class="px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Last 7 Days
+            </button>
+            <button class="px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Last 30 Days
+            </button>
+            <button class="px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Last Quarter
+            </button>
+            <button class="px-3 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-opacity-90">
+                Apply Filter
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div class="bg-white rounded-lg shadow p-5">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-500">Total Surveys</p>
+                <h3 class="text-2xl font-bold text-gray-900 mt-1">24</h3>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-blue-500 bg-opacity-10 flex items-center justify-center text-blue-500">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-survey-line"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center mt-4">
+            <div class="w-4 h-4 flex items-center justify-center text-green-500">
+                <i class="ri-arrow-up-line"></i>
+            </div>
+            <span class="text-xs font-medium text-green-500 ml-1">+15%</span>
+            <span class="text-xs text-gray-500 ml-2">from last period</span>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-5">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-500">Total Responses</p>
+                <h3 class="text-2xl font-bold text-gray-900 mt-1">3,842</h3>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-green-500 bg-opacity-10 flex items-center justify-center text-green-500">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-chat-check-line"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center mt-4">
+            <div class="w-4 h-4 flex items-center justify-center text-green-500">
+                <i class="ri-arrow-up-line"></i>
+            </div>
+            <span class="text-xs font-medium text-green-500 ml-1">+32%</span>
+            <span class="text-xs text-gray-500 ml-2">from last period</span>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-5">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-500">Avg. Completion Rate</p>
+                <h3 class="text-2xl font-bold text-gray-900 mt-1">78%</h3>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-purple-500 bg-opacity-10 flex items-center justify-center text-purple-500">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-percent-line"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center mt-4">
+            <div class="w-4 h-4 flex items-center justify-center text-green-500">
+                <i class="ri-arrow-up-line"></i>
+            </div>
+            <span class="text-xs font-medium text-green-500 ml-1">+5%</span>
+            <span class="text-xs text-gray-500 ml-2">from last period</span>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-5">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-500">Avg. Time to Complete</p>
+                <h3 class="text-2xl font-bold text-gray-900 mt-1">6:42</h3>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-yellow-500 bg-opacity-10 flex items-center justify-center text-yellow-500">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-time-line"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center mt-4">
+            <div class="w-4 h-4 flex items-center justify-center text-red-500">
+                <i class="ri-arrow-down-line"></i>
+            </div>
+            <span class="text-xs font-medium text-red-500 ml-1">-8%</span>
+            <span class="text-xs text-gray-500 ml-2">from last period</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left Column (2/3 width) -->
+    <div class="lg:col-span-2 space-y-6">
+        <!-- Participation Trends Chart -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-5 border-b flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">Participation Trends</h3>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200">Weekly</button>
+                    <button class="px-3 py-1 text-xs font-medium text-white bg-primary rounded-full">Monthly</button>
+                    <button class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200">Yearly</button>
+                </div>
+            </div>
+            <div class="p-5">
+                <div id="participationChart" class="w-full h-72"></div>
+            </div>
+        </div>
+
+        <!-- Survey Completion Rates -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-5 border-b flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">Survey Completion Rates</h3>
+                <div class="relative">
+                    <button id="surveyFilterBtn" class="flex items-center px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <span>All Surveys</span>
+                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="p-5 space-y-5">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-900">Campus Waste Management</h4>
+                            <p class="text-xs text-gray-500">342 responses</p>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">85%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-primary h-2.5 rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-900">Faculty Energy Conservation</h4>
+                            <p class="text-xs text-gray-500">128 responses</p>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">72%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-blue-500 h-2.5 rounded-full" style="width: 72%"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-900">Student Transportation Habits</h4>
+                            <p class="text-xs text-gray-500">256 responses</p>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">68%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-purple-500 h-2.5 rounded-full" style="width: 68%"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-900">Dining Hall Food Waste</h4>
+                            <p class="text-xs text-gray-500">189 responses</p>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">91%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-green-500 h-2.5 rounded-full" style="width: 91%"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-900">Campus Recycling Awareness</h4>
+                            <p class="text-xs text-gray-500">412 responses</p>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">76%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 76%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Response Demographics -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-5 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Response Demographics</h3>
+            </div>
+            <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="text-sm font-medium text-gray-900 mb-4">Respondent Role</h4>
+                    <div id="roleChart" class="w-full h-64"></div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium text-gray-900 mb-4">Department Distribution</h4>
+                    <div id="departmentChart" class="w-full h-64"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column (1/3 width) -->
+    <div class="space-y-6">
+        <!-- Survey Category Distribution -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-5 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Survey Categories</h3>
+            </div>
+            <div class="p-5">
+                <div id="categoryChart" class="w-full h-64"></div>
+            </div>
+            <div class="px-5 pb-5">
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Recycling (8)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Energy (5)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Water (4)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Transport (3)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Food (2)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-indigo-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Innovation (2)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Performing Surveys -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-5 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Top Performing Surveys</h3>
+            </div>
+            <div class="p-5 space-y-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-500 mr-3">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-survey-line"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-medium text-gray-900">Campus Waste Management</h4>
+                        <div class="flex items-center mt-1">
+                            <div class="flex">
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-half-fill text-yellow-400 text-xs"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">4.5/5 (342 responses)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-500 mr-3">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-survey-line"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-medium text-gray-900">Dining Hall Food Waste</h4>
+                        <div class="flex items-center mt-1">
+                            <div class="flex">
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-line text-yellow-400 text-xs"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">4.2/5 (189 responses)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center text-purple-500 mr-3">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-survey-line"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-medium text-gray-900">Campus Recycling Awareness</h4>
+                        <div class="flex items-center mt-1">
+                            <div class="flex">
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-line text-yellow-400 text-xs"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">4.1/5 (412 responses)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center text-yellow-500 mr-3">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-survey-line"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-medium text-gray-900">Student Transportation Habits</h4>
+                        <div class="flex items-center mt-1">
+                            <div class="flex">
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-half-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-line text-yellow-400 text-xs"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">3.7/5 (256 responses)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device Usage -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-5 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Device Usage</h3>
+            </div>
+            <div class="p-5">
+                <div id="deviceChart" class="w-full h-64"></div>
+            </div>
+            <div class="px-5 pb-5">
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Mobile (58%)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Desktop (32%)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                        <span class="text-xs text-gray-600">Tablet (10%)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Environmental Impact Metrics -->
+<div class="bg-white rounded-lg shadow mt-6">
+    <div class="p-5 border-b">
+        <h3 class="text-lg font-semibold text-gray-900">Environmental Impact Metrics</h3>
+    </div>
+    <div class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center">
+            <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-500 mx-auto mb-3">
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <i class="ri-recycle-line"></i>
+                </div>
+            </div>
+            <h4 class="text-2xl font-bold text-gray-900">2,450</h4>
+            <p class="text-sm text-gray-500">Pounds of Waste Recycled</p>
+            <div class="flex items-center justify-center mt-2">
+                <div class="w-4 h-4 flex items-center justify-center text-green-500">
+                    <i class="ri-arrow-up-line"></i>
+                </div>
+                <span class="text-xs font-medium text-green-500 ml-1">+18%</span>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 mx-auto mb-3">
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <i class="ri-water-flash-line"></i>
+                </div>
+            </div>
+            <h4 class="text-2xl font-bold text-gray-900">12,800</h4>
+            <p class="text-sm text-gray-500">Gallons of Water Saved</p>
+            <div class="flex items-center justify-center mt-2">
+                <div class="w-4 h-4 flex items-center justify-center text-green-500">
+                    <i class="ri-arrow-up-line"></i>
+                </div>
+                <span class="text-xs font-medium text-green-500 ml-1">+24%</span>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500 mx-auto mb-3">
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <i class="ri-lightbulb-flash-line"></i>
+                </div>
+            </div>
+            <h4 class="text-2xl font-bold text-gray-900">8,750</h4>
+            <p class="text-sm text-gray-500">kWh Energy Conserved</p>
+            <div class="flex items-center justify-center mt-2">
+                <div class="w-4 h-4 flex items-center justify-center text-green-500">
+                    <i class="ri-arrow-up-line"></i>
+                </div>
+                <span class="text-xs font-medium text-green-500 ml-1">+15%</span>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center text-purple-500 mx-auto mb-3">
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <i class="ri-footprint-line"></i>
+                </div>
+            </div>
+            <h4 class="text-2xl font-bold text-gray-900">42.5</h4>
+            <p class="text-sm text-gray-500">Tons CO2 Emissions Reduced</p>
+            <div class="flex items-center justify-center mt-2">
+                <div class="w-4 h-4 flex items-center justify-center text-green-500">
+                    <i class="ri-arrow-up-line"></i>
+                </div>
+                <span class="text-xs font-medium text-green-500 ml-1">+22%</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize charts if ECharts is available
+            if (typeof echarts !== "undefined") {
+                // Participation Chart
+                const participationChart = echarts.init(document.getElementById('participationChart'));
+                participationChart.setOption({
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        borderColor: '#e5e7eb',
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    legend: {
+                        data: ['Students', 'Faculty', 'Staff'],
+                        bottom: 0
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '15%',
+                        top: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: {
+                            show: false
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#f3f4f6'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Students',
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                width: 3,
+                                color: 'rgba(87, 181, 231, 1)'
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(87, 181, 231, 0.2)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(87, 181, 231, 0.05)'
+                                    }
+                                ])
+                            },
+                            symbol: 'none',
+                            data: [320, 432, 501, 634, 890]
+                        },
+                        {
+                            name: 'Faculty',
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                width: 3,
+                                color: 'rgba(141, 211, 199, 1)'
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(141, 211, 199, 0.2)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(141, 211, 199, 0.05)'
+                                    }
+                                ])
+                            },
+                            symbol: 'none',
+                            data: [120, 182, 191, 234, 290]
+                        },
+                        {
+                            name: 'Staff',
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                width: 3,
+                                color: 'rgba(251, 191, 114, 1)'
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(251, 191, 114, 0.2)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(251, 191, 114, 0.05)'
+                                    }
+                                ])
+                            },
+                            symbol: 'none',
+                            data: [150, 232, 201, 154, 190]
+                        }
+                    ]
+                });
+
+                // Role Chart
+                const roleChart = echarts.init(document.getElementById('roleChart'));
+                roleChart.setOption({
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        borderColor: '#e5e7eb',
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        right: 10,
+                        top: 'center',
+                        data: ['Students', 'Faculty', 'Staff', 'Admins']
+                    },
+                    series: [
+                        {
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            center: ['40%', '50%'],
+                            avoidLabelOverlap: false,
+                            itemStyle: {
+                                borderRadius: 8,
+                                borderColor: '#fff',
+                                borderWidth: 2
+                            },
+                            label: {
+                                show: false
+                            },
+                            emphasis: {
+                                label: {
+                                    show: false
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            data: [
+                                { value: 735, name: 'Students', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+                                { value: 310, name: 'Faculty', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+                                { value: 234, name: 'Staff', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+                                { value: 15, name: 'Admins', itemStyle: { color: 'rgba(252, 141, 98, 1)' } }
+                            ]
+                        }
+                    ]
+                });
+
+                // Department Chart
+                const departmentChart = echarts.init(document.getElementById('departmentChart'));
+                departmentChart.setOption({
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        borderColor: '#e5e7eb',
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    series: [
+                        {
+                            type: 'pie',
+                            radius: '70%',
+                            center: ['50%', '50%'],
+                            data: [
+                                { value: 335, name: 'Science', itemStyle: { color: '#10b981' } },
+                                { value: 310, name: 'Engineering', itemStyle: { color: '#3b82f6' } },
+                                { value: 234, name: 'Arts', itemStyle: { color: '#8b5cf6' } },
+                                { value: 135, name: 'Business', itemStyle: { color: '#f59e0b' } },
+                                { value: 154, name: 'Medicine', itemStyle: { color: '#ef4444' } },
+                                { value: 335, name: 'Others', itemStyle: { color: '#6b7280' } }
+                            ],
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            },
+                            label: {
+                                formatter: '{b}: {d}%'
+                            }
+                        }
+                    ]
+                });
+
+                // Category Chart
+                const categoryChart = echarts.init(document.getElementById('categoryChart'));
+                categoryChart.setOption({
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        borderColor: '#e5e7eb',
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    series: [
+                        {
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            center: ['50%', '50%'],
+                            avoidLabelOverlap: false,
+                            itemStyle: {
+                                borderRadius: 8,
+                                borderColor: '#fff',
+                                borderWidth: 2
+                            },
+                            label: {
+                                show: false
+                            },
+                            emphasis: {
+                                label: {
+                                    show: false
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            data: [
+                                { value: 8, name: 'Recycling', itemStyle: { color: '#3b82f6' } },
+                                { value: 5, name: 'Energy', itemStyle: { color: '#10b981' } },
+                                { value: 4, name: 'Water', itemStyle: { color: '#f59e0b' } },
+                                { value: 3, name: 'Transport', itemStyle: { color: '#8b5cf6' } },
+                                { value: 2, name: 'Food', itemStyle: { color: '#ef4444' } },
+                                { value: 2, name: 'Innovation', itemStyle: { color: '#6366f1' } }
+                            ]
+                        }
+                    ]
+                });
+
+                // Device Chart
+                const deviceChart = echarts.init(document.getElementById('deviceChart'));
+                deviceChart.setOption({
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        borderColor: '#e5e7eb',
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    series: [
+                        {
+                            type: 'pie',
+                            radius: '70%',
+                            center: ['50%', '50%'],
+                            data: [
+                                { value: 58, name: 'Mobile', itemStyle: { color: '#3b82f6' } },
+                                { value: 32, name: 'Desktop', itemStyle: { color: '#10b981' } },
+                                { value: 10, name: 'Tablet', itemStyle: { color: '#f59e0b' } }
+                            ],
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            },
+                            label: {
+                                formatter: '{b}: {d}%'
+                            }
+                        }
+                    ]
+                });
+
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    participationChart.resize();
+                    roleChart.resize();
+                    departmentChart.resize();
+                    categoryChart.resize();
+                    deviceChart.resize();
+                });
+            }
+        });
+    </script>
+}

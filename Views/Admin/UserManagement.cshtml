@@ -1,0 +1,345 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">User Management</h1>
+        <p class="page-subtitle">Manage users and their permissions</p>
+    </div>
+    <div class="page-actions">
+        <button class="btn btn-outline" id="exportUsersBtn">
+            <i class="ri-download-line"></i>
+            Export
+        </button>
+        <button class="btn btn-primary" id="createUserBtn">
+            <i class="ri-user-add-line"></i>
+            Add User
+        </button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="flex flex-col md:flex-row justify-between mb-4 space-y-4 md:space-y-0">
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <div class="relative">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                    <input type="text" id="searchUsers" class="search-input" placeholder="Search users...">
+                </div>
+                <select id="roleFilter" class="form-control w-full md:w-40">
+                    <option value="">All Roles</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Moderator">Moderator</option>
+                    <option value="User">User</option>
+                </select>
+                <select id="statusFilter" class="form-control w-full md:w-40">
+                    <option value="">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Blocked">Blocked</option>
+                </select>
+            </div>
+            <div class="flex items-center space-x-2">
+                <label for="bulkActions" class="text-sm text-gray-500">Bulk Actions:</label>
+                <select id="bulkActions" class="form-control w-40" disabled>
+                    <option value="">Select Action</option>
+                    <option value="activate">Activate</option>
+                    <option value="deactivate">Deactivate</option>
+                    <option value="delete">Delete</option>
+                </select>
+                <button id="applyBulkAction" class="btn btn-sm btn-outline" disabled>Apply</button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="w-10">
+                            <input type="checkbox" id="selectAllUsers" class="form-checkbox">
+                        </th>
+                        <th class="w-10">#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Registered</th>
+                        <th>Last Login</th>
+                        <th class="w-20">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        string status = i % 4 == 0 ? "Pending" : (i % 5 == 0 ? "Blocked" : (i % 3 == 0 ? "Inactive" : "Active"));
+                        string role = i % 7 == 0 ? "Admin" : (i % 5 == 0 ? "Moderator" : "User");
+                        string statusClass = status == "Active" ? "badge-success" :
+                        (status == "Inactive" ? "badge-warning" :
+                        (status == "Blocked" ? "badge-danger" : "badge-info"));
+                        string username = i % 2 == 0 ? "john.doe" : "maria.smith";
+                        string email = username + "@@example.com"; // Escape @ with @@
+
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="user-checkbox form-checkbox" data-id="@i">
+                            </td>
+                            <td>@i</td>
+                            <td>
+                                <div class="flex items-center space-x-3">
+                                    <div class="user-avatar">
+                                        @(i % 2 == 0 ? "JD" : "MS")
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">@(i % 2 == 0 ? "John Doe" : "Maria Smith")</p>
+                                        <p class="text-xs text-gray-500">@email</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@email</td>
+                            <td>@role</td>
+                            <td><span class="badge @statusClass">@status</span></td>
+                            <td>@(DateTime.Now.AddDays(-i * 7).ToString("MMM dd, yyyy"))</td>
+                            <td>@(i % 3 == 0 ? "Never" : DateTime.Now.AddDays(-i).ToString("MMM dd, yyyy"))</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="btn-icon" title="Edit User">
+                                        <i class="ri-pencil-line"></i>
+                                    </button>
+                                    <button class="btn-icon" title="Reset Password">
+                                        <i class="ri-lock-password-line"></i>
+                                    </button>
+                                    <button class="btn-icon text-red-500" title="Delete User">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex flex-col md:flex-row justify-between items-center mt-4 space-y-4 md:space-y-0">
+            <div class="text-sm text-gray-500">
+                Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium">100</span> users
+            </div>
+            <div class="pagination">
+                <button class="pagination-item" disabled>
+                    <i class="ri-arrow-left-s-line"></i>
+                </button>
+                <button class="pagination-item active">1</button>
+                <button class="pagination-item">2</button>
+                <button class="pagination-item">3</button>
+                <button class="pagination-item">4</button>
+                <button class="pagination-item">5</button>
+                <button class="pagination-item">
+                    <i class="ri-arrow-right-s-line"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create User Modal (Hidden by default) -->
+<div id="createUserModal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3 class="modal-title">Add New User</h3>
+            <button class="modal-close">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="createUserForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" id="firstName" name="FirstName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" id="lastName" name="LastName" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="Email" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="Username" class="form-control" required>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="Password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="ConfirmPassword" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role" class="form-label">Role</label>
+                    <select id="role" name="Role" class="form-control" required>
+                        <option value="">Select Role</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Moderator">Moderator</option>
+                        <option value="User">User</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="sendWelcomeEmail" name="SendWelcomeEmail" class="form-checkbox" checked>
+                        <label for="sendWelcomeEmail" class="form-label-inline">Send welcome email</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="requirePasswordChange" name="RequirePasswordChange" class="form-checkbox" checked>
+                        <label for="requirePasswordChange" class="form-label-inline">Require password change on first login</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline modal-close">Cancel</button>
+            <button id="saveUserBtn" class="btn btn-primary">Create User</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle select all checkbox
+            const selectAllUsers = document.getElementById('selectAllUsers');
+            const userCheckboxes = document.querySelectorAll('.user-checkbox');
+            const bulkActions = document.getElementById('bulkActions');
+            const applyBulkAction = document.getElementById('applyBulkAction');
+
+            selectAllUsers.addEventListener('change', function() {
+                userCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+
+                updateBulkActionState();
+            });
+
+            userCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateBulkActionState);
+            });
+
+            function updateBulkActionState() {
+                const checkedCount = document.querySelectorAll('.user-checkbox:checked').length;
+                bulkActions.disabled = checkedCount === 0;
+                applyBulkAction.disabled = checkedCount === 0;
+            }
+
+            // Handle bulk action
+            applyBulkAction.addEventListener('click', function() {
+                const action = bulkActions.value;
+                if (!action) {
+                    alert('Please select an action');
+                    return;
+                }
+
+                const selectedIds = Array.from(document.querySelectorAll('.user-checkbox:checked'))
+                    .map(checkbox => checkbox.getAttribute('data-id'));
+
+                if (confirm(`Are you sure you want to ${action} ${selectedIds.length} users?`)) {
+                    // Simulate action
+                    alert(`${action.charAt(0).toUpperCase() + action.slice(1)} action applied to users: ${selectedIds.join(', ')}`);
+
+                    // Reset checkboxes and bulk actions
+                    selectAllUsers.checked = false;
+                    userCheckboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    bulkActions.value = '';
+                    updateBulkActionState();
+                }
+            });
+
+            // Modal functionality
+            const createUserBtn = document.getElementById('createUserBtn');
+            const createUserModal = document.getElementById('createUserModal');
+            const modalCloseButtons = document.querySelectorAll('.modal-close');
+            const saveUserBtn = document.getElementById('saveUserBtn');
+
+            createUserBtn.addEventListener('click', function() {
+                createUserModal.classList.remove('hidden');
+            });
+
+            modalCloseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    createUserModal.classList.add('hidden');
+                });
+            });
+
+            // Close modal when clicking outside
+            createUserModal.addEventListener('click', function(event) {
+                if (event.target === createUserModal || event.target.classList.contains('modal-overlay')) {
+                    createUserModal.classList.add('hidden');
+                }
+            });
+
+            // Handle save user
+            saveUserBtn.addEventListener('click', function() {
+                const form = document.getElementById('createUserForm');
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+
+                // Simulate form submission
+                alert('User created successfully!');
+                createUserModal.classList.add('hidden');
+                form.reset();
+            });
+
+            // Handle search
+            const searchUsers = document.getElementById('searchUsers');
+            searchUsers.addEventListener('input', function() {
+                // Simulate search
+                console.log('Searching for:', this.value);
+            });
+
+            // Handle filters
+            const roleFilter = document.getElementById('roleFilter');
+            const statusFilter = document.getElementById('statusFilter');
+
+            roleFilter.addEventListener('change', function() {
+                // Simulate filtering
+                console.log('Filtering by role:', this.value);
+            });
+
+            statusFilter.addEventListener('change', function() {
+                // Simulate filtering
+                console.log('Filtering by status:', this.value);
+            });
+
+            // Handle export
+            const exportUsersBtn = document.getElementById('exportUsersBtn');
+            exportUsersBtn.addEventListener('click', function() {
+                // Simulate export
+                alert('Exporting users to CSV...');
+            });
+        });
+    </script>
+}

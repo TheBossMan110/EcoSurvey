@@ -1,0 +1,170 @@
+﻿@model IEnumerable<EcoSurvey.Models.FAQ>
+
+@{
+    ViewData["Title"] = "FAQ Management";
+    ViewData["ActivePage"] = "FaqManagement";
+    Layout = "_AdminLayout";
+}
+
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">FAQ Management</h1>
+        <p class="text-sm text-gray-600">Manage frequently asked questions for the environmental awareness survey portal</p>
+    </div>
+    <div class="flex space-x-3">
+        <button id="addCategoryBtn" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                <i class="ri-folder-add-line"></i>
+            </div>
+            Add Category
+        </button>
+        <a asp-action="CreateFaq" class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                <i class="ri-add-line"></i>
+            </div>
+            Add New FAQ
+        </a>
+    </div>
+</div>
+
+<!-- Search and Filter Section -->
+<div class="bg-white rounded-lg shadow mb-6 p-4">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                    <i class="ri-search-line"></i>
+                </div>
+            </div>
+            <input type="text" id="searchInput" class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Search FAQs...">
+        </div>
+    </div>
+</div>
+
+<!-- FAQ List -->
+<div class="bg-white rounded-lg shadow mb-6 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                    <th class="px-6 py-3 w-8">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="selectAll">
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                    <th class="px-6 py-3">Question</th>
+                    <th class="px-6 py-3 w-40">Last Updated</th>
+                    <th class="px-6 py-3 w-20">Order</th>
+                    <th class="px-6 py-3 w-32 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @foreach (var item in Model)
+                {
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 w-8">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" class="faq-checkbox">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="faq-question cursor-pointer" data-faq-id="@item.FaqId">
+                                <div class="flex items-center">
+                                    <p class="text-sm font-medium text-gray-900">@item.Question</p>
+                                    <div class="w-5 h-5 flex items-center justify-center ml-2 text-gray-400 transform transition-transform duration-200">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </div>
+                                <div class="faq-answer hidden mt-2">
+                                    <p class="text-sm text-gray-600">@item.Answer</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-gray-600">@item.LastUpdated.ToString("MMM d, yyyy")</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-gray-600">@item.DisplayOrder</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex space-x-2 justify-end">
+                                <a asp-action="EditFaq" asp-route-id="@item.FaqId" class="p-1 text-gray-500 hover:text-primary">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-edit-line"></i>
+                                    </div>
+                                </a>
+                                <a asp-action="DeleteFaq" asp-route-id="@item.FaqId" class="p-1 text-gray-500 hover:text-red-500">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-between px-6 py-3 bg-gray-50 border-t">
+        <div class="flex items-center">
+            <p class="text-sm text-gray-700">
+                Showing <span class="font-medium">@Model.Count()</span> FAQs
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // FAQ accordion functionality
+            document.querySelectorAll(".faq-question").forEach((question) => {
+                question.addEventListener("click", function () {
+                    const answer = this.querySelector(".faq-answer");
+                    const arrow = this.querySelector("i.ri-arrow-down-s-line");
+
+                    if (answer && arrow) {
+                        answer.classList.toggle("hidden");
+                        arrow.classList.toggle("transform");
+                        arrow.classList.toggle("rotate-180");
+                    }
+                });
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const rows = document.querySelectorAll('tbody tr');
+
+                    rows.forEach(row => {
+                        const question = row.querySelector('.faq-question p').textContent.toLowerCase();
+                        const answer = row.querySelector('.faq-answer p').textContent.toLowerCase();
+
+                        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Select all checkboxes
+            const selectAllCheckbox = document.getElementById('selectAll');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.faq-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+        });
+    </script>
+}

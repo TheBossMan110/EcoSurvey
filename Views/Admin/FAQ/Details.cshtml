@@ -1,0 +1,85 @@
+﻿@model EcoSurvey.Models.FAQ
+
+@{
+    ViewData["Title"] = "FAQ Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">FAQ Details</h1>
+        <p class="page-subtitle">View details of a frequently asked question</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Edit" asp-route-id="@Model.FaqId" class="btn btn-outline">
+            <i class="ri-pencil-line"></i>
+            Edit
+        </a>
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+            <div class="mb-4">
+                <h3 class="text-lg font-medium text-gray-900">Question</h3>
+                <p class="text-gray-700">@Model.Question</p>
+            </div>
+
+            <div class="mb-4">
+                <h3 class="text-lg font-medium text-gray-900">Answer</h3>
+                <p class="text-gray-700 whitespace-pre-line">@Model.Answer</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900">Category</h3>
+                    <p class="text-gray-700">@(string.IsNullOrEmpty(Model.Category) ? "General" : Model.Category)</p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900">Status</h3>
+                    <p class="text-gray-700">
+                        @if (Model.IsPublished)
+                        {
+                            <span class="badge badge-success">Published</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-inactive">Unpublished</span>
+                        }
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900">Display Order</h3>
+                    <p class="text-gray-700">@Model.DisplayOrder</p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h3 class="text-sm font-medium text-gray-900">Last Updated</h3>
+                <p class="text-gray-700">@Model.LastUpdated.ToString("MMM dd, yyyy HH:mm")</p>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a asp-action="Edit" asp-route-id="@Model.FaqId" class="btn btn-primary">
+                <i class="ri-pencil-line"></i>
+                Edit
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.FaqId" class="btn btn-danger">
+                <i class="ri-delete-bin-line"></i>
+                Delete
+            </a>
+            <a asp-action="Index" class="btn btn-outline">
+                <i class="ri-arrow-left-line"></i>
+                Back to List
+            </a>
+        </div>
+    </div>
+</div>

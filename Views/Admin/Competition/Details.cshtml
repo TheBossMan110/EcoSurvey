@@ -1,0 +1,151 @@
+﻿@model EcoSurvey.Models.Competition
+
+@{
+    ViewData["Title"] = "Competition Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Competition Details</h1>
+        <p class="page-subtitle">View details of an environmental awareness competition</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Edit" asp-route-id="@Model.CompetitionId" class="btn btn-outline">
+            <i class="ri-pencil-line"></i>
+            Edit
+        </a>
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Competition Information</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Title</h4>
+                            <p class="text-gray-900">@Model.Title</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Description</h4>
+                            <p class="text-gray-900 whitespace-pre-line">@Model.Description</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Related Survey</h4>
+                            @if (Model.SurveyId.HasValue && ViewBag.Survey != null)
+                            {
+                                <p class="text-gray-900">@ViewBag.Survey.Title</p>
+                            }
+                            else
+                            {
+                                <p class="text-gray-500">None</p>
+                            }
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Rules</h4>
+                            <p class="text-gray-900 whitespace-pre-line">@Model.Rules</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Prizes</h4>
+                            <p class="text-gray-900 whitespace-pre-line">@Model.Prizes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Competition Status</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700">Start Date</h4>
+                                <p class="text-gray-900">@Model.StartDate.ToString("MMM dd, yyyy")</p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700">End Date</h4>
+                                <p class="text-gray-900">@Model.EndDate.ToString("MMM dd, yyyy")</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Status</h4>
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge badge-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-inactive">Inactive</span>
+                            }
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Created Date</h4>
+                            <p class="text-gray-900">@Model.CreatedDate.ToString("MMM dd, yyyy HH:mm")</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Duration</h4>
+                            <p class="text-gray-900">@((Model.EndDate - Model.StartDate).Days) days</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Max Participants</h4>
+                            <p class="text-gray-900">@(Model.MaxParticipants?.ToString() ?? "No limit")</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Current Status</h4>
+                            @{
+                                var now = DateTime.Now;
+                                if (now < Model.StartDate)
+                                {
+                                    <span class="badge badge-info">Upcoming</span>
+                                    <p class="text-sm text-gray-500 mt-1">Starts in @((Model.StartDate - now).Days) days</p>
+                                }
+                                else if (now >= Model.StartDate && now <= Model.EndDate)
+                                {
+                                    <span class="badge badge-success">Ongoing</span>
+                                    <p class="text-sm text-gray-500 mt-1">@((Model.EndDate - now).Days) days remaining</p>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-inactive">Ended</span>
+                                    <p class="text-sm text-gray-500 mt-1">Ended @((now - Model.EndDate).Days) days ago</p>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a asp-action="Edit" asp-route-id="@Model.CompetitionId" class="btn btn-primary">
+                <i class="ri-pencil-line"></i>
+                Edit
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.CompetitionId" class="btn btn-danger">
+                <i class="ri-delete-bin-line"></i>
+                Delete
+            </a>
+            <a asp-action="Index" class="btn btn-outline">
+                <i class="ri-arrow-left-line"></i>
+                Back to List
+            </a>
+        </div>
+    </div>
+</div>

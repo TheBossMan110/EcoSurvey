@@ -1,0 +1,118 @@
+﻿@model IEnumerable<EcoSurvey.Models.FAQ>
+
+@{
+    ViewData["Title"] = "Reorder FAQs";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Reorder FAQs</h1>
+        <p class="page-subtitle">Drag and drop to reorder frequently asked questions</p>
+    </div>
+    <div class="page-actions">
+        <button id="saveOrderBtn" class="btn btn-primary">
+            <i class="ri-save-line"></i>
+            Save Order
+        </button>
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <p class="text-sm text-gray-500 mb-4">Drag and drop items to change their order. FAQs will be displayed in the order shown below.</p>
+
+        @if (Model != null && Model.Any())
+        {
+            <ul id="sortable-faqs" class="space-y-2">
+                @foreach (var faq in Model)
+                {
+                    <li class="bg-gray-50 p-4 rounded-lg cursor-move" data-id="@faq.FaqId">
+                        <div class="flex items-center">
+                            <div class="mr-4 text-gray-400">
+                                <i class="ri-drag-move-line text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900">@faq.Question</p>
+                                <p class="text-xs text-gray-500 truncate max-w-md">@faq.Answer</p>
+                            </div>
+                            <div class="ml-4">
+                                <span class="badge @(faq.IsPublished ? "badge-success" : "badge-inactive")">
+                                    @(faq.IsPublished ? "Published" : "Unpublished")
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="text-center py-8">
+                <p class="text-gray-500">No FAQs found to reorder.</p>
+                <a asp-action="Create" class="text-primary hover:underline">Create your first FAQ</a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sortableList = document.getElementById('sortable-faqs');
+            const saveOrderBtn = document.getElementById('saveOrderBtn');
+
+            if (sortableList) {
+                // Initialize Sortable
+                new Sortable(sortableList, {
+                    animation: 150,
+                    ghostClass: 'bg-gray-100'
+                });
+
+                // Save order
+                saveOrderBtn.addEventListener('click', function() {
+                    const items = sortableList.querySelectorAll('li');
+                    const ids = Array.from(items).map(item => parseInt(item.getAttribute('data-id')));
+
+                    // Show loading state
+                    saveOrderBtn.disabled = true;
+                    saveOrderBtn.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Saving...';
+
+                    // Send order to server
+                    fetch('@Url.Action("UpdateOrder")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        },
+                        body: JSON.stringify(ids)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('FAQ order updated successfully!');
+                            window.location.href = '@Url.Action("Index")';
+                        } else {
+                            alert('Error: ' + (data.message || 'An error occurred while updating the order.'));
+                            saveOrderBtn.disabled = false;
+                            saveOrderBtn.innerHTML = '<i class="ri-save-line"></i> Save Order';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while updating the order.');
+                        saveOrderBtn.disabled = false;
+                        saveOrderBtn.innerHTML = '<i class="ri-save-line"></i> Save Order';
+                    });
+                });
+            }
+        });
+    </script>
+
+    @Html.AntiForgeryToken()
+}

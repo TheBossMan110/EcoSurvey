@@ -1,0 +1,519 @@
+﻿@{
+    ViewData["Title"] = "Survey Board";
+}
+
+<!-- Page Title & Search Section -->
+<section class="bg-white border-b border-gray-200">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+                    Survey Board
+                </h1>
+                <p class="text-gray-600">
+                    Discover and participate in environmental surveys to make a difference
+                </p>
+            </div>
+            <div class="mt-4 md:mt-0 relative">
+                <div class="relative">
+                    <input type="text"
+                           placeholder="Search surveys..."
+                           class="w-full md:w-80 pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm" />
+                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="bg-white shadow-sm mb-6">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex flex-wrap items-center gap-4">
+            <!-- Category Filter -->
+            <div class="relative">
+                <button id="categoryDropdown" class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors text-sm whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-filter-3-line"></i>
+                    </div>
+                    <span>Category</span>
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                </button>
+                <div id="categoryMenu" class="hidden absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg border border-gray-200 z-10">
+                    <div class="p-2">
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" checked />
+                            <span class="checkmark mr-3"></span>
+                            <span>All Categories</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Waste Management</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Energy Conservation</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Water Conservation</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Biodiversity</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Climate Action</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Difficulty Filter -->
+            <div class="relative">
+                <button id="difficultyDropdown" class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors text-sm whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-bar-chart-line"></i>
+                    </div>
+                    <span>Difficulty</span>
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                </button>
+                <div id="difficultyMenu" class="hidden absolute left-0 mt-2 w-48 rounded-lg bg-white shadow-lg border border-gray-200 z-10">
+                    <div class="p-2">
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" checked />
+                            <span class="checkmark mr-3"></span>
+                            <span>All Difficulties</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Easy</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Medium</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Hard</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="relative">
+                <button id="statusDropdown" class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors text-sm whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-checkbox-multiple-line"></i>
+                    </div>
+                    <span>Status</span>
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                </button>
+                <div id="statusMenu" class="hidden absolute left-0 mt-2 w-48 rounded-lg bg-white shadow-lg border border-gray-200 z-10">
+                    <div class="p-2">
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" checked />
+                            <span class="checkmark mr-3"></span>
+                            <span>All Statuses</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Not Started</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>In Progress</span>
+                        </label>
+                        <label class="custom-checkbox flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" />
+                            <span class="checkmark mr-3"></span>
+                            <span>Completed</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sort By -->
+            <div class="relative ml-auto">
+                <button id="sortDropdown" class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors text-sm whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-sort-desc"></i>
+                    </div>
+                    <span>Sort by: Latest</span>
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                </button>
+                <div id="sortMenu" class="hidden absolute right-0 mt-2 w-48 rounded-lg bg-white shadow-lg border border-gray-200 z-10">
+                    <div class="py-1">
+                        <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            Latest
+                        </button>
+                        <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            Most Popular
+                        </button>
+                        <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            Deadline (Soonest)
+                        </button>
+                        <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            Difficulty (Easiest)
+                        </button>
+                        <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            Difficulty (Hardest)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Survey Grid -->
+<main class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Survey Card 1 -->
+        <a href="@Url.Action("Quiz", "Survey")" class="survey-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div class="relative">
+                <div class="h-36 bg-gray-100">
+                    <img src="https://readdy.ai/api/search-image?query=Campus%2520waste%2520audit%2520scene%2520with%2520students%2520analyzing%2520waste%2520bins%2520and%2520sorting%2520recyclables%2C%2520clean%2520educational%2520environment%2C%2520bright%2520lighting%2C%2520professional%2520waste%2520management%2520assessment%2C%2520high%2520quality%2520realistic%2520photography&width=600&height=300&seq=waste1&orientation=landscape"
+                         alt="Campus Waste Audit"
+                         class="w-full h-full object-cover object-top" />
+                </div>
+                <div class="absolute top-3 right-3">
+                    <span class="difficulty-badge difficulty-easy">Easy</span>
+                </div>
+            </div>
+            <div class="p-5">
+                <div class="flex items-center mb-3">
+                    <span class="category-tag category-waste">
+                        <i class="ri-recycle-line mr-1"></i>
+                        Waste Management
+                    </span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                    Campus Waste Audit
+                </h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Help assess the waste generation patterns across different campus
+                    buildings to improve recycling initiatives.
+                </p>
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-time-line"></i>
+                        </div>
+                        <span class="ml-1.5">10-15 min</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <span class="ml-1.5">243 participants</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-calendar-line"></i>
+                        </div>
+                        <span class="ml-1.5">Ends: May 10, 2025</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-coin-line"></i>
+                        </div>
+                        <span class="ml-1.5">15 points</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-medium text-gray-500">Completion status</span>
+                        <span class="text-xs font-medium text-primary">75%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-primary" style="width: 75%"></div>
+                    </div>
+                </div>
+
+                <button class="w-full bg-primary text-white py-2.5 !rounded-button hover:bg-primary/90 transition-colors font-medium whitespace-nowrap">
+                    Continue Survey
+                </button>
+            </div>
+        </a>
+
+        <!-- More survey cards... -->
+        <!-- Survey Card 2 -->
+        <div class="survey-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div class="relative">
+                <div class="h-36 bg-gray-100">
+                    <img src="https://readdy.ai/api/search-image?query=Energy%2520conservation%2520in%2520a%2520university%2520setting%2C%2520students%2520analyzing%2520energy%2520usage%2520data%2C%2520checking%2520smart%2520meters%2C%2520bright%2520modern%2520educational%2520environment%2C%2520professional%2520energy%2520audit%2C%2520high%2520quality%2520realistic%2520photography&width=600&height=300&seq=energy1&orientation=landscape"
+                         alt="Energy Conservation"
+                         class="w-full h-full object-cover object-top" />
+                </div>
+                <div class="absolute top-3 right-3">
+                    <span class="difficulty-badge difficulty-medium">Medium</span>
+                </div>
+            </div>
+            <div class="p-5">
+                <div class="flex items-center mb-3">
+                    <span class="category-tag category-energy">
+                        <i class="ri-lightbulb-line mr-1"></i>
+                        Energy Conservation
+                    </span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                    Energy Usage Patterns
+                </h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Share your energy usage habits to help develop more effective
+                    conservation strategies for campus buildings.
+                </p>
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-time-line"></i>
+                        </div>
+                        <span class="ml-1.5">15-20 min</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <span class="ml-1.5">187 participants</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-calendar-line"></i>
+                        </div>
+                        <span class="ml-1.5">Ends: May 15, 2025</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-coin-line"></i>
+                        </div>
+                        <span class="ml-1.5">20 points</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-medium text-gray-500">Completion status</span>
+                        <span class="text-xs font-medium text-gray-500">Not started</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-primary" style="width: 0%"></div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Quiz", "Survey")">
+                    <button class="w-full bg-primary text-white py-2.5 !rounded-button hover:bg-primary/90 transition-colors font-medium whitespace-nowrap">
+                        Take Survey
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Survey Card 3 -->
+        <div class="survey-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div class="relative">
+                <div class="h-36 bg-gray-100">
+                    <img src="https://readdy.ai/api/search-image?query=Water%2520conservation%2520assessment%2520in%2520university%2520campus%2C%2520students%2520checking%2520water%2520fixtures%2C%2520analyzing%2520water%2520usage%2520data%2C%2520bright%2520educational%2520setting%2C%2520professional%2520water%2520audit%2C%2520high%2520quality%2520realistic%2520photography&width=600&height=300&seq=water1&orientation=landscape"
+                         alt="Water Conservation"
+                         class="w-full h-full object-cover object-top" />
+                </div>
+                <div class="absolute top-3 right-3">
+                    <span class="difficulty-badge difficulty-easy">Easy</span>
+                </div>
+            </div>
+            <div class="p-5">
+                <div class="flex items-center mb-3">
+                    <span class="category-tag category-water">
+                        <i class="ri-drop-line mr-1"></i>
+                        Water Conservation
+                    </span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                    Water Usage Survey
+                </h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Provide insights on water consumption habits to improve campus
+                    water conservation efforts.
+                </p>
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-time-line"></i>
+                        </div>
+                        <span class="ml-1.5">5-10 min</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <span class="ml-1.5">312 participants</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-calendar-line"></i>
+                        </div>
+                        <span class="ml-1.5">Ends: May 8, 2025</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-coin-line"></i>
+                        </div>
+                        <span class="ml-1.5">10 points</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-medium text-gray-500">Completion status</span>
+                        <span class="text-xs font-medium text-primary">100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-primary" style="width: 100%"></div>
+                    </div>
+                </div>
+                <button class="w-full bg-gray-200 text-gray-500 py-2.5 !rounded-button cursor-not-allowed font-medium whitespace-nowrap">
+                    Completed
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-10 flex justify-center">
+        <nav class="flex items-center space-x-2">
+            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50">
+                <i class="ri-arrow-left-s-line"></i>
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white">
+                1
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50">
+                2
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50">
+                3
+            </button>
+            <span class="px-2 text-gray-500">...</span>
+            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50">
+                8
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50">
+                <i class="ri-arrow-right-s-line"></i>
+            </button>
+        </nav>
+    </div>
+</main>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Category dropdown toggle
+            const categoryDropdown = document.getElementById("categoryDropdown");
+            const categoryMenu = document.getElementById("categoryMenu");
+
+            categoryDropdown.addEventListener("click", function () {
+                categoryMenu.classList.toggle("hidden");
+                difficultyMenu.classList.add("hidden");
+                statusMenu.classList.add("hidden");
+                sortMenu.classList.add("hidden");
+            });
+
+            // Difficulty dropdown toggle
+            const difficultyDropdown = document.getElementById("difficultyDropdown");
+            const difficultyMenu = document.getElementById("difficultyMenu");
+
+            difficultyDropdown.addEventListener("click", function () {
+                difficultyMenu.classList.toggle("hidden");
+                categoryMenu.classList.add("hidden");
+                statusMenu.classList.add("hidden");
+                sortMenu.classList.add("hidden");
+            });
+
+            // Status dropdown toggle
+            const statusDropdown = document.getElementById("statusDropdown");
+            const statusMenu = document.getElementById("statusMenu");
+
+            statusDropdown.addEventListener("click", function () {
+                statusMenu.classList.toggle("hidden");
+                categoryMenu.classList.add("hidden");
+                difficultyMenu.classList.add("hidden");
+                sortMenu.classList.add("hidden");
+            });
+
+            // Sort dropdown toggle
+            const sortDropdown = document.getElementById("sortDropdown");
+            const sortMenu = document.getElementById("sortMenu");
+
+            sortDropdown.addEventListener("click", function () {
+                sortMenu.classList.toggle("hidden");
+                categoryMenu.classList.add("hidden");
+                difficultyMenu.classList.add("hidden");
+                statusMenu.classList.add("hidden");
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener("click", function (event) {
+                if (
+                    !categoryDropdown.contains(event.target) &&
+                    !categoryMenu.contains(event.target)
+                ) {
+                    categoryMenu.classList.add("hidden");
+                }
+
+                if (
+                    !difficultyDropdown.contains(event.target) &&
+                    !difficultyMenu.contains(event.target)
+                ) {
+                    difficultyMenu.classList.add("hidden");
+                }
+
+                if (
+                    !statusDropdown.contains(event.target) &&
+                    !statusMenu.contains(event.target)
+                ) {
+                    statusMenu.classList.add("hidden");
+                }
+
+                if (
+                    !sortDropdown.contains(event.target) &&
+                    !sortMenu.contains(event.target)
+                ) {
+                    sortMenu.classList.add("hidden");
+                }
+            });
+
+            // Checkbox functionality
+            const checkboxes = document.querySelectorAll(".custom-checkbox input");
+            checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener("change", function () {
+                    // Filter functionality can be implemented here
+                });
+            });
+        });
+    </script>
+}

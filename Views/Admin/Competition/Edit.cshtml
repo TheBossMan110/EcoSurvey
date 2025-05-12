@@ -1,0 +1,122 @@
+﻿@model EcoSurvey.Models.Competition
+
+@{
+    ViewData["Title"] = "Create Competition";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Create Competition</h1>
+        <p class="page-subtitle">Add a new environmental competition</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="SurveyId" class="form-label">Associated Survey</label>
+                    <select asp-for="SurveyId" class="form-control" asp-items="ViewBag.Surveys">
+                        <option value="">-- Select a Survey --</option>
+                    </select>
+                    <span asp-validation-for="SurveyId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StartDate" class="form-label"></label>
+                    <input asp-for="StartDate" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EndDate" class="form-label"></label>
+                    <input asp-for="EndDate" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Rules" class="form-label"></label>
+                    <textarea asp-for="Rules" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Rules" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Prizes" class="form-label"></label>
+                    <textarea asp-for="Prizes" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Prizes" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="MaxParticipants" class="form-label"></label>
+                    <input asp-for="MaxParticipants" class="form-control" type="number" min="1" />
+                    <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-2">
+                        <input asp-for="IsActive" class="form-checkbox" />
+                        <label asp-for="IsActive" class="form-label mb-0"></label>
+                    </div>
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-4">
+                <a asp-action="Index" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-save-line mr-1"></i> Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Date validation
+            const startDateInput = document.getElementById('StartDate');
+            const endDateInput = document.getElementById('EndDate');
+
+            function validateDates() {
+                const startDate = new Date(startDateInput.value);
+                const endDate = new Date(endDateInput.value);
+
+                if (startDate >= endDate) {
+                    endDateInput.setCustomValidity('End date must be after start date');
+                } else {
+                    endDateInput.setCustomValidity('');
+                }
+            }
+
+            startDateInput.addEventListener('change', validateDates);
+            endDateInput.addEventListener('change', validateDates);
+        });
+    </script>
+}

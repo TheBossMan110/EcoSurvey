@@ -1,0 +1,373 @@
+﻿@{
+    ViewData["Title"] = "System Settings";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">System Settings</h1>
+        <p class="page-subtitle">Configure system-wide settings for the Environmental Awareness Survey Portal</p>
+    </div>
+    <div class="page-actions">
+        <button id="saveAllSettings" class="btn btn-primary">
+            <i class="ri-save-line"></i>
+            Save All Changes
+        </button>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- General Settings -->
+    <div class="card lg:col-span-2">
+        <div class="card-header">
+            <h2 class="card-title">General Settings</h2>
+        </div>
+        <div class="card-body">
+            <form id="generalSettingsForm" class="space-y-6">
+                <div class="form-group">
+                    <label for="siteName" class="form-label">Site Name</label>
+                    <input type="text" id="siteName" name="SiteName" class="form-control" value="Environmental Awareness Survey Portal">
+                </div>
+
+                <div class="form-group">
+                    <label for="siteDescription" class="form-label">Site Description</label>
+                    <textarea id="siteDescription" name="SiteDescription" class="form-control" rows="2">A platform for environmental awareness surveys, competitions, and seminars.</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label for="contactEmail" class="form-label">Contact Email</label>
+                        <input type="email" id="contactEmail" name="ContactEmail" class="form-control" value="contact@ecosurvey.example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="supportEmail" class="form-label">Support Email</label>
+                        <input type="email" id="supportEmail" name="SupportEmail" class="form-control" value="support@ecosurvey.example.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="footerText" class="form-label">Footer Text</label>
+                    <input type="text" id="footerText" name="FooterText" class="form-control" value="© 2023 Environmental Awareness Survey Portal. All rights reserved.">
+                </div>
+
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="maintenanceMode" name="MaintenanceMode" class="form-checkbox">
+                        <label for="maintenanceMode" class="form-label-inline">Enable Maintenance Mode</label>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">When enabled, only administrators can access the site.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Theme Settings -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Theme Settings</h2>
+        </div>
+        <div class="card-body">
+            <form id="themeSettingsForm" class="space-y-6">
+                <div class="form-group">
+                    <label for="primaryColor" class="form-label">Primary Color</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="primaryColor" name="PrimaryColor" class="form-color-picker" value="#10B981">
+                        <input type="text" id="primaryColorHex" class="form-control" value="#10B981" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="secondaryColor" class="form-label">Secondary Color</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="secondaryColor" name="SecondaryColor" class="form-color-picker" value="#3B82F6">
+                        <input type="text" id="secondaryColorHex" class="form-control" value="#3B82F6" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Theme Mode</label>
+                    <div class="flex space-x-4 mt-2">
+                        <div class="flex items-center space-x-2">
+                            <input type="radio" id="lightMode" name="ThemeMode" value="light" class="form-radio" checked>
+                            <label for="lightMode" class="form-label-inline">Light</label>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="radio" id="darkMode" name="ThemeMode" value="dark" class="form-radio">
+                            <label for="darkMode" class="form-label-inline">Dark</label>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="radio" id="systemMode" name="ThemeMode" value="system" class="form-radio">
+                            <label for="systemMode" class="form-label-inline">System</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="logoUpload" class="form-label">Logo</label>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-gray-100 rounded flex items-center justify-center">
+                            <span class="text-lg font-pacifico text-green-600">Eco</span>
+                        </div>
+                        <div>
+                            <input type="file" id="logoUpload" name="Logo" class="hidden" accept="image/*">
+                            <label for="logoUpload" class="btn btn-sm btn-outline cursor-pointer">
+                                <i class="ri-upload-2-line"></i>
+                                Upload Logo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Email Settings -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Email Settings</h2>
+        </div>
+        <div class="card-body">
+            <form id="emailSettingsForm" class="space-y-6">
+                <div class="form-group">
+                    <label for="smtpServer" class="form-label">SMTP Server</label>
+                    <input type="text" id="smtpServer" name="SmtpServer" class="form-control" value="smtp.example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="smtpPort" class="form-label">SMTP Port</label>
+                    <input type="number" id="smtpPort" name="SmtpPort" class="form-control" value="587">
+                </div>
+
+                <div class="form-group">
+                    <label for="smtpUsername" class="form-label">SMTP Username</label>
+                    <input type="text" id="smtpUsername" name="SmtpUsername" class="form-control" value="notifications@ecosurvey.example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="smtpPassword" class="form-label">SMTP Password</label>
+                    <input type="password" id="smtpPassword" name="SmtpPassword" class="form-control" value="••••••••••••">
+                </div>
+
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="enableSsl" name="EnableSsl" class="form-checkbox" checked>
+                        <label for="enableSsl" class="form-label-inline">Enable SSL</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" id="testEmailConnection" class="btn btn-sm btn-outline">
+                        <i class="ri-mail-check-line"></i>
+                        Test Connection
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Registration Settings -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">User Registration</h2>
+        </div>
+        <div class="card-body">
+            <form id="registrationSettingsForm" class="space-y-6">
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="allowRegistration" name="AllowRegistration" class="form-checkbox" checked>
+                        <label for="allowRegistration" class="form-label-inline">Allow New Registrations</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="requireEmailVerification" name="RequireEmailVerification" class="form-checkbox" checked>
+                        <label for="requireEmailVerification" class="form-label-inline">Require Email Verification</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="allowSocialLogin" name="AllowSocialLogin" class="form-checkbox" checked>
+                        <label for="allowSocialLogin" class="form-label-inline">Allow Social Login</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="defaultUserRole" class="form-label">Default User Role</label>
+                    <select id="defaultUserRole" name="DefaultUserRole" class="form-control">
+                        <option value="User" selected>User</option>
+                        <option value="Contributor">Contributor</option>
+                        <option value="Moderator">Moderator</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="accountApproval" class="form-label">Account Approval</label>
+                    <select id="accountApproval" name="AccountApproval" class="form-control">
+                        <option value="Automatic" selected>Automatic</option>
+                        <option value="Manual">Manual (Admin Approval)</option>
+                        <option value="EmailVerification">Email Verification Only</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="card lg:col-span-2">
+        <div class="card-header">
+            <h2 class="card-title">Security Settings</h2>
+        </div>
+        <div class="card-body">
+            <form id="securitySettingsForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label for="sessionTimeout" class="form-label">Session Timeout (minutes)</label>
+                        <input type="number" id="sessionTimeout" name="SessionTimeout" class="form-control" value="30" min="5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maxLoginAttempts" class="form-label">Max Login Attempts</label>
+                        <input type="number" id="maxLoginAttempts" name="MaxLoginAttempts" class="form-control" value="5" min="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwordPolicy" class="form-label">Password Policy</label>
+                    <select id="passwordPolicy" name="PasswordPolicy" class="form-control">
+                        <option value="Basic">Basic (min 8 characters)</option>
+                        <option value="Standard" selected>Standard (min 8 chars, 1 uppercase, 1 number)</option>
+                        <option value="Strong">Strong (min 10 chars, uppercase, number, special)</option>
+                        <option value="Custom">Custom</option>
+                    </select>
+                </div>
+
+                <div id="customPasswordPolicy" class="space-y-4 hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="form-group">
+                            <label for="minLength" class="form-label">Min Length</label>
+                            <input type="number" id="minLength" name="MinLength" class="form-control" value="8" min="6">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="requireUppercase" class="form-label">Require Uppercase</label>
+                            <select id="requireUppercase" name="RequireUppercase" class="form-control">
+                                <option value="0">No</option>
+                                <option value="1" selected>Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="requireLowercase" class="form-label">Require Lowercase</label>
+                            <select id="requireLowercase" name="RequireLowercase" class="form-control">
+                                <option value="0">No</option>
+                                <option value="1" selected>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="form-group">
+                            <label for="requireDigit" class="form-label">Require Digit</label>
+                            <select id="requireDigit" name="RequireDigit" class="form-control">
+                                <option value="0">No</option>
+                                <option value="1" selected>Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="requireSpecial" class="form-label">Require Special</label>
+                            <select id="requireSpecial" name="RequireSpecial" class="form-control">
+                                <option value="0" selected>No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="passwordExpiry" class="form-label">Password Expiry (days)</label>
+                            <input type="number" id="passwordExpiry" name="PasswordExpiry" class="form-control" value="90" min="0">
+                            <span class="text-xs text-gray-500 mt-1">0 = never expires</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="enableTwoFactor" name="EnableTwoFactor" class="form-checkbox">
+                        <label for="enableTwoFactor" class="form-label-inline">Enable Two-Factor Authentication</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="enforceHttps" name="EnforceHttps" class="form-checkbox" checked>
+                        <label for="enforceHttps" class="form-label-inline">Enforce HTTPS</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Color picker functionality
+            const primaryColor = document.getElementById('primaryColor');
+            const primaryColorHex = document.getElementById('primaryColorHex');
+            const secondaryColor = document.getElementById('secondaryColor');
+            const secondaryColorHex = document.getElementById('secondaryColorHex');
+
+            primaryColor.addEventListener('input', function() {
+                primaryColorHex.value = this.value;
+            });
+
+            secondaryColor.addEventListener('input', function() {
+                secondaryColorHex.value = this.value;
+            });
+
+            // Password policy toggle
+            const passwordPolicy = document.getElementById('passwordPolicy');
+            const customPasswordPolicy = document.getElementById('customPasswordPolicy');
+
+            passwordPolicy.addEventListener('change', function() {
+                if (this.value === 'Custom') {
+                    customPasswordPolicy.classList.remove('hidden');
+                } else {
+                    customPasswordPolicy.classList.add('hidden');
+                }
+            });
+
+            // Test email connection
+            const testEmailConnection = document.getElementById('testEmailConnection');
+
+            testEmailConnection.addEventListener('click', function() {
+                // Simulate testing connection
+                this.disabled = true;
+                this.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Testing...';
+
+                setTimeout(() => {
+                    alert('Email connection successful!');
+                    this.disabled = false;
+                    this.innerHTML = '<i class="ri-mail-check-line"></i> Test Connection';
+                }, 2000);
+            });
+
+            // Save all settings
+            const saveAllSettings = document.getElementById('saveAllSettings');
+
+            saveAllSettings.addEventListener('click', function() {
+                // Simulate saving
+                this.disabled = true;
+                this.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Saving...';
+
+                setTimeout(() => {
+                    alert('All settings have been saved successfully!');
+                    this.disabled = false;
+                    this.innerHTML = '<i class="ri-save-line"></i> Save All Changes';
+                }, 2000);
+            });
+        });
+    </script>
+}

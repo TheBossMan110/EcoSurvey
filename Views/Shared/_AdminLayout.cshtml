@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Environmental Awareness Survey Portal</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+
+    <!-- Tailwind CSS (CDN for development, should be compiled in production) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/admin.css" />
+
+    <!-- Charts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+
+    @RenderSection("Styles", required: false)
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 -translate-x-full md:translate-x-0">
+            <div class="p-4 border-b flex items-center space-x-2">
+                <span class="sidebar-brand">EcoSurvey</span>
+            </div>
+            <nav class="mt-6 px-2">
+                <div class="px-4 mb-3">
+                    <p class="sidebar-section-title">Main</p>
+                </div>
+                <a href="/Admin/Index" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+                    <i class="ri-dashboard-line"></i>
+                    <span class="sidebar-nav-text">Dashboard</span>
+                </a>
+                <a href="/Admin/UserManagement" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "UserManagement" ? "active" : "")">
+                    <i class="ri-user-line"></i>
+                    <span class="sidebar-nav-text">User Management</span>
+                </a>
+                <a href="/Admin/SurveyManagement" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "SurveyManagement" || ViewContext.RouteData.Values["Action"].ToString() == "CreateSurvey" || ViewContext.RouteData.Values["Action"].ToString() == "EditSurvey" ? "active" : "")">
+                    <i class="ri-survey-line"></i>
+                    <span class="sidebar-nav-text">Survey Management</span>
+                </a>
+                <a href="/Admin/CompetitionManagement" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "CompetitionManagement" ? "active" : "")">
+                    <i class="ri-trophy-line"></i>
+                    <span class="sidebar-nav-text">Competition Management</span>
+                </a>
+                <a href="/Admin/FaqManagement" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "FaqManagement" ? "active" : "")">
+                    <i class="ri-question-answer-line"></i>
+                    <span class="sidebar-nav-text">FAQ Management</span>
+                </a>
+                <a href="/Admin/SeminarManagement" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "SeminarManagement" ? "active" : "")">
+                    <i class="ri-presentation-line"></i>
+                    <span class="sidebar-nav-text">Seminar Management</span>
+                </a>
+                <div class="px-4 mb-3 mt-8">
+                    <p class="sidebar-section-title">Reports</p>
+                </div>
+                <a href="/Admin/Analytics" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Analytics" ? "active" : "")">
+                    <i class="ri-bar-chart-line"></i>
+                    <span class="sidebar-nav-text">Analytics</span>
+                </a>
+                <a href="/Admin/Reports" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Reports" ? "active" : "")">
+                    <i class="ri-file-chart-line"></i>
+                    <span class="sidebar-nav-text">Reports</span>
+                </a>
+                <div class="px-4 mb-3 mt-8">
+                    <p class="sidebar-section-title">Settings</p>
+                </div>
+                <a href="/Admin/Settings" class="sidebar-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Settings" ? "active" : "")">
+                    <i class="ri-settings-line"></i>
+                    <span class="sidebar-nav-text">System Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Header -->
+            <header class="header">
+                <div class="flex items-center">
+                    <button id="sidebarToggle" class="p-2 text-gray-600 hover:bg-gray-100 rounded-full focus:outline-none md:hidden">
+                        <i class="ri-menu-line"></i>
+                    </button>
+                    <div class="relative ml-4">
+                        <div class="search-icon">
+                            <i class="ri-search-line"></i>
+                        </div>
+                        <input type="text" class="search-input" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full focus:outline-none">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="border-l h-6 mx-2"></div>
+                    <div class="flex items-center">
+                        <div class="user-avatar">JD</div>
+                        <div class="ml-3 hidden md:block">
+                            <p class="text-sm font-medium text-gray-700">John Doe</p>
+                            <p class="text-xs text-gray-500">Administrator</p>
+                        </div>
+                        <div class="w-5 h-5 flex items-center justify-center ml-2 text-gray-400">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <!-- Core JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar toggle for mobile
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('-translate-x-full');
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                const isMobile = window.innerWidth < 768;
+                if (isMobile && sidebar && !sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+
+            // Initialize any dropdowns
+            const dropdownButtons = document.querySelectorAll('[data-dropdown-toggle]');
+            dropdownButtons.forEach(button => {
+                const targetId = button.getAttribute('data-dropdown-toggle');
+                const target = document.getElementById(targetId);
+
+                if (target) {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        target.classList.toggle('hidden');
+                    });
+                }
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function() {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.classList.contains('hidden')) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Custom JavaScript -->
+    <script src="~/js/admin.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

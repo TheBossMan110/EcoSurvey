@@ -1,0 +1,143 @@
+﻿@model EcoSurvey.Models.Seminar
+
+@{
+    ViewData["Title"] = "Seminar Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Seminar Details</h1>
+        <p class="page-subtitle">View details of an environmental awareness seminar</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Edit" asp-route-id="@Model.SeminarId" class="btn btn-outline">
+            <i class="ri-pencil-line"></i>
+            Edit
+        </a>
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Seminar Information</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Title</h4>
+                            <p class="text-gray-900">@Model.SeminarTitle</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Location</h4>
+                            <p class="text-gray-900">@Model.Location</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Description</h4>
+                            @if (string.IsNullOrEmpty(Model.Description))
+                            {
+                                <p class="text-gray-500">No description provided</p>
+                            }
+                            else
+                            {
+                                <p class="text-gray-900 whitespace-pre-line">@Model.Description</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Seminar Details</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Conducted Date</h4>
+                            <p class="text-gray-900">@Model.ConductedDate.ToString("MMM dd, yyyy")</p>
+                            @{
+                                var isPast = Model.ConductedDate < DateTime.Today;
+                                var isToday = Model.ConductedDate.Date == DateTime.Today;
+                                var daysUntil = (Model.ConductedDate.Date - DateTime.Today).Days;
+                            }
+
+                            @if (isPast)
+                            {
+                                <span class="badge badge-inactive">Past</span>
+                            }
+                            else if (isToday)
+                            {
+                                <span class="badge badge-success">Today</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-info">In @daysUntil days</span>
+                            }
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Number of Participants</h4>
+                            <p class="text-gray-900">@Model.NumberOfParticipants</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-700">Created Date</h4>
+                            <p class="text-gray-900">@Model.CreatedDate.ToString("MMM dd, yyyy HH:mm")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (ViewBag.Participants != null && ViewBag.Participants.Count > 0)
+        {
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Participants (@ViewBag.ParticipantCount)</h3>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-4 py-2">Name</th>
+                                    <th class="px-4 py-2">Email</th>
+                                    <th class="px-4 py-2">Participation Date</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                @foreach (var participant in ViewBag.Participants)
+                                {
+                                    <tr>
+                                        <td class="px-4 py-2">@participant.ParticipantName</td>
+                                        <td class="px-4 py-2">@participant.ParticipantEmail</td>
+                                        <td class="px-4 py-2">@participant.ParticipationDate.ToString("MMM dd, yyyy")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="form-actions mt-6">
+            <a asp-action="Edit" asp-route-id="@Model.SeminarId" class="btn btn-primary">
+                <i class="ri-pencil-line"></i>
+                Edit
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.SeminarId" class="btn btn-danger">
+                <i class="ri-delete-bin-line"></i>
+                Delete
+            </a>
+            <a asp-action="Index" class="btn btn-outline">
+                <i class="ri-arrow-left-line"></i>
+                Back to List
+            </a>
+        </div>
+    </div>
+</div>

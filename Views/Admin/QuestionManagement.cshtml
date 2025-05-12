@@ -1,0 +1,184 @@
+﻿@model IEnumerable<EcoSurvey.Models.Question>
+
+@{
+    ViewData["Title"] = "Question Management";
+    ViewData["ActivePage"] = "SurveyManagement";
+    Layout = "_AdminLayout";
+
+    var survey = ViewBag.Survey as EcoSurvey.Models.Survey;
+}
+
+<!-- Breadcrumb -->
+<div class="flex items-center text-sm text-gray-500 mb-4">
+    <a asp-controller="Admin" asp-action="Index" class="hover:text-primary">Dashboard</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <a asp-controller="Admin" asp-action="SurveyManagement" class="hover:text-primary">Survey Management</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <span class="text-gray-700 font-medium">Question Management</span>
+</div>
+
+<!-- Page Header -->
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Question Management</h1>
+        @if (survey != null)
+        {
+            <p class="text-sm text-gray-600">Manage questions for survey: <span class="font-medium">@survey.Title</span></p>
+        }
+        else
+        {
+            <p class="text-sm text-gray-600">Manage all survey questions</p>
+        }
+    </div>
+    <div class="flex space-x-3">
+        @if (survey != null)
+        {
+            <a asp-action="CreateQuestion" asp-route-surveyId="@survey.SurveyId" class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                    <i class="ri-add-line"></i>
+                </div>
+                Add Question
+            </a>
+        }
+    </div>
+</div>
+
+<!-- Questions Table -->
+<div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-5 border-b">
+        <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+                @if (survey != null)
+                {
+                    <span>Questions for @survey.Title</span>
+                }
+                else
+                {
+                    <span>All Questions</span>
+                }
+            </h3>
+            <div class="text-sm text-gray-500">Showing @Model.Count() questions</div>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3">Question Text</th>
+                    @if (survey == null)
+                    {
+                        <th class="px-6 py-3">Survey</th>
+                    }
+                    <th class="px-6 py-3">Type</th>
+                    <th class="px-6 py-3">Required</th>
+                    <th class="px-6 py-3">Display Order</th>
+                    <th class="px-6 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @foreach (var item in Model)
+                {
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            <p class="text-sm font-medium text-gray-900">@item.QuestionText</p>
+                        </td>
+                        @if (survey == null)
+                        {
+                            <td class="px-6 py-4">
+                                <span class="text-sm text-gray-900">Survey #@item.SurveyId</span>
+                            </td>
+                        }
+                        <td class="px-6 py-4">
+                            @{
+                                string questionType = "Unknown";
+                                switch (item.QuestionType)
+                                {
+                                    case 1:
+                                        questionType = "Text";
+                                        break;
+                                    case 2:
+                                        questionType = "Single Choice";
+                                        break;
+                                    case 3:
+                                        questionType = "Multiple Choice";
+                                        break;
+                                    case 4:
+                                        questionType = "Rating";
+                                        break;
+                                }
+                            }
+                            <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">@questionType</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            @if (item.IsRequired)
+                            {
+                                <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Required</span>
+                            }
+                            else
+                            {
+                                <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">Optional</span>
+                            }
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-gray-900">@item.DisplayOrder</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end space-x-2">
+                                <a asp-action="EditQuestion" asp-route-id="@item.QuestionId" class="p-1 text-gray-500 hover:text-primary" title="Edit Question">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-edit-line"></i>
+                                    </div>
+                                </a>
+                                <a asp-action="AnswerManagement" asp-route-questionId="@item.QuestionId" class="p-1 text-gray-500 hover:text-primary" title="Manage Answers">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-list-check"></i>
+                                    </div>
+                                </a>
+                                <a asp-action="DeleteQuestion" asp-route-id="@item.QuestionId" class="p-1 text-gray-500 hover:text-red-500" title="Delete Question">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="px-5 py-4 bg-white border-t flex justify-between">
+        <div>
+            @if (survey != null)
+            {
+                <a asp-action="SurveyDetails" asp-route-id="@survey.SurveyId" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Back to Survey
+                </a>
+            }
+            else
+            {
+                <a asp-action="SurveyManagement" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Back to Surveys
+                </a>
+            }
+        </div>
+        @if (survey != null)
+        {
+            <a asp-action="CreateQuestion" asp-route-surveyId="@survey.SurveyId" class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                    <i class="ri-add-line"></i>
+                </div>
+                Add Question
+            </a>
+        }
+    </div>
+</div>

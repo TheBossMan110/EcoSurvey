@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Add New FAQ";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Add New FAQ</h1>
+        <p class="page-subtitle">Create a new frequently asked question</p>
+    </div>
+    <div class="page-actions">
+        <a asp-controller="Admin" asp-action="FaqManagement" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to FAQs
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form id="createFaqForm" method="post" action="/Admin/CreateFaq" class="space-y-6">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label for="faqQuestion" class="form-label">Question</label>
+                <input type="text" id="faqQuestion" name="Question" class="form-control" placeholder="Enter the question" required>
+                <span class="form-error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="faqAnswer" class="form-label">Answer</label>
+                <textarea id="faqAnswer" name="Answer" class="form-control" rows="6" placeholder="Enter the answer" required></textarea>
+                <span class="form-error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="faqCategory" class="form-label">Category</label>
+                <select id="faqCategory" name="Category" class="form-control" required>
+                    <option value="">Select a category</option>
+                    <option value="General">General</option>
+                    <option value="Surveys">Surveys</option>
+                    <option value="Competitions">Competitions</option>
+                    <option value="Seminars">Seminars</option>
+                    <option value="Account">Account</option>
+                    <option value="Technical">Technical</option>
+                </select>
+                <span class="form-error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="isPublished" name="IsPublished" class="form-checkbox" checked>
+                    <label for="isPublished" class="form-label-inline">Publish immediately</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="displayOrder" class="form-label">Display Order</label>
+                <input type="number" id="displayOrder" name="DisplayOrder" class="form-control" min="1" value="1">
+                <span class="text-xs text-gray-500 mt-1">Lower numbers will be displayed first</span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-save-line"></i>
+                    Save FAQ
+                </button>
+                <button type="reset" class="btn btn-outline">
+                    <i class="ri-refresh-line"></i>
+                    Reset Form
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('createFaqForm');
+
+            // Form validation
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+                const requiredFields = form.querySelectorAll('[required]');
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        const errorMessage = field.nextElementSibling;
+                        if (errorMessage && errorMessage.classList.contains('form-error-message')) {
+                            errorMessage.textContent = 'This field is required';
+                        }
+                        field.classList.add('error');
+                    } else {
+                        const errorMessage = field.nextElementSibling;
+                        if (errorMessage && errorMessage.classList.contains('form-error-message')) {
+                            errorMessage.textContent = '';
+                        }
+                        field.classList.remove('error');
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+}

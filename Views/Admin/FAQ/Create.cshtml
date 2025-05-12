@@ -1,0 +1,87 @@
+﻿@model EcoSurvey.Models.FAQ
+
+@{
+    ViewData["Title"] = "Create FAQ";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Create New FAQ</h1>
+        <p class="page-subtitle">Add a new frequently asked question to the portal</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Question" class="form-label">Question</label>
+                <input asp-for="Question" class="form-control" placeholder="Enter the question" required />
+                <span asp-validation-for="Question" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Answer" class="form-label">Answer</label>
+                <textarea asp-for="Answer" class="form-control" rows="6" placeholder="Enter the answer" required></textarea>
+                <span asp-validation-for="Answer" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Category" class="form-label">Category</label>
+                <select asp-for="Category" class="form-control">
+                    <option value="">-- Select a category --</option>
+                    <option value="General">General</option>
+                    <option value="Surveys">Surveys</option>
+                    <option value="Competitions">Competitions</option>
+                    <option value="Seminars">Seminars</option>
+                    <option value="Account">Account</option>
+                    <option value="Technical">Technical</option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="flex items-center space-x-2">
+                    <input asp-for="IsPublished" class="form-checkbox" />
+                    <label asp-for="IsPublished" class="form-label-inline">Publish immediately</label>
+                </div>
+                <span asp-validation-for="IsPublished" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DisplayOrder" class="form-label">Display Order</label>
+                <input asp-for="DisplayOrder" class="form-control" type="number" min="1" />
+                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                <p class="text-xs text-gray-500 mt-1">Lower numbers will be displayed first</p>
+            </div>
+
+            <input type="hidden" asp-for="LastUpdated" />
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-save-line"></i>
+                    Create FAQ
+                </button>
+                <a asp-action="Index" class="btn btn-outline">
+                    <i class="ri-close-line"></i>
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

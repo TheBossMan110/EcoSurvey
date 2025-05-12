@@ -1,0 +1,224 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<section class="bg-gradient-to-br from-green-50 to-white py-20">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Contact Us</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Have questions about the Environmental Quiz Competition? We're
+                here to help! Get in touch with our team.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="lg:col-span-1 space-y-8">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="space-y-8">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                                <i class="ri-mail-line text-primary ri-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                                    Email Us
+                                </h3>
+                                <p class="text-gray-600">competition@example.com</p>
+                                <p class="text-gray-600">support@example.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                                <i class="ri-phone-line text-primary ri-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                                    Call Us
+                                </h3>
+                                <p class="text-gray-600">+1 (555) 123-4567</p>
+                                <p class="text-gray-600">Mon - Fri, 9:00 - 18:00</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                                <i class="ri-map-pin-line text-primary ri-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                                    Visit Us
+                                </h3>
+                                <p class="text-gray-600">123 Environmental Way</p>
+                                <p class="text-gray-600">Green City, EC 12345</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        Follow Us
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="#" class="flex items-center space-x-2 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
+                            <i class="ri-facebook-fill text-[#1877F2]"></i>
+                            <span>Facebook</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-2 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
+                            <i class="ri-twitter-fill text-[#1DA1F2]"></i>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-2 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
+                            <i class="ri-instagram-fill text-[#E4405F]"></i>
+                            <span>Instagram</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-2 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
+                            <i class="ri-linkedin-fill text-[#0A66C2]"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+                        Send Us a Message
+                    </h2>
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                        </div>
+                        <div class="flex items-start">
+                            <label class="custom-checkbox flex items-start">
+                                <input type="checkbox" id="privacy-agree" required />
+                                <span class="checkmark mr-2 mt-0.5"></span>
+                                <span class="text-sm text-gray-700">
+                                    I agree to the <a href="#" class="text-primary hover:underline">Privacy Policy</a> and consent to being contacted regarding my inquiry.
+                                </span>
+                            </label>
+                        </div>
+                        <div>
+                            <button type="submit" class="bg-primary text-white px-8 py-3 rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .custom-checkbox {
+            position: relative;
+            cursor: pointer;
+        }
+
+            .custom-checkbox input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+            }
+
+        .checkmark {
+            height: 20px;
+            width: 20px;
+            background-color: #f9fafb;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #2E7D32;
+            border-color: #2E7D32;
+        }
+
+        .checkmark:after {
+            content: "";
+            display: none;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Simple form validation
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const subject = document.getElementById('subject').value;
+                    const message = document.getElementById('message').value;
+                    const privacyAgree = document.getElementById('privacy-agree').checked;
+
+                    if (!name || !email || !subject || !message) {
+                        alert('Please fill in all fields');
+                        return;
+                    }
+
+                    if (!privacyAgree) {
+                        alert('Please agree to the Privacy Policy');
+                        return;
+                    }
+
+                    // Show success message
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50';
+                    successMessage.innerHTML = `
+                        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="ri-check-line text-green-500 ri-2x"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">Message Sent!</h3>
+                                <p class="text-gray-600 mb-6">Thank you for contacting us. We will get back to you as soon as possible.</p>
+                                <button class="bg-primary text-white px-6 py-2 rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">Close</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(successMessage);
+
+                    // Reset form
+                    form.reset();
+
+                    // Close success message on button click
+                    successMessage.querySelector('button').addEventListener('click', function() {
+                        successMessage.remove();
+                    });
+                });
+            }
+        });
+    </script>
+}

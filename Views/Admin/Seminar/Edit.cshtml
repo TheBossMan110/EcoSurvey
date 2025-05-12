@@ -1,0 +1,83 @@
+﻿@model EcoSurvey.Models.Seminar
+
+@{
+    ViewData["Title"] = "Edit Seminar";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Edit Seminar</h1>
+        <p class="page-subtitle">Update an existing environmental awareness seminar</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Index" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SeminarId" />
+            <input type="hidden" asp-for="CreatedDate" />
+
+            <div class="form-group">
+                <label asp-for="SeminarTitle" class="form-label">Seminar Title</label>
+                <input asp-for="SeminarTitle" class="form-control" placeholder="Enter seminar title" required />
+                <span asp-validation-for="SeminarTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Location" class="form-label">Location</label>
+                <input asp-for="Location" class="form-control" placeholder="Enter seminar location" required />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label asp-for="ConductedDate" class="form-label">Conducted Date</label>
+                    <input asp-for="ConductedDate" class="form-control" type="date" required />
+                    <span asp-validation-for="ConductedDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NumberOfParticipants" class="form-label">Number of Participants</label>
+                    <input asp-for="NumberOfParticipants" class="form-control" type="number" min="1" required />
+                    <span asp-validation-for="NumberOfParticipants" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter seminar description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Created Date</label>
+                <p class="text-gray-700">@Model.CreatedDate.ToString("MMM dd, yyyy HH:mm")</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-save-line"></i>
+                    Update Seminar
+                </button>
+                <a asp-action="Index" class="btn btn-outline">
+                    <i class="ri-close-line"></i>
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

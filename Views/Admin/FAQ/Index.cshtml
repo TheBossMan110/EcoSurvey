@@ -1,0 +1,203 @@
+﻿@model IEnumerable<EcoSurvey.Models.FAQ>
+
+@{
+    ViewData["Title"] = "FAQ Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">FAQ Management</h1>
+        <p class="page-subtitle">Manage frequently asked questions for the environmental awareness portal</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Reorder" class="btn btn-outline">
+            <i class="ri-sort-asc"></i>
+            Reorder FAQs
+        </a>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="ri-add-line"></i>
+            Add New FAQ
+        </a>
+    </div>
+</div>
+
+<!-- Display success message if available -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Display error message if available -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="flex flex-col md:flex-row justify-between mb-4 space-y-4 md:space-y-0">
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <div class="relative">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                    <input type="text" id="searchFaqs" class="search-input" placeholder="Search FAQs...">
+                </div>
+                <select id="categoryFilter" class="form-control w-full md:w-40">
+                    <option value="">All Categories</option>
+                    <option value="General">General</option>
+                    <option value="Surveys">Surveys</option>
+                    <option value="Competitions">Competitions</option>
+                    <option value="Seminars">Seminars</option>
+                    <option value="Account">Account</option>
+                    <option value="Technical">Technical</option>
+                </select>
+                <select id="statusFilter" class="form-control w-full md:w-40">
+                    <option value="">All Status</option>
+                    <option value="published">Published</option>
+                    <option value="unpublished">Unpublished</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="w-10">Order</th>
+                        <th>Question</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                        <th class="w-20">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var faq in Model)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <span class="font-medium">@faq.DisplayOrder</span>
+                                </td>
+                                <td>
+                                    <p class="font-medium">@faq.Question</p>
+                                    <p class="text-xs text-gray-500 truncate max-w-md">@faq.Answer</p>
+                                </td>
+                                <td>
+                                    <span class="badge badge-info">@(string.IsNullOrEmpty(faq.Category) ? "General" : faq.Category)</span>
+                                </td>
+                                <td>
+                                    @if (faq.IsPublished)
+                                    {
+                                        <span class="badge badge-success">Published</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-inactive">Unpublished</span>
+                                    }
+                                </td>
+                                <td>
+                                    @faq.LastUpdated.ToString("MMM dd, yyyy")
+                                </td>
+                                <td>
+                                    <div class="flex space-x-1">
+                                        <a asp-action="Details" asp-route-id="@faq.FaqId" class="btn-icon" title="View FAQ">
+                                            <i class="ri-eye-line"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@faq.FaqId" class="btn-icon" title="Edit FAQ">
+                                            <i class="ri-pencil-line"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@faq.FaqId" class="btn-icon text-red-500" title="Delete FAQ">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <p class="text-gray-500">No FAQs found.</p>
+                                <a asp-action="Create" class="text-primary hover:underline">Create your first FAQ</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle search
+            const searchInput = document.getElementById('searchFaqs');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    const question = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+
+                    if (question.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Handle category filter
+            const categoryFilter = document.getElementById('categoryFilter');
+            categoryFilter.addEventListener('change', function() {
+                const selectedCategory = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    if (!selectedCategory) {
+                        row.style.display = '';
+                        return;
+                    }
+
+                    const categoryCell = row.querySelector('td:nth-child(3)');
+                    if (categoryCell && categoryCell.textContent.toLowerCase().includes(selectedCategory)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Handle status filter
+            const statusFilter = document.getElementById('statusFilter');
+            statusFilter.addEventListener('change', function() {
+                const selectedStatus = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    if (!selectedStatus) {
+                        row.style.display = '';
+                        return;
+                    }
+
+                    const statusCell = row.querySelector('td:nth-child(4)');
+                    if (statusCell && statusCell.textContent.toLowerCase().includes(selectedStatus)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+}
