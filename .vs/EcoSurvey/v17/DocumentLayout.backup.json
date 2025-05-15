@@ -7,28 +7,24 @@
       "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:controllers\\competitioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\views\\admin\\competition\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:views\\admin\\competition\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\views\\competition\\quiz.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:views\\competition\\quiz.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\views\\admin\\competitionmanagement.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:views\\admin\\competitionmanagement.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\models\\question.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:models\\question.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\models\\competitionquestion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:models\\competitionquestion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\models\\competition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:models\\competition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\views\\admin\\competition\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:views\\admin\\competition\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\views\\admin\\createcompetition.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:views\\admin\\createcompetition.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|e:\\e-project\\ecosurvey\\views\\competition\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6E1EC063-07C2-431E-BEF9-C1C7A9C8BE45}|EcoSurvey.csproj|solutionrelative:views\\competition\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,58 +34,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Views\\Admin\\Competition\\Edit.cshtml",
-              "RelativeDocumentMoniker": "Views\\Admin\\Competition\\Edit.cshtml",
-              "ToolTip": "E:\\E-Project\\EcoSurvey\\Views\\Admin\\Competition\\Edit.cshtml",
-              "RelativeToolTip": "Views\\Admin\\Competition\\Edit.cshtml",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABcAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-12T06:55:25.752Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "AdminController.cs",
-              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Controllers\\AdminController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
-              "ToolTip": "E:\\E-Project\\EcoSurvey\\Controllers\\AdminController.cs",
-              "RelativeToolTip": "Controllers\\AdminController.cs",
-              "ViewState": "AgIAABEBAAAAAAAAAAAlwBkBAAANAAAAAAAAAA==",
+              "Title": "CompetitionQuestion.cs",
+              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Models\\CompetitionQuestion.cs",
+              "RelativeDocumentMoniker": "Models\\CompetitionQuestion.cs",
+              "ToolTip": "E:\\E-Project\\EcoSurvey\\Models\\CompetitionQuestion.cs",
+              "RelativeToolTip": "Models\\CompetitionQuestion.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-12T06:44:26.233Z",
+              "WhenOpened": "2025-05-15T21:25:09.53Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Views\\Admin\\Competition\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Admin\\Competition\\Index.cshtml",
-              "ToolTip": "E:\\E-Project\\EcoSurvey\\Views\\Admin\\Competition\\Index.cshtml",
-              "RelativeToolTip": "Views\\Admin\\Competition\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-12T06:44:14.452Z",
+              "DocumentIndex": 2,
+              "Title": "Question.cs",
+              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Models\\Question.cs",
+              "RelativeDocumentMoniker": "Models\\Question.cs",
+              "ToolTip": "E:\\E-Project\\EcoSurvey\\Models\\Question.cs",
+              "RelativeToolTip": "Models\\Question.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T21:19:51.387Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "_AdminLayout.cshtml",
-              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Views\\Shared\\_AdminLayout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_AdminLayout.cshtml",
-              "ToolTip": "E:\\E-Project\\EcoSurvey\\Views\\Shared\\_AdminLayout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_AdminLayout.cshtml",
-              "ViewState": "AgIAACQAAAAAAAAAAAAjwDMAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-12T06:38:57.694Z",
+              "Title": "Competition.cs",
+              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Models\\Competition.cs",
+              "RelativeDocumentMoniker": "Models\\Competition.cs",
+              "ToolTip": "E:\\E-Project\\EcoSurvey\\Models\\Competition.cs",
+              "RelativeToolTip": "Models\\Competition.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T21:19:20.509Z",
               "EditorCaption": ""
             },
             {
@@ -100,35 +83,35 @@
               "RelativeDocumentMoniker": "Controllers\\CompetitionController.cs",
               "ToolTip": "E:\\E-Project\\EcoSurvey\\Controllers\\CompetitionController.cs",
               "RelativeToolTip": "Controllers\\CompetitionController.cs",
-              "ViewState": "AgIAAGQAAAAAAAAAAAAgwHIAAAA+AAAAAAAAAA==",
+              "ViewState": "AgIAAAEBAAAAAAAAAAAswAoBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-12T06:27:28.68Z",
+              "WhenOpened": "2025-05-15T20:45:43.038Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CreateCompetition.cshtml",
-              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Views\\Admin\\CreateCompetition.cshtml",
-              "RelativeDocumentMoniker": "Views\\Admin\\CreateCompetition.cshtml",
-              "ToolTip": "E:\\E-Project\\EcoSurvey\\Views\\Admin\\CreateCompetition.cshtml",
-              "RelativeToolTip": "Views\\Admin\\CreateCompetition.cshtml",
-              "ViewState": "AgIAAIoAAAAAAAAAAAAAAJgAAAChAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Quiz.cshtml",
+              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Views\\Competition\\Quiz.cshtml",
+              "RelativeDocumentMoniker": "Views\\Competition\\Quiz.cshtml",
+              "ToolTip": "E:\\E-Project\\EcoSurvey\\Views\\Competition\\Quiz.cshtml",
+              "RelativeToolTip": "Views\\Competition\\Quiz.cshtml",
+              "ViewState": "AgIAAEACAAAAAAAAAADwv2ICAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-12T06:19:03.882Z",
+              "WhenOpened": "2025-05-15T20:24:12.48Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CompetitionManagement.cshtml",
-              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Views\\Admin\\CompetitionManagement.cshtml",
-              "RelativeDocumentMoniker": "Views\\Admin\\CompetitionManagement.cshtml",
-              "ToolTip": "E:\\E-Project\\EcoSurvey\\Views\\Admin\\CompetitionManagement.cshtml",
-              "RelativeToolTip": "Views\\Admin\\CompetitionManagement.cshtml",
-              "ViewState": "AgIAAMcAAAAAAAAAAAAlwM4AAABUAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\E-Project\\EcoSurvey\\Views\\Competition\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Competition\\Index.cshtml",
+              "ToolTip": "E:\\E-Project\\EcoSurvey\\Views\\Competition\\Index.cshtml",
+              "RelativeToolTip": "Views\\Competition\\Index.cshtml",
+              "ViewState": "AgIAAOAAAAAAAAAAAAAkwDMBAABoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-12T06:05:22.41Z",
+              "WhenOpened": "2025-05-15T20:09:49.535Z",
               "EditorCaption": ""
             }
           ]

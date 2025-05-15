@@ -25,6 +25,7 @@
 <div class="card">
     <div class="card-body">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Seminar Info Section -->
             <div>
                 <div class="mb-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-2">Seminar Information</h3>
@@ -54,6 +55,7 @@
                 </div>
             </div>
 
+            <!-- Seminar Details Section -->
             <div>
                 <div class="mb-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-2">Seminar Details</h3>
@@ -66,7 +68,6 @@
                                 var isToday = Model.ConductedDate.Date == DateTime.Today;
                                 var daysUntil = (Model.ConductedDate.Date - DateTime.Today).Days;
                             }
-
                             @if (isPast)
                             {
                                 <span class="badge badge-inactive">Past</span>
@@ -95,6 +96,7 @@
             </div>
         </div>
 
+        <!-- Participants Table -->
         @if (ViewBag.Participants != null && ViewBag.Participants.Count > 0)
         {
             <div class="mt-6">
@@ -125,16 +127,9 @@
             </div>
         }
 
-        <div class="form-actions mt-6">
-            <a asp-action="Edit" asp-route-id="@Model.SeminarId" class="btn btn-primary">
-                <i class="ri-pencil-line"></i>
-                Edit
-            </a>
-            <a asp-action="Delete" asp-route-id="@Model.SeminarId" class="btn btn-danger">
-                <i class="ri-delete-bin-line"></i>
-                Delete
-            </a>
-            <a asp-action="Index" class="btn btn-outline">
+        <!-- Action Buttons -->
+        <div class="form-actions mt-6 flex gap-2">
+            <a asp-controller="Admin" asp-action="SeminarManagement" class="btn btn-outline">
                 <i class="ri-arrow-left-line"></i>
                 Back to List
             </a>

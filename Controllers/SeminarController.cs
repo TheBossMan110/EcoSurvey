@@ -47,8 +47,8 @@ namespace EcoSurvey.Areas.Admin.Controllers
             }
 
             // Get participants if available
-            var participants = await _context.EffectiveParticipation
-                .Where(p => p.SeminarId == id)
+            var participants = await _context.CompetitionParticipants
+                .Where(p => p.ParticipantId == id)
                 .ToListAsync();
 
             ViewBag.Participants = participants;
@@ -93,24 +93,18 @@ namespace EcoSurvey.Areas.Admin.Controllers
         }
 
         // GET: Admin/Seminar/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var seminar = await _context.Seminars.FindAsync(id);
             if (seminar == null)
             {
                 return NotFound();
             }
-            return View(seminar);
+            return View("~/Views/Admin/Seminar/Edit.cshtml", seminar);
         }
 
         // POST: Admin/Seminar/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Seminar seminar)
         {
             if (id != seminar.SeminarId)
@@ -118,34 +112,35 @@ namespace EcoSurvey.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(seminar);
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+                    _context.Seminars.Update(seminar);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Seminar updated successfully!";
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    if (!SeminarExists(seminar.SeminarId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        _logger.LogError(ex, "Concurrency error updating seminar: {@Seminar}", seminar);
-                        ModelState.AddModelError("", "The seminar was modified by another user. Please try again.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error updating seminar: {@Seminar}", seminar);
-                    ModelState.AddModelError("", "An error occurred while updating the seminar. Please try again.");
-                }
-            }
-            return View(seminar);
+                    var SeminarsList = _context.Seminars.ToList();
+                    return View("~/Views/Admin/SeminarManagement.cshtml", SeminarsList);
+            //return RedirectToAction(nameof(Index));
+            //    }
+            //    catch (DbUpdateConcurrencyException ex)
+            //    {
+            //        if (!SeminarExists(seminar.SeminarId))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            _logger.LogError(ex, "Concurrency error updating seminar: {@Seminar}", seminar);
+            //            ModelState.AddModelError("", "The seminar was modified by another user. Please try again.");
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        _logger.LogError(ex, "Error updating seminar: {@Seminar}", seminar);
+            //        ModelState.AddModelError("", "An error occurred while updating the seminar. Please try again.");
+            //    }
+            //}
         }
 
         // GET: Admin/Seminar/Delete/5
@@ -181,13 +176,13 @@ namespace EcoSurvey.Areas.Admin.Controllers
                 }
 
                 // Also delete associated participants if any
-                var participants = await _context.EffectiveParticipation
-                    .Where(p => p.SeminarId == id)
+                var participants = await _context.CompetitionParticipants
+                    .Where(p => p.ParticipantId == id)
                     .ToListAsync();
 
                 if (participants.Any())
                 {
-                    _context.EffectiveParticipation.RemoveRange(participants);
+                    _context.CompetitionParticipants.RemoveRange(participants);
                 }
 
                 _context.Seminars.Remove(seminar);

@@ -1,5 +1,6 @@
 ﻿// Models/Competition.cs
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -44,5 +45,9 @@ namespace EcoSurvey.Models
         // Navigation property
         [ForeignKey("SurveyId")]
         public virtual Survey Survey { get; set; }
+
+        // Add these new navigation properties
+        public virtual ICollection<Winner> Winners { get; set; } = new List<Winner>();
+        public virtual ICollection<CompetitionParticipant> Participants { get; set; } = new List<CompetitionParticipant>();
     }
 }

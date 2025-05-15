@@ -6,6 +6,15 @@
     Layout = "_AdminLayout";
 }
 
+<!-- Breadcrumb -->
+<div class="flex items-center text-sm text-gray-500 mb-4">
+    <a asp-controller="Admin" asp-action="Index" class="hover:text-primary">Dashboard</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <span class="text-gray-700 font-medium">Survey Management</span>
+</div>
+
 <div class="flex items-center justify-between mb-6">
     <div>
         <h1 class="text-2xl font-bold text-gray-900">Survey Management</h1>
@@ -52,7 +61,6 @@
                         <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Active</a></li>
                         <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Draft</a></li>
                         <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Completed</a></li>
-                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Archived</a></li>
                     </ul>
                 </div>
             </div>
@@ -69,7 +77,6 @@
                         <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 7 Days</a></li>
                         <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 30 Days</a></li>
                         <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 90 Days</a></li>
-                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Custom Range</a></li>
                     </ul>
                 </div>
             </div>
@@ -84,9 +91,7 @@
                     <ul class="py-1 text-sm text-gray-700">
                         <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 font-medium text-primary">All</a></li>
                         <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Students</a></li>
-                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Faculty</a></li>
-                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Staff</a></li>
-                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">All Users</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Faculty/Staff</a></li>
                     </ul>
                 </div>
             </div>
@@ -146,22 +151,7 @@
                         </td>
                         <td class="px-6 py-4">
                             <span class="text-sm text-gray-900">
-                                @{
-                                    string targetGroup = "Unknown";
-                                    switch (item.TargetUserType)
-                                    {
-                                        case 2:
-                                            targetGroup = "Faculty/Staff";
-                                            break;
-                                        case 3:
-                                            targetGroup = "Students";
-                                            break;
-                                        default:
-                                            targetGroup = "All Users";
-                                            break;
-                                    }
-                                }
-                                @targetGroup
+                                @item.TargetUserTypeDisplay
                             </span>
                         </td>
                         <td class="px-6 py-4">
@@ -187,22 +177,17 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex justify-end space-x-2">
-                                <a asp-action="SurveyDetails" asp-route-id="@item.SurveyId" class="p-1 text-gray-500 hover:text-primary" title="View Survey">
+                                <a asp-controller="Survey" asp-action="Details" asp-route-id="@item.SurveyId" class="p-1 text-gray-500 hover:text-primary" title="View Survey">
                                     <div class="w-6 h-6 flex items-center justify-center">
                                         <i class="ri-eye-line"></i>
                                     </div>
                                 </a>
-                                <a asp-action="EditSurvey" asp-route-id="@item.SurveyId" class="p-1 text-gray-500 hover:text-primary" title="Edit Survey">
+                                <a asp-controller="Survey" asp-action="Edit" asp-route-id="@item.SurveyId" class="p-1 text-gray-500 hover:text-primary" title="Edit Survey">
                                     <div class="w-6 h-6 flex items-center justify-center">
                                         <i class="ri-edit-line"></i>
                                     </div>
                                 </a>
-                                <a asp-action="QuestionManagement" asp-route-surveyId="@item.SurveyId" class="p-1 text-gray-500 hover:text-primary" title="Manage Questions">
-                                    <div class="w-6 h-6 flex items-center justify-center">
-                                        <i class="ri-list-check"></i>
-                                    </div>
-                                </a>
-                                <a asp-action="DeleteSurvey" asp-route-id="@item.SurveyId" class="p-1 text-gray-500 hover:text-red-500" title="Delete Survey">
+                                <a asp-controller="Survey" asp-action="Delete" asp-route-id="@item.SurveyId" class="p-1 text-gray-500 hover:text-red-500" title="Delete Survey">
                                     <div class="w-6 h-6 flex items-center justify-center">
                                         <i class="ri-delete-bin-line"></i>
                                     </div>

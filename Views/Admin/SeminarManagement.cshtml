@@ -6,19 +6,23 @@
     Layout = "_AdminLayout";
 }
 
-<div class="page-header">
+<div class="flex items-center justify-between mb-6">
     <div>
-        <h1 class="page-title">Seminar Management</h1>
-        <p class="page-subtitle">Manage environmental awareness seminars and workshops</p>
+        <h1 class="text-2xl font-bold text-gray-900">Seminar Management</h1>
+        <p class="text-sm text-gray-600">Create, manage, and track environmental Seminar and campaigns</p>
     </div>
-    <div class="page-actions">
-        <button class="btn btn-outline" id="exportSeminarsBtn">
-            <i class="ri-download-line"></i>
-            Export
+    <div class="flex space-x-3">
+        <button class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                <i class="ri-download-line"></i>
+            </div>
+            Export Report
         </button>
-        <a href="/Admin/CreateSeminar" class="btn btn-primary">
-            <i class="ri-add-line"></i>
-            Add Seminar
+        <a href="/Admin/CreateSeminar" class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                <i class="ri-add-line"></i>
+            </div>
+            Create Seminar
         </a>
     </div>
 </div>
@@ -64,7 +68,6 @@
                 <button id="applyBulkAction" class="btn btn-sm btn-outline" disabled>Apply</button>
             </div>
         </div>
-
         <div class="overflow-x-auto">
             <table class="table">
                 <thead>
@@ -119,14 +122,23 @@
                                     }
                                 </td>
                                 <td>@seminar.NumberOfParticipants</td>
-                                <td>
-                                    <div class="flex space-x-1">
-                                        <a href="/Admin/EditSeminar/@seminar.SeminarId" class="btn-icon" title="Edit Seminar">
-                                            <i class="ri-pencil-line"></i>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end space-x-2">
+                                        <a href="/Admin/DetailSeminar/@seminar.SeminarId" class="p-1 text-gray-500 hover:text-primary" title="View Survey">
+                                            <div class="w-6 h-6 flex items-center justify-center">
+                                                <i class="ri-eye-line"></i>
+                                            </div>
                                         </a>
-                                        <button class="btn-icon text-red-500 delete-seminar-btn" data-id="@seminar.SeminarId" title="Delete Seminar">
-                                            <i class="ri-delete-bin-line"></i>
-                                        </button>
+                                        <a href="/Admin/EditSeminar/@seminar.SeminarId" class="p-1 text-gray-500 hover:text-primary" title="Edit Survey">
+                                            <div class="w-6 h-6 flex items-center justify-center">
+                                                <i class="ri-edit-line"></i>
+                                            </div>
+                                        </a>
+                                        <a href="/Admin/DeleteSeminar/@seminar.SeminarId" class="p-1 text-gray-500 hover:text-red-500" title="Delete Survey">
+                                            <div class="w-6 h-6 flex items-center justify-center">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </div>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>

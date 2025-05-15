@@ -20,7 +20,8 @@
 
 <div class="card">
     <div class="card-body">
-        <form asp-action="Create" method="post">
+        <form asp-controller="Competition" asp-action="Edit" method="post">
+            <input type="text" asp-for="CompetitionId" hidden/>
             <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -86,7 +87,7 @@
             <div class="mt-6 flex justify-end space-x-4">
                 <a asp-action="Index" class="btn btn-outline">Cancel</a>
                 <button type="submit" class="btn btn-primary">
-                    <i class="ri-save-line mr-1"></i> Create
+                    <i class="ri-save-line mr-1"></i> Update
                 </button>
             </div>
         </form>

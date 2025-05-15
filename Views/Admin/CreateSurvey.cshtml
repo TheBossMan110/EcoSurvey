@@ -12,7 +12,7 @@
     <div class="w-4 h-4 flex items-center justify-center mx-1">
         <i class="ri-arrow-right-s-line"></i>
     </div>
-    <a asp-controller="Admin" asp-action="SurveyManagement" class="hover:text-primary">Survey Management</a>
+    <a asp-controller="Survey" asp-action="Index" class="hover:text-primary">Survey Management</a>
     <div class="w-4 h-4 flex items-center justify-center mx-1">
         <i class="ri-arrow-right-s-line"></i>
     </div>
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<form asp-action="CreateSurvey" method="post">
+<form asp-controller="Survey" asp-action="Create" method="post">
     <div class="bg-white rounded-lg shadow mb-6">
         <div class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -58,10 +58,9 @@
                         <label asp-for="TargetUserType" class="block text-sm font-medium text-gray-700 mb-1">Target Audience <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <select asp-for="TargetUserType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none appearance-none">
-                                <option value="" selected disabled>Select target audience</option>
-                                <option value="3">Students</option>
+                                <option value="0">All Users</option>
                                 <option value="2">Faculty/Staff</option>
-                                <option value="1">All Users</option>
+                                <option value="3">Students</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <div class="w-5 h-5 flex items-center justify-center text-gray-400">
@@ -86,7 +85,7 @@
                             </div>
                         </div>
                         <div>
-                            <label asp-for="EndDate" class="block text-sm font-medium text-gray-700 mb-1">End Date <span class="text-red-500">  class="block text-sm font-medium text-gray-700 mb-1">End Date <span class="text-red-500">*</span></label>
+                            <label asp-for="EndDate" class="block text-sm font-medium text-gray-700 mb-1">End Date <span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <div class="w-5 h-5 flex items-center justify-center text-gray-400">
@@ -100,6 +99,12 @@
                     </div>
 
                     <div class="mb-4">
+                        <label asp-for="EstimatedCompletionTime" class="block text-sm font-medium text-gray-700 mb-1">Estimated Completion Time (minutes)</label>
+                        <input asp-for="EstimatedCompletionTime" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Enter estimated time">
+                        <span asp-validation-for="EstimatedCompletionTime" class="text-xs text-red-500"></span>
+                    </div>
+
+                    <div class="mb-4">
                         <label asp-for="IsActive" class="flex items-center">
                             <input asp-for="IsActive" type="checkbox" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary">
                             <span class="ml-2 text-sm text-gray-700">Activate survey immediately after creation</span>
@@ -108,15 +113,83 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="p-5 border-t bg-gray-50 flex justify-end">
-            <a asp-action="SurveyManagement" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap mr-3">
-                Cancel
-            </a>
-            <button type="submit" class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-                Create Survey
+    <!-- Questions Section -->
+    <div class="bg-white rounded-lg shadow mb-6">
+        <div class="p-6 border-b">
+            <h2 class="text-lg font-medium text-gray-900">Survey Questions</h2>
+            <p class="text-sm text-gray-600">Add questions to your survey</p>
+        </div>
+
+        <div class="p-6">
+            <div id="questions-container">
+                <!-- Question template will be cloned here -->
+                <div class="question-item mb-6 p-4 border border-gray-200 rounded-lg">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Question Text <span class="text-red-500">*</span></label>
+                        <input type="text" name="Questions[0].QuestionText" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" placeholder="Enter question text" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Question Type <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <select name="Questions[0].QuestionType" class="question-type bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none appearance-none" required>
+                                <option value="1">Text Answer</option>
+                                <option value="2" selected>Single Choice (MCQ)</option>
+                                <option value="3">Multiple Choice</option>
+                                <option value="4">Rating Scale</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="Questions[0].IsRequired" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary" checked>
+                            <span class="ml-2 text-sm text-gray-700">Required question</span>
+                        </label>
+                    </div>
+
+                    <div class="options-section">
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Options <span class="text-red-500">*</span></label>
+                            <p class="text-xs text-gray-500 mb-2">Enter each option on a new line or separate with commas</p>
+                            <textarea name="Questions[0].Options" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-primary focus:ring-opacity-20 outline-none" rows="3" placeholder="Option 1, Option 2, Option 3" required>Option 1, Option 2, Option 3</textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="button" class="remove-question flex items-center px-3 py-1.5 bg-red-50 text-red-600 rounded-button text-sm font-medium hover:bg-red-100">
+                            <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                <i class="ri-delete-bin-line"></i>
+                            </div>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" id="add-question" class="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200">
+                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                    <i class="ri-add-line"></i>
+                </div>
+                Add Question
             </button>
         </div>
+    </div>
+
+    <div class="p-5 border-t bg-gray-50 flex justify-end">
+        <a asp-controller="Admin" asp-action="SurveyManagement" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap mr-3">
+            Cancel
+        </a>
+        <button type="submit" class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            Create Survey
+        </button>
     </div>
 </form>
 
@@ -150,10 +223,66 @@
                     if (isActiveCheckbox) {
                         isActiveCheckbox.checked = false;
                     }
-
                     document.querySelector('form').submit();
                 });
             }
+
+            // Question management
+            let questionCount = 1;
+            const questionsContainer = document.getElementById('questions-container');
+            const addQuestionBtn = document.getElementById('add-question');
+
+            // Add new question
+            addQuestionBtn.addEventListener('click', function() {
+                const template = questionsContainer.querySelector('.question-item').cloneNode(true);
+                const newIndex = questionCount;
+
+                // Update all names and IDs
+                template.querySelectorAll('[name]').forEach(el => {
+                    const name = el.getAttribute('name').replace(/\[\d+\]/, `[${newIndex}]`);
+                    el.setAttribute('name', name);
+                });
+
+                // Clear values
+                template.querySelector('[name^="Questions"]').value = '';
+                template.querySelector('.options-section textarea').value = '';
+                template.querySelector('.question-type').value = '2';
+
+                questionsContainer.appendChild(template);
+                questionCount++;
+            });
+
+            // Remove question
+            questionsContainer.addEventListener('click', function(e) {
+                if (e.target.closest('.remove-question')) {
+                    const questionItem = e.target.closest('.question-item');
+                    if (questionsContainer.querySelectorAll('.question-item').length > 1) {
+                        questionItem.remove();
+                    } else {
+                        // Reset the single remaining question instead of removing
+                        const inputs = questionItem.querySelectorAll('input[type="text"], textarea');
+                        inputs.forEach(input => input.value = '');
+                        questionItem.querySelector('.question-type').value = '2';
+                    }
+                }
+            });
+
+            // Toggle options based on question type
+            questionsContainer.addEventListener('change', function(e) {
+                if (e.target.classList.contains('question-type')) {
+                    const questionItem = e.target.closest('.question-item');
+                    const optionsSection = questionItem.querySelector('.options-section');
+                    const isMCQ = e.target.value === '2' || e.target.value === '3';
+
+                    if (isMCQ) {
+                        optionsSection.style.display = 'block';
+                        optionsSection.querySelector('textarea').setAttribute('required', '');
+                    } else {
+                        optionsSection.style.display = 'none';
+                        optionsSection.querySelector('textarea').removeAttribute('required');
+                    }
+                }
+            });
         });
     </script>
 }

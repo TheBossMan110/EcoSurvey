@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EcoSurvey.Models
 {
-    public class Winner
+    public class CompetitionParticipant
     {
         [Key]
-        public int WinnerId { get; set; }
+        public int ParticipantId { get; set; }
 
         public int CompetitionId { get; set; }
 
@@ -15,18 +16,19 @@ namespace EcoSurvey.Models
         [StringLength(100)]
         public string Name { get; set; }
 
+        [Required]
         [StringLength(100)]
         [EmailAddress]
         public string Email { get; set; }
 
-        public int Position { get; set; }
-
         public int Score { get; set; }
 
-        public DateTime AwardDate { get; set; } = DateTime.Now;
+        public DateTime SubmissionDate { get; set; } = DateTime.Now;
 
-        // Navigation property
+        // Navigation properties
         [ForeignKey("CompetitionId")]
         public virtual Competition Competition { get; set; }
+
+        public virtual ICollection<CompetitionAnswer> Answers { get; set; } = new List<CompetitionAnswer>();
     }
 }

@@ -2,8 +2,22 @@
 
 @{
     ViewData["Title"] = "Delete Survey";
+    ViewData["ActivePage"] = "SurveyManagement";
     Layout = "_AdminLayout";
 }
+
+<!-- Breadcrumb -->
+<div class="flex items-center text-sm text-gray-500 mb-4">
+    <a asp-controller="Admin" asp-action="Index" class="hover:text-primary">Dashboard</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <a asp-controller="Admin" asp-action="SurveyManagement" class="hover:text-primary">Survey Management</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <span class="text-gray-700 font-medium">Delete Survey</span>
+</div>
 
 <div class="page-header">
     <div>
@@ -11,7 +25,7 @@
         <p class="page-subtitle">Confirm deletion of an environmental awareness survey</p>
     </div>
     <div class="page-actions">
-        <a asp-action="Index" class="btn btn-outline">
+        <a asp-controller="Admin" asp-action="SurveyManagement" class="btn btn-outline">
             <i class="ri-arrow-left-line"></i>
             Back to List
         </a>
@@ -78,10 +92,10 @@
             </div>
         </div>
 
-        <form asp-action="Delete" method="post">
+        <form asp-controller="Survey" asp-action="Delete" method="post">
             <input type="hidden" asp-for="SurveyId" />
             <div class="flex justify-center space-x-4">
-                <a asp-action="Index" class="btn btn-outline">
+                <a asp-controller="Survey" asp-action="SurveyManagement" class="btn btn-outline">
                     <i class="ri-close-line"></i>
                     Cancel
                 </a>
@@ -91,5 +105,6 @@
                 </button>
             </div>
         </form>
+
     </div>
-</div>
+</div>  

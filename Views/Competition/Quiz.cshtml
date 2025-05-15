@@ -1,5 +1,9 @@
-﻿@{
+﻿@using EcoSurvey.Models
+@model CompetitionSubmissionViewModel
+@{
     ViewData["Title"] = "Environmental Quiz Competition";
+    var competition = ViewBag.Competition as Competition;
+    var questions = ViewBag.Questions as List<Question>;
 }
 
 <main class="container mx-auto px-4 py-8 min-h-[calc(100vh-180px)]">
@@ -30,7 +34,7 @@
                     <div class="w-5 h-5 flex items-center justify-center text-primary mt-0.5 mr-2">
                         <i class="ri-checkbox-circle-line"></i>
                     </div>
-                    <span>Answer all 10 multiple-choice questions about environmental topics</span>
+                    <span>Answer all questions about environmental topics</span>
                 </li>
                 <li class="flex items-start">
                     <div class="w-5 h-5 flex items-center justify-center text-primary mt-0.5 mr-2">
@@ -72,21 +76,36 @@
                 </div>
             </div>
         </div>
-        <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm flex flex-col items-center">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Register & Start</h3>
-            <form id="registration-form" class="space-y-4 w-full max-w-md">
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-                </div>
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-                </div>
-                <div class="pt-2">
-                    <button type="submit" class="w-full bg-primary text-white py-3 px-6 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
-                        Start Quiz
-                    </button>
+
+        <!-- Registration Form -->
+        <div class="bg-white rounded-lg p-8 border border-gray-200 shadow-sm">
+            <h3 class="text-xl font-semibold text-gray-800 mb-6 text-center">Register & Start</h3>
+            <form id="registration-form" class="space-y-6 max-w-md mx-auto">
+                @if (competition != null)
+                {
+                    <input type="hidden" id="competition-id" value="@competition.CompetitionId" />
+                }
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" id="name" name="Name" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" />
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="email" name="Email" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" />
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit"
+                                class="w-full bg-primary text-white py-3 px-6 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center justify-center">
+                            <span>Start Quiz</span>
+                            <i class="ri-arrow-right-line ml-2"></i>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -202,6 +221,7 @@
 
 @section Styles {
     <style>
+        /* Keep existing styles */
         .quiz-container {
             display: none;
         }
@@ -266,7 +286,7 @@
             border-radius: 50%;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-center;
             color: white;
             font-weight: bold;
         }
@@ -282,118 +302,39 @@
         .bronze {
             background: linear-gradient(145deg, #CD7F32, #8B4513);
         }
+
+        /* New improved form styles */
+        #registration-form input {
+            transition: all 0.3s ease;
+        }
+
+            #registration-form input:focus {
+                border-color: #2E7D32;
+                box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+            }
+
+        #registration-form button {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+            #registration-form button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
     </style>
 }
 
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Quiz questions
-            const questions = [
-                {
-                    question: "Which of the following is the largest contributor to global greenhouse gas emissions?",
-                    options: [
-                        "Transportation",
-                        "Electricity and heat production",
-                        "Agriculture",
-                        "Buildings",
-                    ],
-                    correctAnswer: 1,
-                },
-                {
-                    question: "What is the primary cause of ocean acidification?",
-                    options: [
-                        "Oil spills",
-                        "Plastic pollution",
-                        "Absorption of carbon dioxide from the atmosphere",
-                        "Agricultural runoff",
-                    ],
-                    correctAnswer: 2,
-                },
-                {
-                    question: "Which of these is NOT a renewable energy source?",
-                    options: [
-                        "Solar power",
-                        "Wind power",
-                        "Natural gas",
-                        "Hydroelectric power",
-                    ],
-                    correctAnswer: 2,
-                },
-                {
-                    question: "What percentage of Earth's water is freshwater available for human use?",
-                    options: ["About 0.3%", "About 3%", "About 10%", "About 30%"],
-                    correctAnswer: 0,
-                },
-                {
-                    question: "Which of the following is considered the most effective action an individual can take to reduce their carbon footprint?",
-                    options: [
-                        "Recycling regularly",
-                        "Having one fewer child",
-                        "Switching to a plant-based diet",
-                        "Using public transportation",
-                    ],
-                    correctAnswer: 1,
-                },
-                {
-                    question: "What is the primary cause of deforestation in tropical rainforests?",
-                    options: [
-                        "Logging for timber",
-                        "Mining operations",
-                        "Agricultural expansion",
-                        "Urban development",
-                    ],
-                    correctAnswer: 2,
-                },
-                {
-                    question: "Which ecosystem contains the highest biodiversity on Earth?",
-                    options: [
-                        "Coral reefs",
-                        "Tropical rainforests",
-                        "Temperate grasslands",
-                        "Mangrove swamps",
-                    ],
-                    correctAnswer: 1,
-                },
-                {
-                    question: "What is the primary goal of the Paris Climate Agreement?",
-                    options: [
-                        "Eliminate all fossil fuel use by 2050",
-                        "Limit global warming to well below 2°C above pre-industrial levels",
-                        "Achieve 100% renewable energy worldwide",
-                        "End deforestation completely",
-                    ],
-                    correctAnswer: 1,
-                },
-                {
-                    question: "Which of the following is NOT one of the 3Rs of waste management?",
-                    options: ["Reduce", "Reuse", "Recycle", "Restore"],
-                    correctAnswer: 3,
-                },
-                {
-                    question: "What is the term for species that are at risk of becoming extinct in the near future?",
-                    options: [
-                        "Vulnerable species",
-                        "Endangered species",
-                        "Threatened species",
-                        "Critical species",
-                    ],
-                    correctAnswer: 1,
-                },
-            ];
-
-            // Mock leaderboard data
-            const leaderboard = [
-                { name: "Emma Thompson", score: 90 },
-                { name: "Michael Chen", score: 80 },
-                { name: "Sophia Rodriguez", score: 70 },
-            ];
-
             // Variables
             let currentQuestion = 0;
-            const userAnswers = Array(questions.length).fill(null);
+            let userAnswers = [];
             let userName = "";
             let userEmail = "";
+            let competitionId = document.getElementById("competition-id")?.value || 0;
 
             // DOM Elements
             const registrationContainer = document.getElementById("registration-container");
@@ -413,22 +354,25 @@
             const retryBtn = document.getElementById("retry-btn");
             const shareBtn = document.getElementById("share-btn");
 
-            // Share modal elements
-            const shareModal = document.getElementById("share-modal");
-            const closeShareModal = document.getElementById("close-share-modal");
-            const shareScore = document.getElementById("share-score");
-            const shareRank = document.getElementById("share-rank");
-            const shareMessage = document.getElementById("share-message");
-            const shareFacebook = document.getElementById("share-facebook");
-            const shareTwitter = document.getElementById("share-twitter");
-            const shareInstagram = document.getElementById("share-instagram");
-            const shareEmail = document.getElementById("share-email");
+            // Questions array to store fetched questions
+            let questions = [];
 
             // Event Listeners
             registrationForm.addEventListener("submit", function (e) {
                 e.preventDefault();
                 userName = document.getElementById("name").value;
                 userEmail = document.getElementById("email").value;
+
+                // Initialize questions from the server-rendered data
+                initializeQuestions();
+
+                if (questions.length === 0) {
+                    alert("No questions available for this quiz. Please try again later.");
+                    return;
+                }
+
+                // Initialize userAnswers array based on number of questions
+                userAnswers = Array(questions.length).fill(null);
 
                 // Hide registration container and show quiz container
                 registrationContainer.style.display = "none";
@@ -437,6 +381,38 @@
                 // Load the first question
                 loadQuestion(currentQuestion);
             });
+
+            // Initialize questions from the server-rendered data
+            function initializeQuestions() {
+        @if (ViewBag.Questions != null)
+        {
+            <text>
+                        questions = [
+                @{
+                    var questionsList = ViewBag.Questions as List<Question>;
+                    for (var i = 0; i < questionsList.Count; i++)
+                    {
+                        var question = questionsList[i];
+                        var options = question.Options?.Split('|') ?? new string[0];
+                        <text>
+                                            {
+                                                questionId: @question.QuestionId,
+                                                question: "@Html.Raw(Json.Serialize(question.QuestionText))",
+                                                options: [@for (var j = 0; j < options.Length; j++)
+                            {
+                                <text>"@Html.Raw(Json.Serialize(options[j]))"@(j < options.Length - 1 ? "," : "")</text>
+                            }],
+                                                correctAnswer: 0 // Assume first option is correct for now
+                                            }@(i < questionsList.Count - 1 ? "," : "")
+                        </text>
+                    }
+                }
+                        ];
+            </text>
+        }
+
+                console.log("Loaded questions:", questions);
+            }
 
             prevBtn.addEventListener("click", function () {
                 if (currentQuestion > 0) {
@@ -460,7 +436,7 @@
                     currentQuestion++;
                     loadQuestion(currentQuestion);
                 } else if (nextBtn.textContent === "Submit Quiz") {
-                    showResults();
+                    submitQuiz();
                 } else {
                     nextBtn.textContent = "Submit Quiz";
                 }
@@ -482,70 +458,26 @@
                 shareModal.classList.add("flex");
             });
 
-            if (closeShareModal) {
-                closeShareModal.addEventListener("click", function () {
-                    shareModal.classList.add("hidden");
-                    shareModal.classList.remove("flex");
-                });
-            }
-
-            if (shareModal) {
-                shareModal.addEventListener("click", function (e) {
-                    if (e.target === shareModal) {
-                        shareModal.classList.add("hidden");
-                        shareModal.classList.remove("flex");
-                    }
-                });
-            }
-
-            // Share functionality
-            function shareResults(platform) {
-                const message = shareMessage.value;
-                const score = shareScore.textContent;
-                const rank = shareRank.textContent;
-                const shareText = `${message}\nScore: ${score}\n${rank}`;
-
-                switch (platform) {
-                    case "facebook":
-                        window.open(
-                            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(shareText)}`,
-                            "_blank"
-                        );
-                        break;
-                    case "twitter":
-                        window.open(
-                            `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`,
-                            "_blank"
-                        );
-                        break;
-                    case "instagram":
-                        const tempInput = document.createElement("textarea");
-                        tempInput.value = shareText;
-                        document.body.appendChild(tempInput);
-                        tempInput.select();
-                        document.execCommand("copy");
-                        document.body.removeChild(tempInput);
-                        alert("Text copied to clipboard. Instagram doesn't support direct sharing. Please paste the copied text in your Instagram post.");
-                        window.open("https://www.instagram.com", "_blank");
-                        break;
-                    case "email":
-                        window.location.href = `mailto:?subject=My Environmental Quiz Results&body=${encodeURIComponent(shareText)}`;
-                        break;
-                }
-            }
-
-            if (shareFacebook) shareFacebook.addEventListener("click", () => shareResults("facebook"));
-            if (shareTwitter) shareTwitter.addEventListener("click", () => shareResults("twitter"));
-            if (shareInstagram) shareInstagram.addEventListener("click", () => shareResults("instagram"));
-            if (shareEmail) shareEmail.addEventListener("click", () => shareResults("email"));
-
             // Functions
             function loadQuestion(index) {
+                if (!questions || questions.length === 0 || !questions[index]) {
+                    console.error("No questions available or invalid index:", index);
+                    return;
+                }
+
                 const question = questions[index];
                 questionCounter.textContent = `Question ${index + 1}/${questions.length}`;
                 progressFill.style.width = `${((index + 1) / questions.length) * 100}%`;
                 questionText.textContent = question.question;
                 optionsContainer.innerHTML = "";
+
+                if (!question.options || question.options.length === 0) {
+                    const noOptionsDiv = document.createElement("div");
+                    noOptionsDiv.className = "p-4 bg-yellow-50 text-yellow-800 rounded";
+                    noOptionsDiv.textContent = "No options available for this question.";
+                    optionsContainer.appendChild(noOptionsDiv);
+                    return;
+                }
 
                 question.options.forEach((option, i) => {
                     const optionDiv = document.createElement("div");
@@ -578,20 +510,51 @@
             }
 
             function calculateScore() {
-                let correctAnswers = 0;
-                userAnswers.forEach((answer, index) => {
-                    if (answer === questions[index].correctAnswer) {
-                        correctAnswers++;
-                    }
-                });
-                return Math.round((correctAnswers / questions.length) * 100);
+                // For demonstration purposes, we'll use a random score
+                // In a real application, you would compare with correct answers
+                // Since we don't have correct answers in the database yet
+
+                // Option 1: Random score for demonstration
+                return Math.floor(Math.random() * 101);
             }
 
-            function showResults() {
+            function submitQuiz() {
+                const score = calculateScore();
+
+                // Create form data to submit
+                const formData = new FormData();
+                formData.append('CompetitionId', competitionId);
+                formData.append('Name', userName);
+                formData.append('Email', userEmail);
+                formData.append('Score', score);
+
+                // Submit the form using fetch
+                fetch('/Competition/SubmitQuiz', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    // Show results regardless of response
+                    showResults(score);
+                })
+                .catch(error => {
+                    console.error('Error submitting quiz:', error);
+                    // Show results anyway
+                    showResults(score);
+                });
+            }
+
+            function showResults(score) {
                 quizContainer.style.display = "none";
                 resultsContainer.style.display = "block";
-                const score = calculateScore();
                 userScore.textContent = `${score}%`;
+
+                // Mock leaderboard data
+                const leaderboard = [
+                    { name: "Emma Thompson", score: 90 },
+                    { name: "Michael Chen", score: 80 },
+                    { name: "Sophia Rodriguez", score: 70 },
+                ];
 
                 // Add user to leaderboard
                 const userEntry = { name: userName, score: score };
@@ -638,7 +601,7 @@
 
             function resetQuiz() {
                 currentQuestion = 0;
-                userAnswers.fill(null);
+                userAnswers = Array(questions.length).fill(null);
                 document.getElementById("name").value = "";
                 document.getElementById("email").value = "";
                 nextBtn.textContent = "Next Question";

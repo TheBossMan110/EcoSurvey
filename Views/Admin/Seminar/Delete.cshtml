@@ -65,7 +65,7 @@
             }
         </div>
 
-        <form asp-action="Delete" method="post">
+        <form asp-controller="Admin" asp-action="DeleteSeminar" method="post">
             <input type="hidden" asp-for="SeminarId" />
             <div class="flex justify-center space-x-4">
                 <a asp-action="Index" class="btn btn-outline">

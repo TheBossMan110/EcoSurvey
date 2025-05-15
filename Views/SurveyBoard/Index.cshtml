@@ -191,217 +191,212 @@
 <!-- Survey Grid -->
 <main class="container mx-auto px-4 py-6">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Survey Card 1 -->
-        <a href="@Url.Action("Quiz", "Survey")" class="survey-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div class="relative">
-                <div class="h-36 bg-gray-100">
-                    <img src="https://readdy.ai/api/search-image?query=Campus%2520waste%2520audit%2520scene%2520with%2520students%2520analyzing%2520waste%2520bins%2520and%2520sorting%2520recyclables%2C%2520clean%2520educational%2520environment%2C%2520bright%2520lighting%2C%2520professional%2520waste%2520management%2520assessment%2C%2520high%2520quality%2520realistic%2520photography&width=600&height=300&seq=waste1&orientation=landscape"
-                         alt="Campus Waste Audit"
-                         class="w-full h-full object-cover object-top" />
-                </div>
-                <div class="absolute top-3 right-3">
-                    <span class="difficulty-badge difficulty-easy">Easy</span>
-                </div>
-            </div>
-            <div class="p-5">
-                <div class="flex items-center mb-3">
-                    <span class="category-tag category-waste">
-                        <i class="ri-recycle-line mr-1"></i>
-                        Waste Management
-                    </span>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">
-                    Campus Waste Audit
-                </h3>
-                <p class="text-gray-600 text-sm mb-4">
-                    Help assess the waste generation patterns across different campus
-                    buildings to improve recycling initiatives.
-                </p>
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-time-line"></i>
+        @if (ViewBag.ActiveSurveys != null && ViewBag.ActiveSurveys.Count > 0)
+        {
+            @foreach (var survey in ViewBag.ActiveSurveys)
+            {
+                <div class="survey-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="relative">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=Students%20planting%20trees%20in%20a%20campus%20garden%2C%20environmental%20conservation%20activity%2C%20bright%20natural%20lighting%2C%20educational%20setting%2C%20students%20working%20together%2C%20high%20quality%20realistic%20photography%2C%20environmental%20education&width=600&height=400&seq=eco2&orientation=landscape"
+                                 alt="Tree Planting Day"
+                                 class="w-full h-full object-cover object-top" />
                         </div>
-                        <span class="ml-1.5">10-15 min</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-user-line"></i>
-                        </div>
-                        <span class="ml-1.5">243 participants</span>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-calendar-line"></i>
-                        </div>
-                        <span class="ml-1.5">Ends: May 10, 2025</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-coin-line"></i>
-                        </div>
-                        <span class="ml-1.5">15 points</span>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="text-xs font-medium text-gray-500">Completion status</span>
-                        <span class="text-xs font-medium text-primary">75%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill bg-primary" style="width: 75%"></div>
-                    </div>
-                </div>
+                        <div class="absolute top-3 right-3">
+                            @{
+                                var difficulty = "Easy";
+                                var difficultyClass = "difficulty-easy";
 
-                <button class="w-full bg-primary text-white py-2.5 !rounded-button hover:bg-primary/90 transition-colors font-medium whitespace-nowrap">
-                    Continue Survey
-                </button>
-            </div>
-        </a>
+                                if (survey.EstimatedCompletionTime > 30)
+                                {
+                                    difficulty = "Hard";
+                                    difficultyClass = "difficulty-hard";
+                                }
+                                else if (survey.EstimatedCompletionTime > 15)
+                                {
+                                    difficulty = "Medium";
+                                    difficultyClass = "difficulty-medium";
+                                }
+                            }
+                            <span class="difficulty-badge @difficultyClass">@difficulty</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center mb-3">
+                            <span class="category-tag category-waste">
+                                <i class="ri-recycle-line mr-1"></i>
+                                @(survey.TargetUserTypeDisplay)
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                            @survey.Title
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            @(survey.Description.Length > 120 ? survey.Description.Substring(0, 120) + "..." : survey.Description)
+                        </p>
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                                <span class="ml-1.5">@survey.EstimatedCompletionTime min</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                                @{
+                                    var participantCount = 0;
+                                    if (survey.ResponseCounts != null && survey.ResponseCounts.ContainsKey(survey.SurveyId))
+                                    {
+                                        participantCount = survey.ResponseCounts[survey.SurveyId];
+                                    }
+                                }
+                                <span class="ml-1.5">@participantCount participants</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                <span class="ml-1.5">Ends: @survey.EndDate.ToString("MMM d, yyyy")</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-coin-line"></i>
+                                </div>
+                                <span class="ml-1.5">@(survey.EstimatedCompletionTime > 0 ? survey.EstimatedCompletionTime / 2 : 5) points</span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-medium text-gray-500">Completion status</span>
+                                <span class="text-xs font-medium text-primary">Not started</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-primary" style="width: 0%"></div>
+                            </div>
+                        </div>
 
-        <!-- More survey cards... -->
-        <!-- Survey Card 2 -->
-        <div class="survey-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div class="relative">
-                <div class="h-36 bg-gray-100">
-                    <img src="https://readdy.ai/api/search-image?query=Energy%2520conservation%2520in%2520a%2520university%2520setting%2C%2520students%2520analyzing%2520energy%2520usage%2520data%2C%2520checking%2520smart%2520meters%2C%2520bright%2520modern%2520educational%2520environment%2C%2520professional%2520energy%2520audit%2C%2520high%2520quality%2520realistic%2520photography&width=600&height=300&seq=energy1&orientation=landscape"
-                         alt="Energy Conservation"
-                         class="w-full h-full object-cover object-top" />
+                        <!-- In your survey card button -->
+                        <a href="@Url.Action("Quiz", "Survey", new { id = survey.SurveyId })">
+                            <button class="w-full bg-primary text-white py-2.5 !rounded-button hover:bg-primary/90 transition-colors font-medium whitespace-nowrap">
+                                Take Survey
+                            </button>
+                        </a>
+                    </div>
                 </div>
-                <div class="absolute top-3 right-3">
-                    <span class="difficulty-badge difficulty-medium">Medium</span>
-                </div>
+            }
+        }
+        else
+        {
+            <div class="col-span-3 text-center py-10">
+                <div class="text-gray-500">No active surveys available at the moment.</div>
             </div>
-            <div class="p-5">
-                <div class="flex items-center mb-3">
-                    <span class="category-tag category-energy">
-                        <i class="ri-lightbulb-line mr-1"></i>
-                        Energy Conservation
-                    </span>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">
-                    Energy Usage Patterns
-                </h3>
-                <p class="text-gray-600 text-sm mb-4">
-                    Share your energy usage habits to help develop more effective
-                    conservation strategies for campus buildings.
-                </p>
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-time-line"></i>
-                        </div>
-                        <span class="ml-1.5">15-20 min</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-user-line"></i>
-                        </div>
-                        <span class="ml-1.5">187 participants</span>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-calendar-line"></i>
-                        </div>
-                        <span class="ml-1.5">Ends: May 15, 2025</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-coin-line"></i>
-                        </div>
-                        <span class="ml-1.5">20 points</span>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="text-xs font-medium text-gray-500">Completion status</span>
-                        <span class="text-xs font-medium text-gray-500">Not started</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill bg-primary" style="width: 0%"></div>
-                    </div>
-                </div>
-                <a href="@Url.Action("Quiz", "Survey")">
-                    <button class="w-full bg-primary text-white py-2.5 !rounded-button hover:bg-primary/90 transition-colors font-medium whitespace-nowrap">
-                        Take Survey
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Survey Card 3 -->
-        <div class="survey-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div class="relative">
-                <div class="h-36 bg-gray-100">
-                    <img src="https://readdy.ai/api/search-image?query=Water%2520conservation%2520assessment%2520in%2520university%2520campus%2C%2520students%2520checking%2520water%2520fixtures%2C%2520analyzing%2520water%2520usage%2520data%2C%2520bright%2520educational%2520setting%2C%2520professional%2520water%2520audit%2C%2520high%2520quality%2520realistic%2520photography&width=600&height=300&seq=water1&orientation=landscape"
-                         alt="Water Conservation"
-                         class="w-full h-full object-cover object-top" />
-                </div>
-                <div class="absolute top-3 right-3">
-                    <span class="difficulty-badge difficulty-easy">Easy</span>
-                </div>
-            </div>
-            <div class="p-5">
-                <div class="flex items-center mb-3">
-                    <span class="category-tag category-water">
-                        <i class="ri-drop-line mr-1"></i>
-                        Water Conservation
-                    </span>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">
-                    Water Usage Survey
-                </h3>
-                <p class="text-gray-600 text-sm mb-4">
-                    Provide insights on water consumption habits to improve campus
-                    water conservation efforts.
-                </p>
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-time-line"></i>
-                        </div>
-                        <span class="ml-1.5">5-10 min</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-user-line"></i>
-                        </div>
-                        <span class="ml-1.5">312 participants</span>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-calendar-line"></i>
-                        </div>
-                        <span class="ml-1.5">Ends: May 8, 2025</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-coin-line"></i>
-                        </div>
-                        <span class="ml-1.5">10 points</span>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="text-xs font-medium text-gray-500">Completion status</span>
-                        <span class="text-xs font-medium text-primary">100%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill bg-primary" style="width: 100%"></div>
-                    </div>
-                </div>
-                <button class="w-full bg-gray-200 text-gray-500 py-2.5 !rounded-button cursor-not-allowed font-medium whitespace-nowrap">
-                    Completed
-                </button>
-            </div>
-        </div>
+        }
     </div>
+
+    @if (ViewBag.PastSurveys != null && ViewBag.PastSurveys.Count > 0)
+    {
+        <div class="mt-12 mb-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Past Surveys</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach (var survey in ViewBag.PastSurveys)
+                {
+                    <div class="survey-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden opacity-75">
+                        <div class="relative">
+                            <div class="h-36 bg-gray-100">
+                                <img src="https://readdy.ai/api/search-image?query=Environmental%20survey%20scene%20with%20students%20analyzing%20data%2C%20clean%20educational%20environment%2C%20bright%20lighting%2C%20professional%20assessment%2C%20high%20quality%20realistic%20photography&width=600&height=300&orientation=landscape"
+                                     alt="@survey.Title"
+                                     class="w-full h-full object-cover object-top" />
+                            </div>
+                            <div class="absolute top-3 right-3">
+                                @{
+                                    var difficulty = "Easy";
+                                    var difficultyClass = "difficulty-easy";
+
+                                    if (survey.EstimatedCompletionTime > 30)
+                                    {
+                                        difficulty = "Hard";
+                                        difficultyClass = "difficulty-hard";
+                                    }
+                                    else if (survey.EstimatedCompletionTime > 15)
+                                    {
+                                        difficulty = "Medium";
+                                        difficultyClass = "difficulty-medium";
+                                    }
+                                }
+                                <span class="difficulty-badge @difficultyClass">@difficulty</span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center mb-3">
+                                <span class="category-tag category-waste">
+                                    <i class="ri-recycle-line mr-1"></i>
+                                    @(survey.TargetUserTypeDisplay)
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                                @survey.Title
+                            </h3>
+                            <p class="text-gray-600 text-sm mb-4">
+                                @(survey.Description.Length > 120 ? survey.Description.Substring(0, 120) + "..." : survey.Description)
+                            </p>
+                            <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-time-line"></i>
+                                    </div>
+                                    <span class="ml-1.5">@survey.EstimatedCompletionTime min</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                    @{
+                                        var participantCount = 0;
+                                        if (survey.ResponseCounts != null && survey.ResponseCounts.ContainsKey(survey.SurveyId))
+                                        {
+                                            participantCount = survey.ResponseCounts[survey.SurveyId];
+                                        }
+                                    }
+                                    <span class="ml-1.5">@participantCount participants</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                    <span class="ml-1.5">Ended: @survey.EndDate.ToString("MMM d, yyyy")</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-coin-line"></i>
+                                    </div>
+                                    <span class="ml-1.5">@(survey.EstimatedCompletionTime > 0 ? survey.EstimatedCompletionTime / 2 : 5) points</span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-medium text-gray-500">Survey status</span>
+                                    <span class="text-xs font-medium text-gray-500">Closed</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-gray-300" style="width: 100%"></div>
+                                </div>
+                            </div>
+
+                            <button class="w-full bg-gray-200 text-gray-500 py-2.5 !rounded-button cursor-not-allowed font-medium whitespace-nowrap">
+                                Survey Closed
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 
     <!-- Pagination -->
     <div class="mt-10 flex justify-center">

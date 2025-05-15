@@ -137,3 +137,4 @@ E:\E-Project\EcoSurvey\obj\Debug\net8.0\refint\EcoSurvey.dll
 E:\E-Project\EcoSurvey\obj\Debug\net8.0\EcoSurvey.pdb
 E:\E-Project\EcoSurvey\obj\Debug\net8.0\EcoSurvey.genruntimeconfig.cache
 E:\E-Project\EcoSurvey\obj\Debug\net8.0\ref\EcoSurvey.dll
+E:\E-Project\EcoSurvey\obj\Debug\net8.0\EcoSurvey.sourcelink.json

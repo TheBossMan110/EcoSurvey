@@ -426,40 +426,18 @@ namespace EcoSurvey.Controllers
             {
                 return NotFound();
             }
-            return View(seminar);
+            return View("~/Views/Admin/Seminar/Edit.cshtml", seminar);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditSeminar(int id, Seminar seminar)
         {
-            if (id != seminar.SeminarId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(seminar);
+                    _context.Seminars.Update(seminar);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Seminar updated successfully!";
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SeminarExists(seminar.SeminarId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(SeminarManagement));
-            }
-            return View(seminar);
+                    var Seminars = await _context.Seminars.ToListAsync();
+                    return View("~/Views/Admin/SeminarManagement.cshtml", Seminars);
         }
 
         public async Task<IActionResult> DeleteSeminar(int id)
@@ -470,7 +448,7 @@ namespace EcoSurvey.Controllers
                 return NotFound();
             }
 
-            return View(seminar);
+            return View("~/Views/Admin/Seminar/Delete.cshtml", seminar);
         }
 
         [HttpPost, ActionName("DeleteSeminar")]
@@ -480,8 +458,21 @@ namespace EcoSurvey.Controllers
             var seminar = await _context.Seminars.FindAsync(id);
             _context.Seminars.Remove(seminar);
             await _context.SaveChangesAsync();
+            var Seminars = await _context.Seminars.ToListAsync();
             TempData["SuccessMessage"] = "Seminar deleted successfully!";
-            return RedirectToAction(nameof(SeminarManagement));
+            return View("~/Views/Admin/SeminarManagement.cshtml", Seminars);
+        }
+
+        public async Task<IActionResult> DetailSeminar(int id)
+        {
+            var seminar = await _context.Seminars.FindAsync(id);
+
+            if (seminar == null)
+            {
+                return NotFound();
+            }
+
+            return View("~/Views/Admin/Seminar/Details.cshtml", seminar);
         }
 
         private bool SeminarExists(int id)

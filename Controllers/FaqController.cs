@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EcoSurvey.Controllers
+namespace EcoSurvey.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class FaqController : Controller
@@ -26,16 +26,8 @@ namespace EcoSurvey.Controllers
         // GET: Admin/Faq
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                var faqs = await _context.FAQs.OrderBy(f => f.DisplayOrder).ToListAsync();
-                return View(faqs);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving FAQs");
-                return View(new List<FAQ>());
-            }
+            var faqs = await _context.FAQs.ToListAsync();
+            return View(faqs);
         }
 
         // GET: Admin/Faq/Details/5
@@ -60,21 +52,13 @@ namespace EcoSurvey.Controllers
         // GET: Admin/Faq/Create
         public IActionResult Create()
         {
-            try
+            var faq = new FAQ
             {
-                var faq = new FAQ
-                {
-                    DisplayOrder = _context.FAQs.Count() + 1,
-                    LastUpdated = DateTime.Now,
-                    IsPublished = true
-                };
-                return View(faq);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error creating new FAQ");
-                return View(new FAQ { DisplayOrder = 1, LastUpdated = DateTime.Now, IsPublished = true });
-            }
+                DisplayOrder = _context.FAQs.Count() + 1,
+                LastUpdated = DateTime.Now,
+                IsPublished = true
+            };
+            return View(faq);
         }
 
         // POST: Admin/Faq/Create
@@ -82,45 +66,28 @@ namespace EcoSurvey.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(FAQ faq)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
+
                     faq.LastUpdated = DateTime.Now;
                     _context.Add(faq);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "FAQ created successfully!";
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(faq);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error saving FAQ: {@FAQ}", faq);
-                ModelState.AddModelError("", "An error occurred while saving the FAQ. Please try again.");
-                return View(faq);
-            }
+                    return RedirectToAction("FaqManagement", "Admin");
         }
 
-        // GET: Admin/Faq/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
+        // GET: Admin/Faq/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
             var faq = await _context.FAQs.FindAsync(id);
             if (faq == null)
             {
                 return NotFound();
             }
-            return View(faq);
+            return View("~/Views/Admin/FAQ/Edit.cshtml", faq);
         }
 
         // POST: Admin/Faq/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, FAQ faq)
         {
             if (id != faq.FaqId)
@@ -128,35 +95,11 @@ namespace EcoSurvey.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    faq.LastUpdated = DateTime.Now;
-                    _context.Update(faq);
-                    await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "FAQ updated successfully!";
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    if (!FaqExists(faq.FaqId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        _logger.LogError(ex, "Concurrency error updating FAQ: {@FAQ}", faq);
-                        ModelState.AddModelError("", "The FAQ was modified by another user. Please try again.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error updating FAQ: {@FAQ}", faq);
-                    ModelState.AddModelError("", "An error occurred while updating the FAQ. Please try again.");
-                }
-            }
-            return View(faq);
+            _context.FAQs.Update(faq);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "FAQ updated successfully!";
+            var FaqsList = _context.FAQs.ToList();
+            return View("~/Views/Admin/FaqManagement.cshtml", FaqsList);
         }
 
         // GET: Admin/Faq/Delete/5
@@ -201,40 +144,6 @@ namespace EcoSurvey.Controllers
                 _logger.LogError(ex, "Error deleting FAQ with ID: {FaqId}", id);
                 TempData["ErrorMessage"] = "An error occurred while deleting the FAQ. Please try again.";
                 return RedirectToAction(nameof(Index));
-            }
-        }
-
-        // GET: Admin/Faq/Reorder
-        public async Task<IActionResult> Reorder()
-        {
-            var faqs = await _context.FAQs.OrderBy(f => f.DisplayOrder).ToListAsync();
-            return View(faqs);
-        }
-
-        // POST: Admin/Faq/UpdateOrder
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateOrder([FromBody] int[] ids)
-        {
-            try
-            {
-                for (int i = 0; i < ids.Length; i++)
-                {
-                    var faq = await _context.FAQs.FindAsync(ids[i]);
-                    if (faq != null)
-                    {
-                        faq.DisplayOrder = i + 1;
-                        _context.Update(faq);
-                    }
-                }
-
-                await _context.SaveChangesAsync();
-                return Json(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating FAQ order");
-                return Json(new { success = false, message = "An error occurred while updating the order." });
             }
         }
 

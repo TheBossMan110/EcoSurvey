@@ -20,19 +20,39 @@ namespace EcoSurvey.Controllers
         // GET: Admin/Competition
         public async Task<IActionResult> Index()
         {
-            var competitions = await _context.Competitions
-                .Include(c => c.Survey)
-                .OrderByDescending(c => c.CreatedDate)
-                .ToListAsync();
+            try
+            {
+                var activeCompetitions = await _context.Competitions
+                    .Where(c => c.IsActive && c.EndDate >= DateTime.Now)
+                    .OrderByDescending(c => c.StartDate)
+                    .ToListAsync();
 
-            // Get survey titles for display
-            var surveyIds = competitions.Where(c => c.SurveyId.HasValue).Select(c => c.SurveyId.Value).Distinct();
-            var surveys = await _context.Surveys
-                .Where(s => surveyIds.Contains(s.SurveyId))
-                .ToDictionaryAsync(s => s.SurveyId, s => s.Title);
+                var pastCompetitions = await _context.Competitions
+                    .Where(c => !c.IsActive || c.EndDate < DateTime.Now)
+                    .OrderByDescending(c => c.EndDate)
+                    .Take(5)
+                    .ToListAsync();
 
-            ViewBag.SurveyTitles = surveys;
-            return View(competitions);
+                // Get top winners for display
+                var topWinners = await _context.Winners
+                    .OrderBy(w => w.Position)
+                    .Take(3)
+                    .ToListAsync();
+
+                var viewModel = new CompetitionViewModel
+                {
+                    ActiveCompetitions = activeCompetitions,
+                    PastCompetitions = pastCompetitions,
+                    TopWinners = topWinners
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                return View(new CompetitionViewModel());
+            }
         }
 
         // GET: Admin/Competition/Details/5
@@ -117,43 +137,14 @@ namespace EcoSurvey.Controllers
 
         // POST: Admin/Competition/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CompetitionId,SurveyId,Title,Description,StartDate,EndDate,IsActive,CreatedDate,Rules,Prizes,MaxParticipants")] Competition competition)
+        public object Edit(Competition competition)
         {
-            if (id != competition.CompetitionId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(competition);
-                    await _context.SaveChangesAsync();
+                   _context.Competitions.Update(competition);
+                    _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Competition updated successfully!";
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CompetitionExists(competition.CompetitionId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
 
-            var surveys = await _context.Surveys
-                .Where(s => s.IsActive && s.EndDate >= DateTime.Now)
-                .Select(s => new { s.SurveyId, s.Title })
-                .ToListAsync();
-
-            ViewBag.Surveys = new SelectList(surveys, "SurveyId", "Title", competition.SurveyId);
-            return View(competition);
+                    var competitionList = _context.Competitions.ToList();
+            return View("~/Views/Admin/CompetitionManagement.cshtml", competitionList);
         }
 
         // GET: Admin/Competition/Delete/5
@@ -233,128 +224,154 @@ namespace EcoSurvey.Controllers
             return View(competition);
         }
 
-        public async Task<IActionResult> Quiz(int id)
+        [Route("api/competition/{competitionId}/questions")]
+        public IActionResult GetQuestions(int competitionId)
         {
-            var competition = await _context.Competitions.FindAsync(id);
-
-            if (competition == null)
+            try
             {
-                return NotFound();
-            }
+                var competition = _context.Competitions.Find(competitionId);
+                if (competition == null || !competition.SurveyId.HasValue)
+                {
+                    return NotFound();
+                }
 
-            // Check if competition is active
-            if (!competition.IsActive || competition.EndDate < DateTime.Now)
+                var questionsFromDb = _context.Questions
+    .Where(q => q.SurveyId == competition.SurveyId &&
+                (q.QuestionType == 2 || q.QuestionType == 3))
+    .OrderBy(q => q.DisplayOrder)
+    .ToList(); // Executes the SQL query and brings data into memory
+
+                var questions = questionsFromDb.Select(q => new
+                {
+                    questionId = q.QuestionId,
+                    question = q.QuestionText,
+                    options = !string.IsNullOrEmpty(q.Options) ? q.Options.Split('|') : new string[0],
+                    correctAnswer = 0 // still a placeholder
+                }).ToList();
+
+
+
+
+                return Json(questions);
+            }
+            catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                // Log the error
+                return StatusCode(500, "An error occurred while fetching questions");
             }
-
-            var survey = await _context.Surveys.FindAsync(competition.SurveyId);
-            if (survey == null)
+        }
+        public IActionResult Quiz()
+        {
+            try
             {
-                return NotFound();
+
+                // Get the active competition
+                var activeCompetition = _context.Competitions
+                    .Where(c => c.IsActive && c.EndDate >= DateTime.Now)
+                    .OrderByDescending(c => c.StartDate)
+                    .FirstOrDefault();
+
+                if (activeCompetition == null)
+                {
+                    // If no active competition, create a default one for display
+                    activeCompetition = new Competition
+                    {
+                        CompetitionId = 0,
+                        Title = "Environmental Quiz Competition",
+                        Description = "Test your knowledge about environmental issues and sustainability."
+                    };
+                }
+
+                // Get questions for this competition's survey
+                List<Question> questions = new List<Question>();
+                if (activeCompetition.SurveyId.HasValue)
+                {
+                    questions = _context.Questions
+                        .Where(q => q.SurveyId == activeCompetition.SurveyId &&
+                                   (q.QuestionType == 2 || q.QuestionType == 3)) // Only include choice questions
+                        .OrderBy(q => q.DisplayOrder)
+                        .ToList();
+
+                    // Log the number of questions found for debugging
+                    System.Diagnostics.Debug.WriteLine($"Found {questions.Count} questions for competition {activeCompetition.CompetitionId}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Competition {activeCompetition.CompetitionId} has no SurveyId");
+                }
+
+                ViewBag.Competition = activeCompetition;
+                ViewBag.Questions = questions;
+
+                // Create a new view model for the form
+                var model = new CompetitionSubmissionViewModel
+                {
+                    CompetitionId = activeCompetition.CompetitionId
+                };
+
+                return View(model);
             }
-
-            // Get questions for this survey
-            var questions = await _context.Questions
-                .Where(q => q.SurveyId == survey.SurveyId)
-                .OrderBy(q => q.DisplayOrder)
-                .ToListAsync();
-
-            ViewBag.Questions = questions;
-            ViewBag.Survey = survey;
-            ViewBag.Competition = competition;
-
-            return View();
+            catch (Exception ex)
+            {
+                // Log the error
+                System.Diagnostics.Debug.WriteLine($"Error in Quiz action: {ex.Message}");
+                return View(new CompetitionSubmissionViewModel());
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitQuiz(int competitionId, [FromForm] IFormCollection formData)
+        public IActionResult SubmitQuiz(CompetitionSubmissionViewModel model)
         {
-            var competition = await _context.Competitions.FindAsync(competitionId);
-            if (competition == null)
+            try
             {
-                return NotFound();
-            }
-
-            var survey = await _context.Surveys.FindAsync(competition.SurveyId);
-            if (survey == null)
-            {
-                return NotFound();
-            }
-
-            // Create a new response
-            var response = new Response
-            {
-                SurveyId = survey.SurveyId,
-                SubmissionDate = DateTime.Now
-            };
-
-            _context.Responses.Add(response);
-            await _context.SaveChangesAsync();
-
-            // Get all questions for this survey
-            var questions = await _context.Questions
-                .Where(q => q.SurveyId == survey.SurveyId)
-                .ToListAsync();
-
-            int totalQuestions = questions.Count;
-            int questionsAttempted = 0;
-            int correctAnswers = 0;
-            int wrongAnswers = 0;
-
-            // Process each question's answer
-            foreach (var question in questions)
-            {
-                if (formData.TryGetValue($"question_{question.QuestionId}", out var answerValue))
+                // Create a new participant
+                var participant = new CompetitionParticipant
                 {
-                    questionsAttempted++;
+                    CompetitionId = model.CompetitionId,
+                    Name = model.Name,
+                    Email = model.Email,
+                    Score = model.Score,
+                    SubmissionDate = DateTime.Now
+                };
 
-                    // Save the answer
-                    var answer = new Answer
-                    {
-                        QuestionId = question.QuestionId,
-                        AnswerText = answerValue.ToString()
-                    };
+                _context.CompetitionParticipants.Add(participant);
+                _context.SaveChanges();
 
-                    _context.Answers.Add(answer);
-
-                    // For simplicity, we're not calculating correct/wrong answers here
-                    // In a real application, you would compare with correct answers
-                }
+                // Redirect to a thank you page or back to the competition page
+                TempData["SuccessMessage"] = "Thank you for participating in the quiz!";
+                return RedirectToAction("Index");
             }
-
-            await _context.SaveChangesAsync();
-
-            // Create survey result
-            var result = new SurveyResult
+            catch (Exception ex)
             {
-                SurveyId = survey.SurveyId,
-                ResponseId = response.ResponseId,
-                TotalQuestions = totalQuestions,
-                QuestionsAttempted = questionsAttempted,
-                CorrectAnswers = correctAnswers,
-                WrongAnswers = wrongAnswers,
-                Score = 0, // Calculate based on your scoring system
-                MaxPossibleScore = totalQuestions, // Assuming 1 point per question
-                SubmissionDate = DateTime.Now
-            };
-
-            _context.SurveyResults.Add(result);
-            await _context.SaveChangesAsync();
-
-            // Collect participant information for competition
-            string participantName = formData["ParticipantName"].ToString();
-            string participantEmail = formData["ParticipantEmail"].ToString();
-
-            // Store this information for potential winners
-            TempData["ParticipantName"] = participantName;
-            TempData["ParticipantEmail"] = participantEmail;
-            TempData["CompetitionId"] = competitionId;
-            TempData["Score"] = result.Score;
-
-            return RedirectToAction("ThankYou");
+                // Log the error
+                TempData["ErrorMessage"] = "An error occurred while submitting your quiz.";
+                return RedirectToAction("Quiz");
+            }
         }
 
+        public async Task<IActionResult> Results(int id)
+        {
+            var participant = await _context.CompetitionParticipants
+                .Include(p => p.Competition)
+                .FirstOrDefaultAsync(p => p.ParticipantId == id);
+
+            if (participant == null)
+            {
+                return NotFound();
+            }
+
+            // Get top participants for leaderboard
+            var leaderboard = await _context.CompetitionParticipants
+                .Where(p => p.CompetitionId == participant.CompetitionId)
+                .OrderByDescending(p => p.Score)
+                .Take(10)
+                .ToListAsync();
+
+            ViewBag.Leaderboard = leaderboard;
+            ViewBag.Rank = leaderboard.FindIndex(p => p.ParticipantId == id) + 1;
+
+            return View(participant);
+        }
         public IActionResult ThankYou()
         {
             return View();

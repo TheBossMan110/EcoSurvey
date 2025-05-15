@@ -2,8 +2,22 @@
 
 @{
     ViewData["Title"] = "Edit Survey";
+    ViewData["ActivePage"] = "SurveyManagement";
     Layout = "_AdminLayout";
 }
+
+<!-- Breadcrumb -->
+<div class="flex items-center text-sm text-gray-500 mb-4">
+    <a asp-controller="Admin" asp-action="Index" class="hover:text-primary">Dashboard</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <a asp-controller="Admin" asp-action="SurveyManagement" class="hover:text-primary">Survey Management</a>
+    <div class="w-4 h-4 flex items-center justify-center mx-1">
+        <i class="ri-arrow-right-s-line"></i>
+    </div>
+    <span class="text-gray-700 font-medium">Edit Survey</span>
+</div>
 
 <div class="page-header">
     <div>
@@ -11,7 +25,7 @@
         <p class="page-subtitle">Update an existing environmental awareness survey</p>
     </div>
     <div class="page-actions">
-        <a asp-action="Index" class="btn btn-outline">
+        <a asp-controller="Survey" asp-action="SurveyManagement" class="btn btn-outline">
             <i class="ri-arrow-left-line"></i>
             Back to List
         </a>
@@ -20,9 +34,9 @@
 
 <div class="card">
     <div class="card-body">
-        <form asp-action="Edit" method="post">
+        <form asp-controller="Survey" asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="SurveyId" />
+            <input type="hidden" asp-for="SurveyId"/>
             <input type="hidden" asp-for="CreatedDate" />
 
             <div class="form-group">
@@ -55,12 +69,9 @@
                 <div class="form-group">
                     <label asp-for="TargetUserType" class="form-label">Target User Type</label>
                     <select asp-for="TargetUserType" class="form-control">
-                        <option value="">-- Select Target User Type --</option>
-                        <option value="Students">Students</option>
-                        <option value="Faculty">Faculty</option>
-                        <option value="Staff">Staff</option>
-                        <option value="Community">Community</option>
-                        <option value="All">All</option>
+                        <option value="0">All Users</option>
+                        <option value="2">Faculty/Staff</option>
+                        <option value="3">Students</option>
                     </select>
                     <span asp-validation-for="TargetUserType" class="text-danger"></span>
                 </div>
@@ -90,7 +101,7 @@
                     <i class="ri-save-line"></i>
                     Update Survey
                 </button>
-                <a asp-action="Index" class="btn btn-outline">
+                <a asp-controller="Admin" asp-action="SurveyManagement" class="btn btn-outline">
                     <i class="ri-close-line"></i>
                     Cancel
                 </a>
@@ -108,13 +119,15 @@
 
             startDateInput.addEventListener("change", function() {
                 endDateInput.min = this.value;
-                if (endDateInput.value && endDateInput.value &lt; this.value) {
+                if (endDateInput.value && endDateInput.value < this.value) {
                     endDateInput.value = this.value;
                 }
             });
 
             // Set initial min value for end date
-            endDateInput.min = startDateInput.value;
+            if (startDateInput.value) {
+                endDateInput.min = startDateInput.value;
+            }
         });
     </script>
     @{

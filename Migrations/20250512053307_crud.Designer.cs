@@ -4,6 +4,7 @@ using EcoSurvey.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcoSurvey.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250512053307_crud")]
+    partial class crud
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,26 @@ namespace EcoSurvey.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("EcoSurvey.Models.Answer", b =>
+                {
+                    b.Property<int>("AnswerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnswerId"));
+
+                    b.Property<string>("AnswerText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AnswerId");
+
+                    b.ToTable("Answers", (string)null);
+                });
 
             modelBuilder.Entity("EcoSurvey.Models.Competition", b =>
                 {
@@ -72,94 +95,33 @@ namespace EcoSurvey.Migrations
                     b.ToTable("Competitions", (string)null);
                 });
 
-            modelBuilder.Entity("EcoSurvey.Models.CompetitionAnswer", b =>
+            modelBuilder.Entity("EcoSurvey.Models.EffectiveParticipation", b =>
                 {
-                    b.Property<int>("AnswerId")
+                    b.Property<int>("ParticipationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnswerId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParticipationId"));
 
-                    b.Property<string>("AnswerText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsCorrect")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ParticipantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AnswerId");
-
-                    b.HasIndex("ParticipantId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("CompetitionAnswers", (string)null);
-                });
-
-            modelBuilder.Entity("EcoSurvey.Models.CompetitionParticipant", b =>
-                {
-                    b.Property<int>("ParticipantId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParticipantId"));
-
-                    b.Property<int>("CompetitionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
+                    b.Property<string>("ParticipantEmail")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("ParticipantName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SubmissionDate")
+                    b.Property<DateTime>("ParticipationDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ParticipantId");
-
-                    b.HasIndex("CompetitionId");
-
-                    b.ToTable("CompetitionParticipants", (string)null);
-                });
-
-            modelBuilder.Entity("EcoSurvey.Models.CompetitionQuestion", b =>
-                {
-                    b.Property<int>("CompetitionQuestionId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("SeminarId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompetitionQuestionId"));
+                    b.HasKey("ParticipationId");
 
-                    b.Property<int>("CompetitionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CorrectOptionIndex")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CompetitionQuestionId");
-
-                    b.HasIndex("CompetitionId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("CompetitionQuestions", (string)null);
+                    b.ToTable("EffectiveParticipation", (string)null);
                 });
 
             modelBuilder.Entity("EcoSurvey.Models.FAQ", b =>
@@ -211,6 +173,7 @@ namespace EcoSurvey.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Options")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QuestionText")
@@ -413,18 +376,18 @@ namespace EcoSurvey.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WinnerId"));
 
-                    b.Property<DateTime>("AwardDate")
+                    b.Property<DateTime>("AwardedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CompetitionId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("ParticipantEmail")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("ParticipantName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -432,12 +395,12 @@ namespace EcoSurvey.Migrations
                     b.Property<int>("Position")
                         .HasColumnType("int");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("int");
+                    b.Property<string>("Prize")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("WinnerId");
-
-                    b.HasIndex("CompetitionId");
 
                     b.ToTable("Winners", (string)null);
                 });
@@ -449,78 +412,6 @@ namespace EcoSurvey.Migrations
                         .HasForeignKey("SurveyId");
 
                     b.Navigation("Survey");
-                });
-
-            modelBuilder.Entity("EcoSurvey.Models.CompetitionAnswer", b =>
-                {
-                    b.HasOne("EcoSurvey.Models.CompetitionParticipant", "Participant")
-                        .WithMany("Answers")
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EcoSurvey.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Participant");
-
-                    b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("EcoSurvey.Models.CompetitionParticipant", b =>
-                {
-                    b.HasOne("EcoSurvey.Models.Competition", "Competition")
-                        .WithMany("Participants")
-                        .HasForeignKey("CompetitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Competition");
-                });
-
-            modelBuilder.Entity("EcoSurvey.Models.CompetitionQuestion", b =>
-                {
-                    b.HasOne("EcoSurvey.Models.Competition", "Competition")
-                        .WithMany()
-                        .HasForeignKey("CompetitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EcoSurvey.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Competition");
-
-                    b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("EcoSurvey.Models.Winner", b =>
-                {
-                    b.HasOne("EcoSurvey.Models.Competition", "Competition")
-                        .WithMany("Winners")
-                        .HasForeignKey("CompetitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Competition");
-                });
-
-            modelBuilder.Entity("EcoSurvey.Models.Competition", b =>
-                {
-                    b.Navigation("Participants");
-
-                    b.Navigation("Winners");
-                });
-
-            modelBuilder.Entity("EcoSurvey.Models.CompetitionParticipant", b =>
-                {
-                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }

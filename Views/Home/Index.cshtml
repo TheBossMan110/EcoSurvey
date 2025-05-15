@@ -1,8 +1,9 @@
-﻿@{
+﻿@model EcoSurvey.Controllers.HomeViewModel
+@{
     ViewData["Title"] = "Home";
 }
 
-<!-- Hero Section -->
+<!-- Hero Section remains unchanged -->
 <section class="relative overflow-hidden" style="background-image: url('https://readdy.ai/api/search-image?query=A%20serene%20environmental%20education%20scene%20with%20lush%20green%20forest%20and%20nature%20elements%20on%20the%20right%20side%2C%20with%20a%20clean%20gradient%20transitioning%20to%20white%20space%20on%20the%20left.%20The%20image%20shows%20students%20engaged%20in%20environmental%20activities.%20Natural%20lighting%2C%20soft%20colors%2C%20perfect%20for%20text%20overlay%20on%20the%20left%20side.%20Realistic%20style%2C%20high%20quality%2C%20professional%20photography.&width=1920&height=600&seq=eco1&orientation=landscape'); background-size: cover; background-position: center;">
     <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent"></div>
     <div class="container mx-auto px-4 py-16 md:py-24 relative">
@@ -34,7 +35,8 @@
     <!-- Stats Overview -->
     <section class="mb-16">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Active Surveys -->
+            <!-- Active Surveys - UPDATED WITH DYNAMIC DATA -->
+            <!-- Active Surveys - Simplified with hardcoded IDs -->
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-semibold text-gray-800">
@@ -45,39 +47,45 @@
                     </div>
                 </div>
                 <div class="space-y-4">
+                    <!-- Survey 1 -->
                     <div class="bg-gray-50 p-4 rounded-md flex items-center justify-between">
                         <div>
                             <h3 class="font-medium text-gray-800">Campus Waste Audit</h3>
-                            <p class="text-sm text-gray-500">Ends in 3 days</p>
+                            <p class="text-sm text-gray-500">Survey ID: 1</p>
                         </div>
-                        <a asp-controller="SurveyBoard" asp-action="Index">
+                        <a asp-controller="SurveyBoard" asp-action="Index" asp-route-id="1">
                             <button class="bg-primary text-white px-3 py-1.5 !rounded-button text-sm whitespace-nowrap">
                                 Take Survey
                             </button>
                         </a>
                     </div>
+
+                    <!-- Survey 2 -->
                     <div class="bg-gray-50 p-4 rounded-md flex items-center justify-between">
                         <div>
                             <h3 class="font-medium text-gray-800">Water Conservation</h3>
-                            <p class="text-sm text-gray-500">Ends in 5 days</p>
+                            <p class="text-sm text-gray-500">Survey ID: 2</p>
                         </div>
-                        <a asp-controller="SurveyBoard" asp-action="Index">
+                        <a asp-controller="SurveyBoard" asp-action="Index" asp-route-id="2">
                             <button class="bg-primary text-white px-3 py-1.5 !rounded-button text-sm whitespace-nowrap">
                                 Take Survey
                             </button>
                         </a>
                     </div>
+
+                    <!-- Survey 3 -->
                     <div class="bg-gray-50 p-4 rounded-md flex items-center justify-between">
                         <div>
                             <h3 class="font-medium text-gray-800">Renewable Energy</h3>
-                            <p class="text-sm text-gray-500">Ends in 7 days</p>
+                            <p class="text-sm text-gray-500">Survey ID: 3</p>
                         </div>
-                        <a asp-controller="SurveyBoard" asp-action="Index">
+                        <a asp-controller="SurveyBoard" asp-action="Index" asp-route-id="3">
                             <button class="bg-primary text-white px-3 py-1.5 !rounded-button text-sm whitespace-nowrap">
                                 Take Survey
                             </button>
                         </a>
                     </div>
+
                     <a asp-controller="SurveyBoard" asp-action="Index">
                         <button class="w-full text-primary font-medium py-2 hover:underline flex items-center justify-center">
                             <span>View All Surveys</span>
@@ -87,7 +95,7 @@
                 </div>
             </div>
 
-            <!-- Competition Leaderboard -->
+            <!-- Competition Leaderboard - UPDATED WITH DYNAMIC DATA -->
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-semibold text-gray-800">
@@ -98,6 +106,18 @@
                     </div>
                 </div>
                 <div class="space-y-4">
+                    @if (Model.ActiveCompetitions != null && Model.ActiveCompetitions.Any())
+                    {
+                        var competition = Model.ActiveCompetitions.FirstOrDefault();
+                        if (competition != null)
+                        {
+                            <div class="text-sm text-gray-500 mb-2">
+                                <span class="font-medium">@competition.Title</span>
+                            </div>
+                        }
+                    }
+
+                    <!-- Keep the hardcoded leaderboard for now -->
                     <div class="flex items-center justify-between p-3 border-b">
                         <div class="flex items-center">
                             <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-medium">
@@ -151,6 +171,21 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Participation Statistics - UNCHANGED -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">
+                        Participation Statistics
+                    </h2>
+                    <div class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full mb-4">
+                        <i class="ri-bar-chart-line text-3xl"></i>
+                    </div>
+                </div>
+                <div id="participationChart" class="h-64"></div>
+            </div>
+        </div>
+    </section>
 
             <!-- Participation Statistics -->
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">

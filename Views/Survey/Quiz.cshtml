@@ -1,250 +1,208 @@
 ﻿@{
-    ViewData["Title"] = "Environmental Quiz";
+    ViewData["Title"] = ViewBag.Survey?.Title ?? "Survey";
+    var survey = ViewBag.Survey as EcoSurvey.Models.Survey;
+    var questions = ViewBag.Questions as List<EcoSurvey.Models.Question>;
 }
 
 <main class="container mx-auto px-4 py-8 mt-16 mb-16 min-h-screen">
     <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6 md:p-8">
-        <div id="quiz-container">
-            <div class="mb-6">
-                <div class="text-2xl font-bold text-gray-800 mb-2">
-                    Environmental Knowledge Quiz
+        @if (questions == null || !questions.Any())
+        {
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="ri-error-warning-line text-yellow-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-yellow-700">
+                            This survey does not have any questions yet.
+                        </p>
+                    </div>
                 </div>
-                <p class="text-gray-600">
-                    Test your knowledge about environmental issues with this quiz.
-                </p>
             </div>
-
-            <form id="quiz-form" class="space-y-6">
-                <div class="space-y-6">
-                    <div class="question-container">
-                        <p class="font-medium text-gray-800 mb-3">
-                            1. Which of the following is a greenhouse gas?
-                        </p>
-                        <div class="space-y-2">
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q1" value="a" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Carbon Dioxide</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q1" value="b" />
-                                <span class="radio-mark mr-2"></span>
-                                />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Nitrogen</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q1" value="c" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Oxygen</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q1" value="d" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Hydrogen</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question-container">
-                        <p class="font-medium text-gray-800 mb-3">
-                            2. What is the main cause of ocean acidification?
-                        </p>
-                        <div class="space-y-2">
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q2" value="a" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Plastic pollution</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q2" value="b" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Carbon dioxide absorption</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q2" value="c" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Oil spills</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q2" value="d" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Overfishing</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question-container">
-                        <p class="font-medium text-gray-800 mb-3">
-                            3. Which renewable energy source currently provides the most
-                            electricity globally?
-                        </p>
-                        <div class="space-y-2">
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q3" value="a" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Solar power</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q3" value="b" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Wind power</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q3" value="c" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Hydropower</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q3" value="d" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Geothermal power</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question-container">
-                        <p class="font-medium text-gray-800 mb-3">
-                            4. What is the primary cause of deforestation in the Amazon
-                            rainforest?
-                        </p>
-                        <div class="space-y-2">
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q4" value="a" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Urban development</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q4" value="b" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Agriculture and cattle ranching</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q4" value="c" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Mining</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q4" value="d" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Tourism</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question-container">
-                        <p class="font-medium text-gray-800 mb-3">
-                            5. Which of these activities contributes most to water
-                            pollution?
-                        </p>
-                        <div class="space-y-2">
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q5" value="a" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Industrial waste discharge</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q5" value="b" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Household sewage</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q5" value="c" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Agricultural runoff</span>
-                            </label>
-                            <label class="flex items-center custom-radio">
-                                <input type="radio" name="q5" value="d" />
-                                <span class="radio-mark mr-2"></span>
-                                <span>Recreational activities</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="w-full px-6 py-3 bg-primary text-white rounded-button hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
-                        Submit Quiz
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <div id="results-container" class="hidden">
-            <div class="text-center">
-                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <i class="ri-award-line ri-2x text-primary"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Quiz Results</h2>
+        }
+        else
+        {
+            <div id="quiz-container">
                 <div class="mb-6">
-                    <div class="text-4xl font-bold text-primary mb-2">
-                        <span id="score-percentage">0</span>%
+                    <div class="text-2xl font-bold text-gray-800 mb-2">
+                        @survey.Title
                     </div>
-                    <p class="text-gray-600">Correct Answers</p>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="bg-green-50 p-4 rounded-lg">
-                        <div class="text-2xl font-bold text-green-600 mb-1">
-                            <span id="correct-answers">0</span>
+                    <p class="text-gray-600">
+                        @survey.Description
+                    </p>
+                    <div class="mt-3 flex items-center text-sm text-gray-500">
+                        <div class="flex items-center mr-4">
+                            <i class="ri-time-line mr-1"></i>
+                            <span>@survey.EstimatedCompletionTime min</span>
                         </div>
-                        <p class="text-green-600">Correct</p>
-                    </div>
-                    <div class="bg-red-50 p-4 rounded-lg">
-                        <div class="text-2xl font-bold text-red-600 mb-1">
-                            <span id="wrong-answers">0</span>
+                        <div class="flex items-center">
+                            <i class="ri-calendar-line mr-1"></i>
+                            <span>Ends: @survey.EndDate.ToString("MMM d, yyyy")</span>
                         </div>
-                        <p class="text-red-600">Wrong</p>
                     </div>
                 </div>
-                <button onclick="retakeQuiz()" class="px-6 py-3 bg-primary text-white rounded-button hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
-                    Retake Quiz
-                </button>
+
+                <form id="quiz-form" method="post" action="@Url.Action("SubmitQuiz", "Survey")" class="space-y-6">
+                    <input type="hidden" name="surveyId" value="@survey.SurveyId" />
+                    @Html.AntiForgeryToken()
+
+                    <div class="space-y-6">
+                        @foreach (var question in questions)
+                        {
+                            <div class="question-container p-4 border border-gray-200 rounded-lg">
+                                <p class="font-medium text-gray-800 mb-3">
+                                    @(questions.IndexOf(question) + 1). @question.QuestionText
+                                    @if (question.IsRequired)
+                                    {
+                                        <span class="text-red-500">*</span>
+                                    }
+                                </p>
+
+                                @if (question.QuestionType == 1) // Text
+                                {
+                                    <div>
+                                        <input type="text"
+                                               name="question_@(question.QuestionId)"
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        @(question.IsRequired ? "required" : "") />
+                                    </div>
+                                }
+                                else if (question.QuestionType == 2) // Single Choice
+                                {
+                                    <div class="space-y-2">
+                                        @{
+                                            var options = !string.IsNullOrEmpty(question.Options)
+                                            ? System.Text.Json.JsonSerializer.Deserialize<List<string>>(question.Options)
+                                            : new List<string>();
+
+                                            foreach (var option in options)
+                                            {
+                                                var optionValue = options.IndexOf(option).ToString();
+                                                <label class="flex items-center custom-radio">
+                                                    <input type="radio"
+                                                           name="question_@(question.QuestionId)"
+                                                           value="@optionValue"
+                                                    @(question.IsRequired ? "required" : "") />
+                                                    <span class="radio-mark mr-2"></span>
+                                                    <span>@option</span>
+                                                </label>
+                                            }
+                                        }
+                                    </div>
+                                }
+                                else if (question.QuestionType == 3) // Multiple Choice
+                                {
+                                    <div class="space-y-2">
+                                        @{
+                                            var options = !string.IsNullOrEmpty(question.Options)
+                                            ? System.Text.Json.JsonSerializer.Deserialize<List<string>>(question.Options)
+                                            : new List<string>();
+
+                                            foreach (var option in options)
+                                            {
+                                                var optionValue = options.IndexOf(option).ToString();
+                                                <label class="flex items-center custom-checkbox">
+                                                    <input type="checkbox"
+                                                           name="question_@(question.QuestionId)_@optionValue"
+                                                           value="@optionValue" />
+                                                    <span class="checkmark mr-2"></span>
+                                                    <span>@option</span>
+                                                </label>
+                                            }
+                                        }
+                                    </div>
+                                }
+                                else if (question.QuestionType == 4) // Rating
+                                {
+                                    <div class="flex items-center space-x-2">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <label class="rating-item">
+                                                <input type="radio"
+                                                       name="question_@(question.QuestionId)"
+                                                       value="@i"
+                                                @(question.IsRequired ? "required" : "") />
+                                                <span class="rating-number">@i</span>
+                                            </label>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <button type="submit" class="w-full px-6 py-3 bg-primary text-white rounded-button hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                            Submit Survey
+                        </button>
+                    </div>
+                </form>
             </div>
-        </div>
+        }
     </div>
 </main>
 
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const quizForm = document.getElementById("quiz-form");
-            const quizContainer = document.getElementById("quiz-container");
-            const resultsContainer = document.getElementById("results-container");
+            // Add styling for rating items when selected
+            const ratingItems = document.querySelectorAll('.rating-item input');
+            ratingItems.forEach(input => {
+                input.addEventListener('change', function() {
+                    // Find all rating items in this question
+                    const questionContainer = this.closest('.question-container');
+                    const allRatingInputs = questionContainer.querySelectorAll('.rating-item input');
+                    const allRatingItems = questionContainer.querySelectorAll('.rating-item');
 
-            const correctAnswers = {
-                q1: "a",
-                q2: "b",
-                q3: "c",
-                q4: "b",
-                q5: "a",
-            };
+                    // Reset all
+                    allRatingItems.forEach(item => {
+                        item.classList.remove('bg-primary', 'border-primary');
+                        item.querySelector('.rating-number').classList.remove('text-white');
+                    });
 
-            quizForm.addEventListener("submit", function (e) {
-                e.preventDefault();
+                    // Get the selected value
+                    const selectedValue = parseInt(this.value);
 
-                let score = 0;
-                const formData = new FormData(quizForm);
-
-                for (let [question, answer] of formData.entries()) {
-                    if (correctAnswers[question] === answer) {
-                        score++;
-                    }
-                }
-
-                const percentage = (score / Object.keys(correctAnswers).length) * 100;
-                const wrongAnswers = Object.keys(correctAnswers).length - score;
-
-                document.getElementById("score-percentage").textContent = Math.round(percentage);
-                document.getElementById("correct-answers").textContent = score;
-                document.getElementById("wrong-answers").textContent = wrongAnswers;
-
-                quizContainer.classList.add("hidden");
-                resultsContainer.classList.remove("hidden");
+                    // Highlight the selected item
+                    const selectedItem = this.closest('.rating-item');
+                    selectedItem.classList.add('bg-primary', 'border-primary');
+                    selectedItem.querySelector('.rating-number').classList.add('text-white');
+                });
             });
-        });
 
-        function retakeQuiz() {
-            document.getElementById("quiz-form").reset();
-            document.getElementById("quiz-container").classList.remove("hidden");
-            document.getElementById("results-container").classList.add("hidden");
-        }
+            // Form validation
+            const quizForm = document.getElementById('quiz-form');
+            if (quizForm) {
+                quizForm.addEventListener('submit', function(e) {
+                    const requiredInputs = quizForm.querySelectorAll('input[required]');
+                    let allFilled = true;
+
+                    requiredInputs.forEach(input => {
+                        if (input.type === 'radio') {
+                            // For radio buttons, check if any in the group is checked
+                            const name = input.name;
+                            const radioGroup = quizForm.querySelectorAll(`input[name="${name}"]`);
+                            const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+
+                            if (!isChecked) {
+                                allFilled = false;
+                                // Highlight the question container
+                                const questionContainer = input.closest('.question-container');
+                                questionContainer.classList.add('border-red-500');
+                            }
+                        } else if (input.value.trim() === '') {
+                            allFilled = false;
+                            // Highlight the question container
+                            const questionContainer = input.closest('.question-container');
+                            questionContainer.classList.add('border-red-500');
+                        }
+                    });
+
+                    if (!allFilled) {
+                        e.preventDefault();
+                        alert('Please answer all required questions.');
+                    }
+                });
+            }
+        });
     </script>
 }
